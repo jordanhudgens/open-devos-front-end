@@ -48,8 +48,6 @@ export default {
 
       console.log(this.$router);
 
-      // this.$router.history.current = null;
-
       this.$router.push({
         name: "SearchResults",
         params: { query: evt.target.value }
