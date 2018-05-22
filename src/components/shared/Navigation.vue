@@ -9,9 +9,8 @@
         <input type="text" placeholder="Search">
       </div>
       <div class="right">
-        <a href="#" class="link">Link 1</a>
-        <a href="#" class="link">Link 2</a>
-        <a href="#" class="link">Link 3</a>
+        <a v-for="navLink in loggedInNavLinks" :key="navLink.linkname" href="#" class="link">
+          <i :class="navLink.linkIcon"></i> {{ navLink.linkName }}</a>
       </div>
     </div>
   </div>
@@ -29,34 +28,50 @@ export default {
   },
   data() {
     return {
+      loggedInNavLinks: [
+        { linkName: 'Categories', linkIcon: 'navIcon fas fa-map-signs' },
+        { linkName: 'Popular', linkIcon: 'navIcon fas fa-chart-line' },
+        { linkName: 'Profile', linkIcon: 'navIcon fas fa-user' },
+        { linkName: 'Publish', linkIcon: 'navIcon fas fa-plus-square' },
+      ]
     }
   }
 }
 </script>
 
 <style scoped>
+@import 'https://use.fontawesome.com/releases/v5.0.13/css/all.css';
+
 .navbar {
-  background: #415068;
+  background: white;
+  height: 90px;
+  border-bottom: lightgray solid 1px;
 }
 
 .navbar .toggle,
 .navbar .brand {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+}
+
+.navIcon {
+  margin-right: 10px;
 }
 
 .navbar .link {
-  display: block;
+  display: flex;
+  align-items: center;
   text-align: center;
-  padding: 1em;
+  padding: 2em;
   text-decoration: none;
-  background: #223047;
-  color: white;
+  color: #239a87;
+  background-color: white;
 }
 
 .navbar .link:hover,
 .navbar .link:active {
-  color: #223047;
-  background: white;
+  color: #156356;
+  border-bottom: #156356 solid 1px;
 }
 
 .navbar .brand {
@@ -72,7 +87,7 @@ export default {
 
 .navbar .toggle {
   padding: 1em;
-  color: black;
+  color: #223047;
   vertical-align: middle;
 }
 
