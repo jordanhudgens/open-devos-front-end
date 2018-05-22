@@ -13,8 +13,9 @@
         <input type="text" :value="query" :placeholder="searchPlaceholder" @keyup.enter="submitQuery">
       </div>
       <div class="right">
-        <a v-for="navLink in loggedInNavLinks" :key="navLink.linkname" href="#" class="link">
-          <i :class="navLink.linkIcon"></i> {{ navLink.linkName }}</a>
+        <router-link v-for="navLink in loggedInNavLinks" :key="navLink.linkName" :to="{ name: navLink.linkName }" class="link">
+          <i :class="navLink.linkIcon"></i> {{ navLink.linkName }}
+        </router-link>
       </div>
     </div>
   </div>
@@ -39,6 +40,7 @@ export default {
         { linkName: 'Popular', linkIcon: 'navIcon fas fa-chart-line' },
         { linkName: 'Profile', linkIcon: 'navIcon fas fa-user' },
         { linkName: 'Publish', linkIcon: 'navIcon fas fa-plus-square' },
+        { linkName: 'Login', linkIcon: 'navIcon fas fa-sign-in-alt' },
       ]
     }
   },
