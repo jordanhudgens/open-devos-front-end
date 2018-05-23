@@ -17,7 +17,7 @@
           <i :class="navLink.linkIcon"></i> {{ navLink.linkName }}
         </router-link>
 
-        <router-link v-if="!currentUser" :to="Login" class="link">
+        <router-link v-if="!currentUser" :to="{ name: 'Login' }" class="link">
           <i class="navIcon fas fa-sign-in-alt"></i> Login
         </router-link>
       </div>
@@ -39,6 +39,9 @@ export default {
   },
   computed: {
     ...mapGetters({ currentUser: 'currentUser' })
+  },
+  created() {
+    console.log(this.currentUser);
   },
   data() {
     return {
