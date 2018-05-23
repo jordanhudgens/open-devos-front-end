@@ -7,6 +7,7 @@
 
 <script>
 import Navigation from '@/components/shared/Navigation';
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'App',
@@ -17,6 +18,9 @@ export default {
   },
   components: {
     Navigation
+  },
+  computed: {
+    ...mapGetters({ currentUser: 'currentUser' })
   }
 }
 </script>

@@ -16,12 +16,18 @@
         <router-link v-for="navLink in loggedInNavLinks" :key="navLink.linkName" :to="{ name: navLink.linkName }" class="link">
           <i :class="navLink.linkIcon"></i> {{ navLink.linkName }}
         </router-link>
+
+        <router-link v-if="!currentUser" :to="Login" class="link">
+          <i class="navIcon fas fa-sign-in-alt"></i> Login
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Navigation',
   props: {
@@ -31,6 +37,9 @@ export default {
       required: true
     }
   },
+  computed: {
+    ...mapGetters({ currentUser: 'currentUser' })
+  },
   data() {
     return {
       query: null,
@@ -39,8 +48,7 @@ export default {
         { linkName: 'Categories', linkIcon: 'navIcon fas fa-map-signs' },
         { linkName: 'Popular', linkIcon: 'navIcon fas fa-chart-line' },
         { linkName: 'Profile', linkIcon: 'navIcon fas fa-user' },
-        { linkName: 'Publish', linkIcon: 'navIcon fas fa-plus-square' },
-        { linkName: 'Login', linkIcon: 'navIcon fas fa-sign-in-alt' },
+        { linkName: 'Publish', linkIcon: 'navIcon fas fa-plus-square' }
       ]
     }
   },

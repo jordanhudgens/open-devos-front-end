@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Login',
   data() {
@@ -36,6 +38,7 @@ export default {
       }
 
       localStorage.token = req.data.token
+      this.$store.dispatch('login')
       this.error = false
 
       this.$router.push({
@@ -44,8 +47,12 @@ export default {
     },
     loginFailed() {
       this.error = 'Login failed!'
+      this.$store.dispatch('logout')
       delete localStorage.token
     }
+  },
+  computed: {
+    ...mapGetters({ currentUser: 'currentUser' })
   }
 }
 </script>
