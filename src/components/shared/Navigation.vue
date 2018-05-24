@@ -20,6 +20,18 @@
         <router-link v-if="!currentUser" :to="{ name: 'Login' }" class="link">
           <i class="navIcon fas fa-sign-in-alt"></i> Login
         </router-link>
+
+        <router-link v-if="currentUser" :to="{ name: 'Profile' }" class="link">
+          <i class="navIcon fas fa-user"></i> Profile
+        </router-link>
+
+        <router-link v-if="currentUser" :to="{ name: 'Publish' }" class="link">
+          <i class="navIcon fas fa-plus-square"></i> Publish
+        </router-link>
+
+        <router-link v-if="currentUser" :to="{ name: 'Logout' }" class="link">
+          <i class="navIcon fas fa-sign-out-alt"></i> Logout
+        </router-link>
       </div>
     </div>
   </div>
@@ -50,8 +62,6 @@ export default {
       loggedInNavLinks: [
         { linkName: 'Categories', linkIcon: 'navIcon fas fa-map-signs' },
         { linkName: 'Popular', linkIcon: 'navIcon fas fa-chart-line' },
-        { linkName: 'Profile', linkIcon: 'navIcon fas fa-user' },
-        { linkName: 'Publish', linkIcon: 'navIcon fas fa-plus-square' }
       ]
     }
   },

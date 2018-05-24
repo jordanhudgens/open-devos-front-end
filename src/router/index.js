@@ -7,6 +7,7 @@ import Categories from "@/components/Categories";
 import Popular from "@/components/Popular";
 import Profile from "@/components/Profile";
 import Publish from "@/components/Publish";
+import Logout from "@/components/auth/Logout";
 
 Vue.use(Router);
 
@@ -27,6 +28,11 @@ export default new Router({
       path: "/login",
       name: "Login",
       component: Login
+    },
+    {
+      path: "/logout",
+      name: "Logout",
+      component: Logout
     },
     {
       path: "/categories",
