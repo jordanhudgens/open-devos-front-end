@@ -2,7 +2,12 @@
   <div>
     <h1>Categories</h1>
 
-    <div v-for="category in categories" :key="category.id">{{ category.title }}</div>
+    <div v-for="category in categories" :key="category.id">
+      <pre>
+          {{ category }}
+        </pre>
+      <a :href="category.url" target="_blank">{{ category.title }}</a>
+    </div>
   </div>
 </template>
 
