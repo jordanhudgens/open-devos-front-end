@@ -25,9 +25,6 @@ export default {
     this.getCategories();
   },
   methods: {
-    slugifyWrapper(str) {
-      return slugify(str, { lower: true });
-    },
     getCategories() {
       axios
         .get(this.categoryApiUrl)

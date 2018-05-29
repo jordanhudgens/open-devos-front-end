@@ -1,6 +1,12 @@
 <template>
   <div>
     <h1>Publish</h1>
+
+    <h2>Published Plans</h2>
+
+    <div v-for="plan in plans" :key="plan.id">
+      {{ plan.title }}
+    </div>
   </div>
 </template>
 
@@ -12,6 +18,7 @@ export default {
   name: 'Publish',
   data() {
     return {
+      plans: []
     }
   },
   computed: {
@@ -27,10 +34,14 @@ export default {
         {
           headers: {
             "Authorization": 'Bearer ' + localStorage.getItem('token')
+          },
+          params: {
+            user_id: 1
           }
-        }).then((data) => {
-          console.log('data comming', data);
-        }).catch((error) => {
+        }).then(response => {
+          this.plans.push(...response.data.plans);
+          console.log('data comming', response);
+        }).catch(error => {
           console.log('error comming', error);
         });
     }
