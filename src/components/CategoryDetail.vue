@@ -12,7 +12,7 @@ export default {
   data() {
     return {
       categoryName: null,
-      categoryId: null,
+      categorySlug: this.$route.params.category_slug,
       categoryApiUrl: 'https://open-devos-api.herokuapp.com/topics',
       plans: []
     }
@@ -25,12 +25,13 @@ export default {
   beforeRouteUpdate(to, from, next) {
     // react to route changes...
     // don't forget to call next()
+    this.categorySlug = this.$route.params.category_slug
     next()
   },
   methods: {
     getCategoryPlans() {
       axios
-        .get(`${this.categoryApiUrl}/${this.categoryId}`)
+        .get(`${this.categoryApiUrl}/${this.categorySlug}`)
         .then(response => {
           this.categoryName = response.data.topic.title;
           console.log(response);
