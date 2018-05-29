@@ -7,7 +7,7 @@ import Categories from "@/components/categories/Categories";
 import CategoryDetail from "@/components/categories/CategoryDetail";
 import Popular from "@/components/Popular";
 import Profile from "@/components/Profile";
-import Publish from "@/components/Publish";
+import Publish from "@/components/publishing/Publish";
 import Logout from "@/components/auth/Logout";
 
 Vue.use(Router);
