@@ -40,9 +40,9 @@ export default {
           }
         }).then(response => {
           this.plans.push(...response.data.plans);
-          console.log('data comming', response);
+          console.log('data: ', response);
         }).catch(error => {
-          console.log('error comming', error);
+          console.log('error: ', error);
         });
     }
   }
