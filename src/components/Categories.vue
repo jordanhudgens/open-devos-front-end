@@ -3,16 +3,16 @@
     <h1>Categories</h1>
 
     <div v-for="category in categories" :key="category.id">
-      <pre>
-          {{ category }}
-        </pre>
-      <a :href="category.url" target="_blank">{{ category.title }}</a>
+      <router-link :to="{ name: 'CategoryDetail', params: { category_slug: slugifyWrapper(category.title) } }" class="link">
+        {{ category.title }}
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import slugify from 'slugify';
 
 export default {
   name: 'Categories',
@@ -26,6 +26,9 @@ export default {
     this.getCategories();
   },
   methods: {
+    slugifyWrapper(str) {
+      return slugify(str, { lower: true });
+    },
     getCategories() {
       axios
         .get(this.categoryApiUrl)

@@ -4,6 +4,7 @@ import Homepage from "@/components/Homepage";
 import SearchResults from "@/components/SearchResults";
 import Login from "@/components/auth/Login";
 import Categories from "@/components/Categories";
+import CategoryDetail from "@/components/CategoryDetail";
 import Popular from "@/components/Popular";
 import Profile from "@/components/Profile";
 import Publish from "@/components/Publish";
@@ -38,6 +39,11 @@ export default new Router({
       path: "/categories",
       name: "Categories",
       component: Categories
+    },
+    {
+      path: "/category/:category_slug",
+      name: "CategoryDetail",
+      component: CategoryDetail
     },
     {
       path: "/popular",
