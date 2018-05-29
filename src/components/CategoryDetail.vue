@@ -19,14 +19,13 @@ export default {
   },
   beforeMount() {
     console.log("params...", this.$route.params);
-    console.log("query...", this.$route.query);
 
-    this.categoryId = this.$route.query.category_id
     this.getCategoryPlans();
   },
   beforeRouteUpdate(to, from, next) {
     // react to route changes...
     // don't forget to call next()
+    next()
   },
   methods: {
     getCategoryPlans() {
