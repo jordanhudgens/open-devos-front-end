@@ -23,8 +23,6 @@ export default {
     this.getCategoryPlans();
   },
   beforeRouteUpdate(to, from, next) {
-    // react to route changes...
-    // don't forget to call next()
     this.categorySlug = this.$route.params.category_slug
     next()
   },

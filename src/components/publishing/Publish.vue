@@ -2,10 +2,21 @@
   <div>
     <h1>Publish</h1>
 
-    <h2>Published Plans</h2>
+    <div class="published-plans-wrapper">
+      <button @click="formToggle" class="formToggleLink">New Plan</button>
 
-    <div v-for="plan in plans" :key="plan.id">
-      {{ plan.title }}
+      <h2>Published Plans</h2>
+      <div v-for="plan in plans" :key="plan.id">
+        {{ plan.title }}
+      </div>
+    </div>
+
+    <div class="plan-form-wrapper">
+      <h2>{{ responseMessage }}</h2>
+      <form @submit.prevent="submitPlanForm">
+        <input type="text" v-model="planTitle" placeholder="Title">
+        <button>Save</button>
+      </form>
     </div>
   </div>
 </template>
@@ -18,7 +29,13 @@ export default {
   name: 'Publish',
   data() {
     return {
-      plans: []
+      plans: [],
+      showForm: false,
+      planTitle: null,
+      selectedPlan: null,
+      errorSubmittingForm: false,
+      planSubmittedSuccessfully: false,
+      responseMessage: null
     }
   },
   computed: {
@@ -29,6 +46,37 @@ export default {
     this.getCurrentPlans()
   },
   methods: {
+    submitPlanForm() {
+      axios
+        .post("https://open-devos-api.herokuapp.com/plans",
+        {
+          plan: {
+            title: this.planTitle,
+            topic_id: 1,
+            user_id: this.currentUser.id
+          }
+        },
+        {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token')
+          }
+        })
+        .then(response => {
+          console.log(response.data);
+          this.errorSubmittingForm = false;
+          this.planSubmittedSuccessfully = true;
+          this.responseMessage = 'The plan was successfully created';
+          return response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.responseMessage = 'There was an error submitting the form, please try again';
+          this.errorSubmittingForm = true;
+        })
+    },
+    formToggle() {
+      console.log('Form toggle');
+    },
     getCurrentPlans() {
       axios.get('https://open-devos-api.herokuapp.com/user-plans',
         {
@@ -50,5 +98,8 @@ export default {
 </script>
 
 <style scoped>
-
+.published-plans-wrapper {
+  width: 400px;
+  background-color: cyan;
+}
 </style>
