@@ -3,7 +3,7 @@
     <h1>Categories</h1>
 
     <div v-for="category in categories" :key="category.id">
-      <router-link :to="{ name: 'CategoryDetail', params: { category_slug: slugifyWrapper(category.title) } }" class="link">
+      <router-link :to="{ name: 'CategoryDetail', params: { category_slug: slugifyWrapper(category.title) }, query: { category_id: category.id } }" class="link">
         {{ category.title }}
       </router-link>
     </div>
@@ -33,8 +33,7 @@ export default {
       axios
         .get(this.categoryApiUrl)
         .then(response => {
-          this.categories.push(...response.data);
-          console.log(this.categories);
+          this.categories.push(...response.data.topics);
         })
         .catch(error => {
           console.log(error);
