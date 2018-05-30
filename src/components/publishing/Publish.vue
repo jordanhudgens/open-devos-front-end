@@ -99,6 +99,7 @@ export default {
         .then(response => {
           this.errorSubmittingForm = false;
           this.planSubmittedSuccessfully = true;
+          this.plans.push(response.data.plan);
           this.responseMessage = 'The plan was successfully created';
           return response.data;
         })
