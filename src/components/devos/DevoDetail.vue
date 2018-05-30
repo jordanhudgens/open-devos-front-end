@@ -8,6 +8,7 @@
 
 <script>
 import axios from 'axios';
+import sanitizeHtml from 'sanitize-html';
 
 export default {
   name: 'DevoDetail',
@@ -34,7 +35,7 @@ export default {
         .get(`${this.devoApiUrl}/${this.devoSlug}`)
         .then(response => {
           this.devoName = response.data.devo.title;
-          this.devoContent = response.data.devo.content;
+          this.devoContent = sanitizeHtml(response.data.devo.content);
           console.log(response);
         })
         .catch(error => {
