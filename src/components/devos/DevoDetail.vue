@@ -1,6 +1,10 @@
 <template>
   <div>
     <h1>{{ devoName }}</h1>
+
+    <div>
+      {{ devoContent }}
+    </div>
   </div>
 </template>
 
@@ -32,6 +36,7 @@ export default {
         .get(`${this.devoApiUrl}/${this.devoSlug}`)
         .then(response => {
           this.devoName = response.data.devo.title;
+          this.devoContent = response.data.devo.content;
           console.log(response);
         })
         .catch(error => {
