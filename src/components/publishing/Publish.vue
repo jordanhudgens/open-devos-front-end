@@ -10,6 +10,10 @@
         <router-link :to="{ name: 'PlanDetail', params: { plan_slug: plan.slug}}">
           {{ plan.title }}
         </router-link>
+
+        <div>
+          <a href="#" @click.prevent="deletePlan" :id="'plan-delete-' + plan.slug">Delete</a>
+        </div>
       </div>
     </div>
 
@@ -37,7 +41,10 @@ export default {
       selectedPlan: null,
       errorSubmittingForm: false,
       planSubmittedSuccessfully: false,
-      responseMessage: null
+      responseMessage: null,
+      errorDeletingPlan: false,
+      planDeletedSuccessfully: false,
+      planDeletionResponseMessage: null
     }
   },
   computed: {
@@ -47,6 +54,28 @@ export default {
     this.getCurrentPlans()
   },
   methods: {
+    deletePlan(evt) {
+      console.log(evt.target.id.slice(12));
+      axios
+        .delete(`https://open-devos-api.herokuapp.com/plans/${evt.target.id.slice(12)}`,
+        {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          this.errorDeletingPlan = false;
+          this.planDeletedSuccessfully = true;
+          this.planDeletionResponseMessage = 'The plan was successfully deleted';
+          return response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.planDeletionResponseMessage = 'There was an error deleting the devo';
+          this.errorDeletingPlan = true;
+        })
+    },
     submitPlanForm() {
       axios
         .post("https://open-devos-api.herokuapp.com/plans",
