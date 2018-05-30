@@ -1,6 +1,11 @@
 <template>
   <div>
     <h1>{{ planName }}</h1>
+    <div v-for="devo in devos" :key="devo.id">
+      <pre>
+            {{ devo }}
+          </pre>
+    </div>
   </div>
 </template>
 
@@ -32,6 +37,7 @@ export default {
         .get(`${this.planApiUrl}/${this.planSlug}`)
         .then(response => {
           this.planName = response.data.plan.title;
+          this.devos.push(...response.data.plan.devos);
           console.log(response);
         })
         .catch(error => {
