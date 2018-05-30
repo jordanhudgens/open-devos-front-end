@@ -1,10 +1,8 @@
 <template>
   <div>
     <h1>{{ planName }}</h1>
-    <div v-for="devo in devos" :key="devo.id">
-      <pre>
-            {{ devo }}
-          </pre>
+    <div v-for="devo in devos" :key="devo.slug">
+      {{ devo.title }}
     </div>
   </div>
 </template>
