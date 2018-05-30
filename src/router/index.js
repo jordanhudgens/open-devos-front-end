@@ -10,6 +10,7 @@ import Profile from "@/components/Profile";
 import Publish from "@/components/publishing/Publish";
 import Logout from "@/components/auth/Logout";
 import PlanDetail from "@/components/plans/PlanDetail";
+import DevoDetail from "@/components/devos/DevoDetail";
 
 Vue.use(Router);
 
@@ -50,6 +51,11 @@ export default new Router({
       path: "/plan/:plan_slug",
       name: "PlanDetail",
       component: PlanDetail
+    },
+    {
+      path: "/devo/:devo_slug",
+      name: "DevoDetail",
+      component: DevoDetail
     },
     {
       path: "/popular",

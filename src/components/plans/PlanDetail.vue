@@ -2,7 +2,9 @@
   <div>
     <h1>{{ planName }}</h1>
     <div v-for="devo in devos" :key="devo.slug">
-      {{ devo.title }}
+      <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
+        {{ devo.title }}
+      </router-link>
     </div>
   </div>
 </template>
