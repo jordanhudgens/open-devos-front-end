@@ -39,7 +39,8 @@ export default {
     }
   },
   props: {
-    planId: Number
+    planId: Number,
+    devos: Array
   },
   computed: {
     ...mapGetters({ currentUser: 'currentUser' })
@@ -66,6 +67,7 @@ export default {
           this.errorSubmittingDevo = false;
           this.devoSubmittedSuccessfully = true;
           this.responseMessage = 'Your devo has been published!';
+          this.$emit('update', response.data.devo);
           return response.data;
         })
         .catch(error => {

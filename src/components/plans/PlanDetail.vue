@@ -10,7 +10,7 @@
     </div>
 
     <div class="devo-form-wrapper">
-      <DevoForm :planId="planId" />
+      <DevoForm :planId="planId" :devos="devos" @update="syncDevos" />
     </div>
   </div>
 </template>
@@ -48,6 +48,9 @@ export default {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   methods: {
+    syncDevos(devo) {
+      this.devos.push(devo);
+    },
     deleteDevo(evt) {
       let url = evt.target.id;
       url = url.split('-');
