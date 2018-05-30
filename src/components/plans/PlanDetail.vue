@@ -8,7 +8,7 @@
     </div>
 
     <div class="devo-form-wrapper">
-      <DevoForm />
+      <DevoForm :planId="planId" />
     </div>
   </div>
 </template>
@@ -23,6 +23,7 @@ export default {
     return {
       planName: null,
       planSlug: this.$route.params.plan_slug,
+      planId: null,
       planApiUrl: 'https://open-devos-api.herokuapp.com/plans',
       devos: []
     }
@@ -45,6 +46,7 @@ export default {
         .get(`${this.planApiUrl}/${this.planSlug}`)
         .then(response => {
           this.planName = response.data.plan.title;
+          this.planId = response.data.plan.id;
           this.devos.push(...response.data.plan.devos);
           console.log(response);
         })

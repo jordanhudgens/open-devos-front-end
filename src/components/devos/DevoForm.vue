@@ -38,6 +38,9 @@ export default {
       errorSubmittingDevo: false,
     }
   },
+  props: {
+    planId: Number
+  },
   computed: {
     ...mapGetters({ currentUser: 'currentUser' })
   },
@@ -50,7 +53,7 @@ export default {
             title: this.devoTitle,
             content: this.devoContent,
             position: 5,
-            plan_id: 1,
+            plan_id: this.planId,
             status: 0,
           }
         },
@@ -80,16 +83,15 @@ export default {
 .form-wrapper {
   display: grid;
   grid-template-columns: repeat(1fr);
-  grid-gap: 20px;
-  input {
-    background-color: transparent;
-    border-top: 1px transparent;
-    border-right: 1px transparent;
-    border-left: 1px transparent;
-    border-bottom: 1px #42b983 solid;
-    padding-bottom: 5px;
-    border-radius: 0px;
-  }
+  grid-gap: 20px; // input {
+  //   background-color: transparent;
+  //   border-top: 1px transparent;
+  //   border-right: 1px transparent;
+  //   border-left: 1px transparent;
+  //   border-bottom: 1px #42b983 solid;
+  //   padding-bottom: 5px;
+  //   border-radius: 0px;
+  // }
   button {
     font-size: 1em;
     background-color: #42b983;
@@ -100,13 +102,11 @@ export default {
     font-weight: 900;
   }
   input[type="text"] {
-    font-size: 1.2em;
-    color: #eaeaea;
+    font-size: 1.2em; // color: #eaeaea;
   }
   textarea {
-    background-color: transparent;
-    font-size: 1.2em;
-    color: #eaeaea;
+    // background-color: transparent;
+    font-size: 1.2em; // color: #eaeaea;
     border: 1px solid #42b983;
     padding: 10px;
     border-radius: 0px;
