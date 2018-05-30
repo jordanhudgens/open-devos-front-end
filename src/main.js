@@ -5,6 +5,10 @@ import App from "./App";
 import router from "./router";
 import axios from "@/data/vue-axios";
 import store from "@/store";
+import wysiwyg from "vue-wysiwyg";
+Vue.use(wysiwyg, {});
+
+import "../node_modules/vue-wysiwyg/dist/vueWysiwyg.css";
 
 Vue.config.productionTip = false;
 

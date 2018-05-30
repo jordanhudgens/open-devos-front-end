@@ -2,9 +2,7 @@
   <div>
     <h1>{{ devoName }}</h1>
 
-    <div>
-      {{ devoContent }}
-    </div>
+    <div v-html="devoContent"></div>
   </div>
 </template>
 
