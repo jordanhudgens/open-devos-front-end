@@ -63,7 +63,6 @@ export default {
           }
         })
         .then(response => {
-          console.log(response.data);
           this.errorSubmittingDevo = false;
           this.devoSubmittedSuccessfully = true;
           this.responseMessage = 'Your devo has been published!';

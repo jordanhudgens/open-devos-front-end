@@ -44,7 +44,6 @@ export default {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   beforeMount() {
-    console.log(this.currentUser.id);
     this.getCurrentPlans()
   },
   methods: {
@@ -64,7 +63,6 @@ export default {
           }
         })
         .then(response => {
-          console.log(response.data);
           this.errorSubmittingForm = false;
           this.planSubmittedSuccessfully = true;
           this.responseMessage = 'The plan was successfully created';
@@ -90,7 +88,6 @@ export default {
           }
         }).then(response => {
           this.plans.push(...response.data.plans);
-          console.log('data: ', response);
         }).catch(error => {
           console.log('error: ', error);
         });

@@ -32,8 +32,6 @@ export default {
     DevoForm
   },
   beforeMount() {
-    console.log("params...", this.$route.params);
-
     this.getPlanDetails();
   },
   beforeRouteUpdate(to, from, next) {
@@ -48,7 +46,6 @@ export default {
           this.planName = response.data.plan.title;
           this.planId = response.data.plan.id;
           this.devos.push(...response.data.plan.devos);
-          console.log(response);
         })
         .catch(error => {
           console.log(error);
