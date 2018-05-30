@@ -7,7 +7,9 @@
 
       <h2>Published Plans</h2>
       <div v-for="plan in plans" :key="plan.id">
-        {{ plan.title }}
+        <router-link :to="{ name: 'PlanDetail', params: { plan_slug: plan.slug}}">
+          {{ plan.title }}
+        </router-link>
       </div>
     </div>
 

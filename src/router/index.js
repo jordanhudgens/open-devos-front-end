@@ -9,6 +9,7 @@ import Popular from "@/components/Popular";
 import Profile from "@/components/Profile";
 import Publish from "@/components/publishing/Publish";
 import Logout from "@/components/auth/Logout";
+import PlanDetail from "@/components/plans/PlanDetail";
 
 Vue.use(Router);
 
@@ -44,6 +45,11 @@ export default new Router({
       path: "/category/:category_slug",
       name: "CategoryDetail",
       component: CategoryDetail
+    },
+    {
+      path: "/plan/:plan_slug",
+      name: "PlanDetail",
+      component: PlanDetail
     },
     {
       path: "/popular",
