@@ -6,13 +6,14 @@
       <button @click="formToggle" class="formToggleLink">New Plan</button>
 
       <h2>Published Plans</h2>
+      {{ planDeletionResponseMessage }}
       <div v-for="plan in plans" :key="plan.id">
         <router-link :to="{ name: 'PlanDetail', params: { plan_slug: plan.slug}}">
           {{ plan.title }}
         </router-link>
 
         <div>
-          <a href="#" @click.prevent="deletePlan" :id="'plan-delete-' + plan.slug">Delete</a>
+          <a href="#" @click.prevent="deletePlan" :id="`plan-delete-${plan.slug}`">Delete</a>
         </div>
       </div>
     </div>
@@ -55,9 +56,12 @@ export default {
   },
   methods: {
     deletePlan(evt) {
-      console.log(evt.target.id.slice(12));
+      let url = evt.target.id;
+      url = url.split('-');
+      const slug = url.slice(2).join('-');
+
       axios
-        .delete(`https://open-devos-api.herokuapp.com/plans/${evt.target.id.slice(12)}`,
+        .delete(`https://open-devos-api.herokuapp.com/plans/${slug}`,
         {
           headers: {
             "Authorization": 'Bearer ' + localStorage.getItem('token'),
@@ -67,6 +71,7 @@ export default {
         .then(response => {
           this.errorDeletingPlan = false;
           this.planDeletedSuccessfully = true;
+          this.plans = this.plans.filter(plan => plan.slug !== slug);
           this.planDeletionResponseMessage = 'The plan was successfully deleted';
           return response.data;
         })
@@ -117,6 +122,7 @@ export default {
           }
         }).then(response => {
           this.plans.push(...response.data.plans);
+          console.log(this.plans);
         }).catch(error => {
           console.log('error: ', error);
         });
