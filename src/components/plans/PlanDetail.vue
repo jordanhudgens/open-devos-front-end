@@ -49,7 +49,10 @@ export default {
   },
   methods: {
     deleteDevo(evt) {
-      console.log(evt.target.id.slice(12));
+      let url = evt.target.id;
+      url = url.split('-');
+      const slug = url.slice(2).join('-');
+
       axios
         .delete(`https://open-devos-api.herokuapp.com/devos/${evt.target.id.slice(12)}`,
         {
@@ -61,6 +64,7 @@ export default {
         .then(response => {
           this.errorDeletingDevo = false;
           this.devoDeletedSuccessfully = true;
+          this.devos = this.devos.filter(devo => devo.slug !== slug);
           this.devoDeletionResponseMessage = 'The devo was successfully deleted';
           return response.data;
         })
