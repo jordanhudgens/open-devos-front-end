@@ -5,6 +5,8 @@
       <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
         {{ devo.title }}
       </router-link>
+
+      <a @click.prevent="deleteDevo" href="#" :id="'devo-delete-' + devo.slug">Delete</a>
     </div>
 
     <div class="devo-form-wrapper">
@@ -14,6 +16,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import axios from 'axios';
 import DevoForm from '@/components/devos/DevoForm';
 
@@ -25,7 +28,10 @@ export default {
       planSlug: this.$route.params.plan_slug,
       planId: null,
       planApiUrl: 'https://open-devos-api.herokuapp.com/plans',
-      devos: []
+      devos: [],
+      errorDeletingDevo: false,
+      devoDeletedSuccessfully: false,
+      devoDeletionResponseMessage: null
     }
   },
   components: {
@@ -38,7 +44,32 @@ export default {
     this.planSlug = this.$route.params.plan_slug
     next()
   },
+  computed: {
+    ...mapGetters({ currentUser: 'currentUser' })
+  },
   methods: {
+    deleteDevo(evt) {
+      console.log(evt.target.id.slice(12));
+      axios
+        .delete(`https://open-devos-api.herokuapp.com/devos/${evt.target.id.slice(12)}`,
+        {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          this.errorDeletingDevo = false;
+          this.devoDeletedSuccessfully = true;
+          this.devoDeletionResponseMessage = 'The devo was successfully deleted';
+          return response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.devoDeletionResponseMessage = 'There was an error deleting the devo';
+          this.errorDeletingDevo = true;
+        })
+    },
     getPlanDetails() {
       axios
         .get(`${this.planApiUrl}/${this.planSlug}`)
