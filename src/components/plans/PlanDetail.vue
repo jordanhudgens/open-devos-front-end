@@ -6,11 +6,16 @@
         {{ devo.title }}
       </router-link>
     </div>
+
+    <div class="devo-form-wrapper">
+      <DevoForm />
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import DevoForm from '@/components/devos/DevoForm';
 
 export default {
   name: 'PlanDetail',
@@ -21,6 +26,9 @@ export default {
       planApiUrl: 'https://open-devos-api.herokuapp.com/plans',
       devos: []
     }
+  },
+  components: {
+    DevoForm
   },
   beforeMount() {
     console.log("params...", this.$route.params);
