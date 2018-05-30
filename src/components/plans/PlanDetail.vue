@@ -1,14 +1,42 @@
 <template>
   <div>
-    <h1>Plan Detail</h1>
+    <h1>{{ planName }}</h1>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'PlanDetail',
   data() {
     return {
+      planName: null,
+      planSlug: this.$route.params.plan_slug,
+      planApiUrl: 'https://open-devos-api.herokuapp.com/plans',
+      devos: []
+    }
+  },
+  beforeMount() {
+    console.log("params...", this.$route.params);
+
+    this.getPlanDetails();
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.planSlug = this.$route.params.plan_slug
+    next()
+  },
+  methods: {
+    getPlanDetails() {
+      axios
+        .get(`${this.planApiUrl}/${this.planSlug}`)
+        .then(response => {
+          this.planName = response.data.plan.title;
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 }
