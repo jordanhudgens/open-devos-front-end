@@ -38,6 +38,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import axios from 'axios';
+import router from '@/router';
 
 export default {
   name: 'Publish',
@@ -65,7 +66,18 @@ export default {
     this.getCurrentPlans()
     this.getCategories()
   },
+  created() {
+    this.checkCurrentLogin()
+  },
+  updated() {
+    this.checkCurrentLogin()
+  },
   methods: {
+    checkCurrentLogin() {
+      if (!this.currentUser) {
+        this.$router.push('login?auth_redirect=publish')
+      }
+    },
     deletePlan(evt) {
       let url = evt.target.id;
       url = url.split('-');
