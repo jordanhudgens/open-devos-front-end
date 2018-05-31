@@ -3,7 +3,9 @@
     <h1>Publish</h1>
 
     <div class="published-plans-wrapper">
-      <button @click="formToggle" class="formToggleLink">New Plan</button>
+      <div v-if="!showPlanForm">
+        <button @click="togglePlanForm" class="showFormButton">New Plan</button>
+      </div>
 
       <h2>Published Plans</h2>
       {{ planDeletionResponseMessage }}
@@ -18,7 +20,7 @@
       </div>
     </div>
 
-    <div class="plan-form-wrapper">
+    <div v-if="showPlanForm" class="plan-form-wrapper">
       <h2>{{ responseMessage }}</h2>
       <form @submit.prevent="submitPlanForm">
         <input type="text" v-model="planTitle" placeholder="Title">
@@ -26,7 +28,8 @@
         <select v-model="planTopic">
           <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.title }}</option>
         </select>
-        <button>Save</button>
+        <button type="submit">Save</button>
+        <button @click.prevent="togglePlanForm">Cancel</button>
       </form>
     </div>
   </div>
@@ -42,7 +45,6 @@ export default {
     return {
       plans: [],
       categories: [],
-      showForm: false,
       planTitle: null,
       planTopic: null,
       selectedPlan: null,
@@ -52,6 +54,7 @@ export default {
       errorDeletingPlan: false,
       planDeletedSuccessfully: false,
       planDeletionResponseMessage: null,
+      showPlanForm: false,
       categoryApiUrl: 'https://open-devos-api.herokuapp.com/topics',
     }
   },
@@ -117,8 +120,8 @@ export default {
           this.errorSubmittingForm = true;
         })
     },
-    formToggle() {
-      console.log('Form toggle');
+    togglePlanForm() {
+      this.showPlanForm = !this.showPlanForm;
     },
     getCurrentPlans() {
       axios.get('https://open-devos-api.herokuapp.com/user-plans',
