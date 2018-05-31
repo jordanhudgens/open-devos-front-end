@@ -28,7 +28,7 @@
         <select v-model="planTopic">
           <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.title }}</option>
         </select>
-        <button type="submit">Save</button>
+        <button type="submit" :disabled="!planTitle || !planTopic">Save</button>
         <button @click.prevent="togglePlanForm">Cancel</button>
       </form>
     </div>
@@ -98,7 +98,7 @@ export default {
         {
           plan: {
             title: this.planTitle,
-            topic_id: 1,
+            topic_id: this.planTopic,
             user_id: this.currentUser.id
           }
         },
@@ -112,6 +112,8 @@ export default {
           this.planSubmittedSuccessfully = true;
           this.plans.push(response.data.plan);
           this.responseMessage = 'The plan was successfully created';
+          this.planTitle = null;
+          this.planTopic = null;
           return response.data;
         })
         .catch(error => {
