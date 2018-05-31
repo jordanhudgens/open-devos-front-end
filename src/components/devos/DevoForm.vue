@@ -17,7 +17,7 @@
 
         <wysiwyg v-model="devoContent" />
 
-        <button type="submit">Publish Devo</button>
+        <button type="submit" :disabled="!devoTitle || !devoContent">Publish Devo</button>
       </form>
     </div>
   </div>
