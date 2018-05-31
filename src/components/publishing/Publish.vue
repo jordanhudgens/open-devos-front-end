@@ -22,6 +22,10 @@
       <h2>{{ responseMessage }}</h2>
       <form @submit.prevent="submitPlanForm">
         <input type="text" v-model="planTitle" placeholder="Title">
+
+        <select v-model="planTopic">
+          <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.title }}</option>
+        </select>
         <button>Save</button>
       </form>
     </div>
@@ -37,15 +41,18 @@ export default {
   data() {
     return {
       plans: [],
+      categories: [],
       showForm: false,
       planTitle: null,
+      planTopic: null,
       selectedPlan: null,
       errorSubmittingForm: false,
       planSubmittedSuccessfully: false,
       responseMessage: null,
       errorDeletingPlan: false,
       planDeletedSuccessfully: false,
-      planDeletionResponseMessage: null
+      planDeletionResponseMessage: null,
+      categoryApiUrl: 'https://open-devos-api.herokuapp.com/topics',
     }
   },
   computed: {
@@ -53,6 +60,7 @@ export default {
   },
   beforeMount() {
     this.getCurrentPlans()
+    this.getCategories()
   },
   methods: {
     deletePlan(evt) {
@@ -126,6 +134,16 @@ export default {
           console.log(this.plans);
         }).catch(error => {
           console.log('error: ', error);
+        });
+    },
+    getCategories() {
+      axios
+        .get(this.categoryApiUrl)
+        .then(response => {
+          this.categories.push(...response.data.topics);
+        })
+        .catch(error => {
+          console.log(error);
         });
     }
   }
