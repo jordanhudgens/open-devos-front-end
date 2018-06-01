@@ -1,6 +1,9 @@
 <template>
   <div>
     <h1>{{ planName }}</h1>
+
+    <h3>{{ planSummary }}</h3>
+
     <div v-for="devo in devos" :key="devo.slug">
       <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
         {{ devo.title }}
@@ -25,6 +28,7 @@ export default {
   data() {
     return {
       planName: null,
+      planSummary: null,
       planSlug: this.$route.params.plan_slug,
       planId: null,
       planApiUrl: 'https://open-devos-api.herokuapp.com/plans',
@@ -82,6 +86,7 @@ export default {
         .get(`${this.planApiUrl}/${this.planSlug}`)
         .then(response => {
           this.planName = response.data.plan.title;
+          this.planSummary = response.data.plan.summary;
           this.planId = response.data.plan.id;
           this.devos.push(...response.data.plan.devos);
         })
