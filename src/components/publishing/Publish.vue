@@ -3,10 +3,6 @@
     <h1>Publish</h1>
 
     <div class="published-plans-wrapper">
-      <div v-if="!showPlanForm">
-        <button @click="togglePlanForm" class="showFormButton">New Plan</button>
-      </div>
-
       <h2>Published Plans</h2>
       {{ planResponseMessage }}
       <div v-for="plan in plans" :key="plan.id">
@@ -24,21 +20,11 @@
       </div>
     </div>
 
-    <div v-if="showPlanForm" class="plan-form-wrapper">
-      <h2>{{ planFormValidationMessage }}</h2>
-      <form @submit.prevent="formTypeSelector">
-        <input type="text" v-model="planTitle" placeholder="Title">
-
-        <select v-model="planTopic">
-          <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.title }}</option>
-        </select>
-
-        <textarea v-model="planSummary" cols="30" rows="10" placeholder="Plan summary"></textarea>
-
-        <button type="submit" :disabled="!planTitle || !planTopic || !planSummary">Save</button>
-        <button @click.prevent="togglePlanForm">Cancel</button>
-      </form>
+    <div class="plan-form-wrapper">
+      <button @click="renderPlanForm">Add a New Plan</button>
+      <PlanForm v-if="showPlanForm" :planToEdit="planToEdit" :categories="categories" @new="addToPlans" @update="updatePlanList" />
     </div>
+
   </div>
 </template>
 
@@ -46,6 +32,7 @@
 import { mapGetters } from 'vuex';
 import axios from 'axios';
 import router from '@/router';
+import PlanForm from '@/components/plans/PlanForm';
 
 export default {
   name: 'Publish',
@@ -53,9 +40,6 @@ export default {
     return {
       plans: [],
       categories: [],
-      planTitle: null,
-      planTopic: null,
-      planSummary: null,
       selectedPlan: null,
       errorSubmittingForm: false,
       planSubmittedSuccessfully: false,
@@ -65,11 +49,15 @@ export default {
       planResponseMessage: null,
       showPlanForm: false,
       formMode: 'new',
+      planToEdit: null,
       categoryApiUrl: 'https://open-devos-api.herokuapp.com/topics',
     }
   },
   computed: {
     ...mapGetters({ currentUser: 'currentUser' })
+  },
+  components: {
+    PlanForm
   },
   beforeMount() {
     this.getCurrentPlans()
@@ -82,6 +70,21 @@ export default {
     this.checkCurrentLogin()
   },
   methods: {
+    addToPlans(plan) {
+      this.plans.push(plan);
+      this.showPlanForm = false;
+    },
+    updatePlanList(plan) {
+      console.log(plan);
+      this.plans.forEach(element => {
+        if (element.id === plan.id) {
+          element.title = plan.title;
+          element.summary = plan.summary;
+          element.topic_id = plan.topic_id;
+        }
+      }, this);
+      this.showPlanForm = false;
+    },
     formTypeSelector() {
       return this.formMode === 'new' ? this.submitPlanForm() : this.editPlanForm();
     },
@@ -89,6 +92,13 @@ export default {
       if (!this.currentUser) {
         this.$router.push('login?auth_redirect=publish')
       }
+    },
+    renderPlanForm() {
+      this.showPlanForm = true;
+    },
+    editPlan(plan) {
+      this.showPlanForm = true;
+      this.planToEdit = plan;
     },
     deletePlan(evt) {
       let url = evt.target.id;
@@ -114,72 +124,6 @@ export default {
           console.log(error);
           this.planResponseMessage = 'There was an error deleting the plan';
           this.errorDeletingPlan = true;
-        })
-    },
-    submitPlanForm() {
-      axios
-        .post("https://open-devos-api.herokuapp.com/plans",
-        {
-          plan: {
-            title: this.planTitle,
-            summary: this.planSummary,
-            topic_id: this.planTopic,
-            user_id: this.currentUser.id
-          }
-        },
-        {
-          headers: {
-            "Authorization": 'Bearer ' + localStorage.getItem('token')
-          }
-        })
-        .then(response => {
-          this.errorSubmittingForm = false;
-          this.planSubmittedSuccessfully = true;
-          this.plans.push(response.data.plan);
-          this.planResponseMessage = 'The plan was successfully created';
-          this.planTitle = null;
-          this.planTopic = null;
-          this.planSummary = null;
-          this.showPlanForm = false;
-          return response.data;
-        })
-        .catch(error => {
-          console.log(error);
-          this.planFormValidationMessage = 'There was an error submitting the form, please try again';
-          this.errorSubmittingForm = true;
-        })
-    },
-    editPlanForm() {
-      axios
-        .patch("https://open-devos-api.herokuapp.com/plans",
-        {
-          plan: {
-            title: this.planTitle,
-            summary: this.planSummary,
-            topic_id: this.planTopic,
-            user_id: this.currentUser.id
-          }
-        },
-        {
-          headers: {
-            "Authorization": 'Bearer ' + localStorage.getItem('token')
-          }
-        })
-        .then(response => {
-          this.errorSubmittingForm = false;
-          this.planSubmittedSuccessfully = true;
-          this.plans.push(response.data.plan);
-          this.planResponseMessage = 'The plan was successfully updated';
-          this.planTitle = null;
-          this.planTopic = null;
-          this.planSummary = null;
-          this.showPlanForm = false;
-          return response.data;
-        })
-        .catch(error => {
-          console.log(error);
-          this.planFormValidationMessage = 'There was an error updated the form, please try again';
-          this.errorSubmittingForm = true;
         })
     },
     togglePlanForm(plan = null, edit = false) {
