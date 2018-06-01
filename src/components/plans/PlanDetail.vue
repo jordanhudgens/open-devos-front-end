@@ -10,10 +10,12 @@
       </router-link>
 
       <a @click.prevent="deleteDevo" href="#" :id="'devo-delete-' + devo.slug">Delete</a>
+      <a @click.prevent="editDevo(devo)" href="#">Edit</a>
     </div>
 
     <div class="devo-form-wrapper">
-      <DevoForm :planId="planId" :devos="devos" @update="syncDevos" />
+      <button @click="renderDevoForm">Add a New Devo</button>
+      <DevoForm v-if="showForm" :planId="planId" :devos="devos" @update="syncDevos" />
     </div>
   </div>
 </template>
@@ -35,7 +37,8 @@ export default {
       devos: [],
       errorDeletingDevo: false,
       devoDeletedSuccessfully: false,
-      devoDeletionResponseMessage: null
+      devoDeletionResponseMessage: null,
+      showForm: false
     }
   },
   components: {
@@ -54,6 +57,12 @@ export default {
   methods: {
     syncDevos(devo) {
       this.devos.push(devo);
+    },
+    renderDevoForm() {
+      this.showForm = true;
+    },
+    editDevo() {
+
     },
     deleteDevo(evt) {
       let url = evt.target.id;

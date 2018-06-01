@@ -8,14 +8,14 @@
       </div>
 
       <h2>Published Plans</h2>
-      {{ planDeletionResponseMessage }}
+      {{ planResponseMessage }}
       <div v-for="plan in plans" :key="plan.id">
         <router-link :to="{ name: 'PlanDetail', params: { plan_slug: plan.slug}}">
           {{ plan.title }}
         </router-link>
 
         <div>
-          <a href="#" @click.prevent="editPlan(plan)" :id="plan">Edit</a>
+          <a href="#" @click.prevent="togglePlanForm(plan, true)" :id="plan">Edit</a>
         </div>
 
         <div>
@@ -25,8 +25,8 @@
     </div>
 
     <div v-if="showPlanForm" class="plan-form-wrapper">
-      <h2>{{ responseMessage }}</h2>
-      <form @submit.prevent="submitPlanForm">
+      <h2>{{ planFormValidationMessage }}</h2>
+      <form @submit.prevent="formTypeSelector">
         <input type="text" v-model="planTitle" placeholder="Title">
 
         <select v-model="planTopic">
@@ -59,11 +59,12 @@ export default {
       selectedPlan: null,
       errorSubmittingForm: false,
       planSubmittedSuccessfully: false,
-      responseMessage: null,
+      planFormValidationMessage: null,
       errorDeletingPlan: false,
       planDeletedSuccessfully: false,
-      planDeletionResponseMessage: null,
+      planResponseMessage: null,
       showPlanForm: false,
+      formMode: 'new',
       categoryApiUrl: 'https://open-devos-api.herokuapp.com/topics',
     }
   },
@@ -81,40 +82,13 @@ export default {
     this.checkCurrentLogin()
   },
   methods: {
+    formTypeSelector() {
+      return this.formMode === 'new' ? this.submitPlanForm() : this.editPlanForm();
+    },
     checkCurrentLogin() {
       if (!this.currentUser) {
         this.$router.push('login?auth_redirect=publish')
       }
-    },
-    editPlan(plan) {
-      console.log(plan);
-
-      this.showPlanForm = true;
-
-      this.planTitle = plan.title;
-      this.planTopic = 1;
-      this.planSummary = 'Pending summary';
-
-      // axios
-      //   .delete(`https://open-devos-api.herokuapp.com/plans/${slug}`,
-      //   {
-      //     headers: {
-      //       "Authorization": 'Bearer ' + localStorage.getItem('token'),
-      //       'Content-Type': 'application/json'
-      //     }
-      //   })
-      //   .then(response => {
-      //     this.errorDeletingPlan = false;
-      //     this.planDeletedSuccessfully = true;
-      //     this.plans = this.plans.filter(plan => plan.slug !== slug);
-      //     this.planDeletionResponseMessage = 'The plan was successfully deleted';
-      //     return response.data;
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //     this.planDeletionResponseMessage = 'There was an error deleting the devo';
-      //     this.errorDeletingPlan = true;
-      //   })
     },
     deletePlan(evt) {
       let url = evt.target.id;
@@ -133,12 +107,12 @@ export default {
           this.errorDeletingPlan = false;
           this.planDeletedSuccessfully = true;
           this.plans = this.plans.filter(plan => plan.slug !== slug);
-          this.planDeletionResponseMessage = 'The plan was successfully deleted';
+          this.planResponseMessage = 'The plan was successfully deleted';
           return response.data;
         })
         .catch(error => {
           console.log(error);
-          this.planDeletionResponseMessage = 'There was an error deleting the devo';
+          this.planResponseMessage = 'There was an error deleting the plan';
           this.errorDeletingPlan = true;
         })
     },
@@ -162,19 +136,66 @@ export default {
           this.errorSubmittingForm = false;
           this.planSubmittedSuccessfully = true;
           this.plans.push(response.data.plan);
-          this.responseMessage = 'The plan was successfully created';
+          this.planResponseMessage = 'The plan was successfully created';
           this.planTitle = null;
           this.planTopic = null;
+          this.planSummary = null;
+          this.showPlanForm = false;
           return response.data;
         })
         .catch(error => {
           console.log(error);
-          this.responseMessage = 'There was an error submitting the form, please try again';
+          this.planFormValidationMessage = 'There was an error submitting the form, please try again';
           this.errorSubmittingForm = true;
         })
     },
-    togglePlanForm() {
-      this.showPlanForm = !this.showPlanForm;
+    editPlanForm() {
+      axios
+        .patch("https://open-devos-api.herokuapp.com/plans",
+        {
+          plan: {
+            title: this.planTitle,
+            summary: this.planSummary,
+            topic_id: this.planTopic,
+            user_id: this.currentUser.id
+          }
+        },
+        {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token')
+          }
+        })
+        .then(response => {
+          this.errorSubmittingForm = false;
+          this.planSubmittedSuccessfully = true;
+          this.plans.push(response.data.plan);
+          this.planResponseMessage = 'The plan was successfully updated';
+          this.planTitle = null;
+          this.planTopic = null;
+          this.planSummary = null;
+          this.showPlanForm = false;
+          return response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.planFormValidationMessage = 'There was an error updated the form, please try again';
+          this.errorSubmittingForm = true;
+        })
+    },
+    togglePlanForm(plan = null, edit = false) {
+      if (edit) {
+        this.formMode = 'edit';
+        this.showPlanForm = true;
+        this.planTitle = plan.title;
+        this.planTopic = plan.topic.id;
+        this.planSummary = plan.summary;
+      } else {
+        this.formMode = 'new';
+        this.planTitle = null;
+        this.planTopic = null;
+        this.planSummary = null;
+        this.showPlanForm = !this.showPlanForm;
+      }
     },
     getCurrentPlans() {
       axios.get('https://open-devos-api.herokuapp.com/user-plans',
