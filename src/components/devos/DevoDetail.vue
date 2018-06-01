@@ -35,7 +35,9 @@ export default {
         .get(`${this.devoApiUrl}/${this.devoSlug}`)
         .then(response => {
           this.devoName = response.data.devo.title;
-          this.devoContent = sanitizeHtml(response.data.devo.content);
+          this.devoContent = sanitizeHtml(response.data.devo.content, {
+            allowedTags: sanitizeHtml.defaults.allowedTags.concat(['h1', 'h2'])
+          });
           console.log(response);
         })
         .catch(error => {
