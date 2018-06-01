@@ -15,6 +15,10 @@
         </router-link>
 
         <div>
+          <a href="#" @click.prevent="editPlan(plan)" :id="plan">Edit</a>
+        </div>
+
+        <div>
           <a href="#" @click.prevent="deletePlan" :id="`plan-delete-${plan.slug}`">Delete</a>
         </div>
       </div>
@@ -81,6 +85,36 @@ export default {
       if (!this.currentUser) {
         this.$router.push('login?auth_redirect=publish')
       }
+    },
+    editPlan(plan) {
+      console.log(plan);
+
+      this.showPlanForm = true;
+
+      this.planTitle = plan.title;
+      this.planTopic = 1;
+      this.planSummary = 'Pending summary';
+
+      // axios
+      //   .delete(`https://open-devos-api.herokuapp.com/plans/${slug}`,
+      //   {
+      //     headers: {
+      //       "Authorization": 'Bearer ' + localStorage.getItem('token'),
+      //       'Content-Type': 'application/json'
+      //     }
+      //   })
+      //   .then(response => {
+      //     this.errorDeletingPlan = false;
+      //     this.planDeletedSuccessfully = true;
+      //     this.plans = this.plans.filter(plan => plan.slug !== slug);
+      //     this.planDeletionResponseMessage = 'The plan was successfully deleted';
+      //     return response.data;
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //     this.planDeletionResponseMessage = 'There was an error deleting the devo';
+      //     this.errorDeletingPlan = true;
+      //   })
     },
     deletePlan(evt) {
       let url = evt.target.id;
