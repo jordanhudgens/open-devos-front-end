@@ -5,7 +5,7 @@
     </div>
 
     <div>
-      <h2>Build a new plan</h2>
+      <h2>Plan form</h2>
 
       <div v-if="errorSubmittingPlan">
         <h2>{{ responseMessage }}</h2>
@@ -55,7 +55,7 @@ export default {
     if (this.planToEdit) {
       this.planTitle = this.planToEdit.title;
       this.planSummary = this.planToEdit.summary;
-      this.planTopic = this.planToEdit.topic_id;
+      this.planTopic = this.planToEdit.topic.id;
     }
   },
   methods: {

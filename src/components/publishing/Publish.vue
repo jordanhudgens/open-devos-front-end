@@ -11,7 +11,7 @@
         </router-link>
 
         <div>
-          <a href="#" @click.prevent="togglePlanForm(plan, true)" :id="plan">Edit</a>
+          <a @click.prevent="editPlan(plan)" href="#">Edit</a>
         </div>
 
         <div>
