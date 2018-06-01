@@ -28,7 +28,10 @@
         <select v-model="planTopic">
           <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.title }}</option>
         </select>
-        <button type="submit" :disabled="!planTitle || !planTopic">Save</button>
+
+        <textarea v-model="planSummary" cols="30" rows="10" placeholder="Plan summary"></textarea>
+
+        <button type="submit" :disabled="!planTitle || !planTopic || !planSummary">Save</button>
         <button @click.prevent="togglePlanForm">Cancel</button>
       </form>
     </div>
@@ -48,6 +51,7 @@ export default {
       categories: [],
       planTitle: null,
       planTopic: null,
+      planSummary: null,
       selectedPlan: null,
       errorSubmittingForm: false,
       planSubmittedSuccessfully: false,
@@ -110,6 +114,7 @@ export default {
         {
           plan: {
             title: this.planTitle,
+            summary: this.planSummary,
             topic_id: this.planTopic,
             user_id: this.currentUser.id
           }
