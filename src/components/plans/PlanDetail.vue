@@ -15,7 +15,7 @@
 
     <div class="devo-form-wrapper">
       <button @click="renderDevoForm">Add a New Devo</button>
-      <DevoForm v-if="showForm" :planId="planId" :devos="devos" @update="syncDevos" />
+      <DevoForm v-if="showForm" :devoToEdit="devoToEdit" :planId="planId" :devos="devos" @new="addToDevos" @update="updateDevoList" />
     </div>
   </div>
 </template>
@@ -38,7 +38,8 @@ export default {
       errorDeletingDevo: false,
       devoDeletedSuccessfully: false,
       devoDeletionResponseMessage: null,
-      showForm: false
+      showForm: false,
+      devoToEdit: null
     }
   },
   components: {
@@ -55,14 +56,27 @@ export default {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   methods: {
-    syncDevos(devo) {
+    addToDevos(devo) {
       this.devos.push(devo);
+      this.showForm = false;
+    },
+    updateDevoList(devo) {
+      console.log(devo);
+      console.log('devos')
+      this.devos.forEach(element => {
+        if (element.id === devo.id) {
+          element.title = devo.title;
+          element.content = devo.content;
+        }
+      }, this);
+      this.showForm = false;
     },
     renderDevoForm() {
       this.showForm = true;
     },
-    editDevo() {
-
+    editDevo(devo) {
+      this.showForm = true;
+      this.devoToEdit = devo;
     },
     deleteDevo(evt) {
       let url = evt.target.id;

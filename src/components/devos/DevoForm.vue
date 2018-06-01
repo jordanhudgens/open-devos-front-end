@@ -4,14 +4,14 @@
       <h2>{{ responseMessage }}</h2>
     </div>
 
-    <div v-if="!devoSubmittedSuccessfully">
+    <div>
       <h2>Add a Devo to the Plan</h2>
 
       <div v-if="errorSubmittingDevo">
         <h2>{{ responseMessage }}</h2>
       </div>
 
-      <form @submit.prevent="submitDevoForm" class="form-wrapper">
+      <form @submit.prevent="formTypeSelector" class="form-wrapper">
 
         <input type="text" v-model="devoTitle" placeholder="Title">
 
@@ -33,6 +33,7 @@ export default {
     return {
       devoTitle: '',
       devoContent: '',
+      devoSlug: '',
       responseMessage: '',
       devoSubmittedSuccessfully: false,
       errorSubmittingDevo: false,
@@ -40,12 +41,57 @@ export default {
   },
   props: {
     planId: Number,
-    devos: Array
+    devos: Array,
+    devoToEdit: Object
   },
   computed: {
     ...mapGetters({ currentUser: 'currentUser' })
   },
+  created() {
+    console.log('devo to edit', this.devoToEdit);
+    if (this.devoToEdit) {
+      this.devoTitle = this.devoToEdit.title;
+      this.devoContent = this.devoToEdit.content;
+    }
+  },
   methods: {
+    formTypeSelector() {
+      if (this.devoToEdit) {
+        this.editDevoForm()
+      } else {
+        this.submitDevoForm()
+      }
+    },
+    editDevoForm() {
+      axios
+        .patch(`https://open-devos-api.herokuapp.com/devos/${this.devoToEdit.slug}`,
+        {
+          devo: {
+            title: this.devoTitle,
+            content: this.devoContent,
+            position: 5,
+            plan_id: this.planId,
+            status: 0,
+          }
+        },
+        {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token')
+          }
+        })
+        .then(response => {
+          this.errorSubmittingDevo = false;
+          this.devoSubmittedSuccessfully = true;
+          this.responseMessage = 'Your devo has been published!';
+          this.$emit('update', response.data.devo);
+          return response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.responseMessage = 'There was an error submitting the form, make sure you filled out all required fields.';
+          this.errorSubmittingDevo = true;
+        })
+    },
     submitDevoForm() {
       axios
         .post("https://open-devos-api.herokuapp.com/devos",
@@ -67,7 +113,7 @@ export default {
           this.errorSubmittingDevo = false;
           this.devoSubmittedSuccessfully = true;
           this.responseMessage = 'Your devo has been published!';
-          this.$emit('update', response.data.devo);
+          this.$emit('new', response.data.devo);
           return response.data;
         })
         .catch(error => {
