@@ -11,6 +11,8 @@
         <h2>{{ responseMessage }}</h2>
       </div>
 
+      <pre>{{ passedDevoTitle }}</pre>
+
       <form @submit.prevent="formTypeSelector" class="form-wrapper">
 
         <input type="text" v-model="devoTitle" placeholder="Title">
@@ -42,13 +44,19 @@ export default {
   props: {
     planId: Number,
     devos: Array,
-    devoToEdit: Object
+    devoToEdit: Object,
+    passedDevoTitle: String
   },
   computed: {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   created() {
-    console.log('devo to edit', this.devoToEdit);
+    if (this.devoToEdit) {
+      this.devoTitle = this.passedDevoTitle;
+      this.devoContent = this.devoToEdit.content;
+    }
+  },
+  updated() {
     if (this.devoToEdit) {
       this.devoTitle = this.devoToEdit.title;
       this.devoContent = this.devoToEdit.content;
@@ -56,11 +64,16 @@ export default {
   },
   methods: {
     formTypeSelector() {
-      if (this.devoToEdit) {
+      if (this.passedDevoTitle) {
         this.editDevoForm()
       } else {
         this.submitDevoForm()
       }
+      // if (this.devoToEdit) {
+      //   this.editDevoForm()
+      // } else {
+      //   this.submitDevoForm()
+      // }
     },
     editDevoForm() {
       axios

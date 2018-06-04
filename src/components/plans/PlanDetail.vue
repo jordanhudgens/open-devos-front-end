@@ -14,8 +14,9 @@
     </div>
 
     <div class="devo-form-wrapper">
-      <button @click="renderDevoForm">Add a New Devo</button>
-      <DevoForm v-if="showForm" :devoToEdit="devoToEdit" :planId="planId" :devos="devos" @new="addToDevos" @update="updateDevoList" />
+      <button v-if="showNewDevoButton" @click="renderDevoForm">Add a New Devo</button>
+      <button v-if="!showNewDevoButton" @click="cancelDevoForm">Cancel</button>
+      <DevoForm v-if="showForm" :passedDevoTitle="devoToEdit.title" :devoToEdit.sync="devoToEdit" :planId="planId" :devos="devos" @new="addToDevos" @update="updateDevoList" :key="devoFormKey" />
     </div>
   </div>
 </template>
@@ -39,7 +40,9 @@ export default {
       devoDeletedSuccessfully: false,
       devoDeletionResponseMessage: null,
       showForm: false,
-      devoToEdit: null
+      devoToEdit: null,
+      showNewDevoButton: true,
+      devoFormKey: null
     }
   },
   components: {
@@ -48,6 +51,34 @@ export default {
   beforeMount() {
     this.getPlanDetails();
   },
+  beforeUpdate() {
+    console.log('mounted', this.devoToEdit);
+    if (this.devoToEdit) {
+      this.devoTitle = this.devoToEdit.title;
+      this.devoContent = this.devoToEdit.content;
+    }
+  },
+  updated() {
+    console.log('devo to update', this.devoToEdit);
+    if (this.devoToEdit) {
+      this.devoTitle = this.devoToEdit.title;
+      this.devoContent = this.devoToEdit.content;
+    }
+  },
+  beforeDestroy() {
+    console.log('beforeDestory', this.devoToEdit);
+    if (this.devoToEdit) {
+      this.devoTitle = this.devoToEdit.title;
+      this.devoContent = this.devoToEdit.content;
+    }
+  },
+  beforeDestroy() {
+    console.log('destroyed', this.devoToEdit);
+    if (this.devoToEdit) {
+      this.devoTitle = this.devoToEdit.title;
+      this.devoContent = this.devoToEdit.content;
+    }
+  },
   beforeRouteUpdate(to, from, next) {
     this.planSlug = this.$route.params.plan_slug
     next()
@@ -55,14 +86,21 @@ export default {
   computed: {
     ...mapGetters({ currentUser: 'currentUser' })
   },
+  watch: {
+    devoToEdit(dte) {
+      this.devoToEdit = dte;
+    }
+  },
   methods: {
+    cancelDevoForm() {
+      this.showNewDevoButton = true;
+      this.showForm = false;
+    },
     addToDevos(devo) {
       this.devos.push(devo);
       this.showForm = false;
     },
     updateDevoList(devo) {
-      console.log(devo);
-      console.log('devos')
       this.devos.forEach(element => {
         if (element.id === devo.id) {
           element.title = devo.title;
@@ -72,9 +110,12 @@ export default {
       this.showForm = false;
     },
     renderDevoForm() {
+      this.showNewDevoButton = false;
       this.showForm = true;
+      this.devoToEdit = null;
     },
     editDevo(devo) {
+      this.showNewDevoButton = false;
       this.showForm = true;
       this.devoToEdit = devo;
     },
