@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     register() {
-      this.$http.post('/register', { user: this.email, password: this.password })
+      this.$http.post('/register', { user: this.email, password: this.password, password_confirmation: this.passwordConfirmation })
         .then(request => this.loginSuccessful(request))
         .catch(() => this.loginFailed())
     },
@@ -40,7 +40,7 @@ export default {
       }
 
       localStorage.token = req.data.token
-      this.$store.dispatch('register')
+      this.$store.dispatch('login')
       this.error = false
 
       this.$router.push({
