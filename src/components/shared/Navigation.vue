@@ -10,7 +10,7 @@
       </router-link>
 
       <div class="navSearchBar">
-        <input type="text" :value="query" :placeholder="searchPlaceholder" @keyup.enter="submitQuery">
+        <input type="text" class="fa fa-input" :value="query" :placeholder="searchPlaceholder" @keyup.enter="submitQuery">
       </div>
       <div class="right">
         <router-link v-for="navLink in loggedInNavLinks" :key="navLink.linkName" :to="{ name: navLink.linkName }" class="link">
@@ -149,7 +149,7 @@ export default {
 
 .navSearchBar input[type="text"] {
   font-size: 1.3em;
-  font-family: "Font Awesome\ 5 Free", Helvetica, sans-serif;
+  font-family: "Font Awesome\ 5 Free", Arial, Helvetica, sans-serif;
   color: #585858;
   border-top: 1px solid transparent;
   border-right: 1px solid transparent;
@@ -158,7 +158,7 @@ export default {
 }
 
 .navSearchBar input[type="text"]::placeholer {
-  font-family: "Font Awesome\ 5 Free", Helvetica, sans-serif;
+  font-family: "Font Awesome\ 5 Free", Arial, Helvetica, sans-serif;
   color: #a4a4a4;
 }
 
