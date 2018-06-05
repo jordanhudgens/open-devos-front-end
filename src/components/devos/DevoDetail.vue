@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="devo-detail-wrapper">
     <h1>{{ devoName }}</h1>
 
     <div class="returned-content" v-html="devoContent"></div>
@@ -46,5 +46,14 @@ export default {
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css?family=Merriweather');
 
+.devo-detail-wrapper {
+  padding-left: 80px;
+  padding-right: 80px;
+}
+
+.returned-content {
+  font-family: 'Merriweather', serif;
+}
 </style>

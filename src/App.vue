@@ -49,6 +49,11 @@ body {
     width: calc(100vw - 30px);
     padding: 15px;
 
+    .devo-detail-wrapper {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+
     div,
     .returned-content {
       width: 100% !important;
