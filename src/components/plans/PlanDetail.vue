@@ -51,45 +51,12 @@ export default {
   beforeMount() {
     this.getPlanDetails();
   },
-  beforeUpdate() {
-    console.log('mounted', this.devoToEdit);
-    if (this.devoToEdit) {
-      this.devoTitle = this.devoToEdit.title;
-      this.devoContent = this.devoToEdit.content;
-    }
-  },
-  updated() {
-    console.log('devo to update', this.devoToEdit);
-    if (this.devoToEdit) {
-      this.devoTitle = this.devoToEdit.title;
-      this.devoContent = this.devoToEdit.content;
-    }
-  },
-  beforeDestroy() {
-    console.log('beforeDestory', this.devoToEdit);
-    if (this.devoToEdit) {
-      this.devoTitle = this.devoToEdit.title;
-      this.devoContent = this.devoToEdit.content;
-    }
-  },
-  beforeDestroy() {
-    console.log('destroyed', this.devoToEdit);
-    if (this.devoToEdit) {
-      this.devoTitle = this.devoToEdit.title;
-      this.devoContent = this.devoToEdit.content;
-    }
-  },
   beforeRouteUpdate(to, from, next) {
     this.planSlug = this.$route.params.plan_slug
     next()
   },
   computed: {
     ...mapGetters({ currentUser: 'currentUser' })
-  },
-  watch: {
-    devoToEdit(dte) {
-      this.devoToEdit = dte;
-    }
   },
   methods: {
     cancelDevoForm() {

@@ -11,8 +11,6 @@
         <h2>{{ responseMessage }}</h2>
       </div>
 
-      <pre>{{ passedDevoTitle }}</pre>
-
       <form @submit.prevent="formTypeSelector" class="form-wrapper">
 
         <input type="text" v-model="devoTitle" placeholder="Title">
@@ -45,26 +43,28 @@ export default {
     planId: Number,
     devos: Array,
     devoToEdit: Object,
-    passedDevoTitle: String
   },
   computed: {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   created() {
     if (this.devoToEdit) {
-      this.devoTitle = this.passedDevoTitle;
-      this.devoContent = this.devoToEdit.content;
-    }
-  },
-  updated() {
-    if (this.devoToEdit) {
       this.devoTitle = this.devoToEdit.title;
       this.devoContent = this.devoToEdit.content;
     }
   },
+  watch: {
+    devoToEdit(newValue, oldValue) {
+      console.log('new value', newValue);
+      console.log('old value', oldValue);
+
+      this.devoTitle = newValue.title;
+      this.devoContent = oldValue.content;
+    }
+  },
   methods: {
     formTypeSelector() {
-      if (this.passedDevoTitle) {
+      if (this.devoToEdit) {
         this.editDevoForm()
       } else {
         this.submitDevoForm()
