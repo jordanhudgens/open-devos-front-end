@@ -46,13 +46,6 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'Navigation',
-  props: {
-    navItems: {
-      type: Array,
-      default: [],
-      required: true
-    }
-  },
   computed: {
     ...mapGetters({ currentUser: 'currentUser' })
   },
@@ -69,6 +62,10 @@ export default {
         { linkName: 'Popular', linkIcon: 'navIcon fas fa-chart-line' },
       ]
     }
+  },
+  destroyed() {
+    console.log('destroyed...');
+
   },
   methods: {
     submitQuery(evt) {

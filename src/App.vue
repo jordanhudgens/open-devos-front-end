@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navigation :navItems="pageElements"></Navigation>
+    <Navigation />
 
     <div class="container">
       <div class="content-wrapper">
