@@ -11,8 +11,12 @@ import Publish from "@/components/publishing/Publish";
 import Logout from "@/components/auth/Logout";
 import PlanDetail from "@/components/plans/PlanDetail";
 import DevoDetail from "@/components/devos/DevoDetail";
+import { mapGetters } from "vuex";
+import store from "@/store";
 
 Vue.use(Router);
+
+const currentUser = store.getters.currentUser;
 
 const router = new Router({
   mode: "history",
@@ -70,7 +74,18 @@ const router = new Router({
     {
       path: "/publish",
       name: "Publish",
-      component: Publish
+      component: Publish,
+      beforeEnter: (to, from, next) => {
+        console.log("to", to);
+        console.log("from", from);
+        console.log("currentUser", currentUser);
+
+        if (currentUser) {
+          next();
+        } else {
+          next({ name: "Login" });
+        }
+      }
     }
   ]
 });

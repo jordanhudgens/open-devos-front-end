@@ -63,12 +63,6 @@ export default {
     this.getCurrentPlans()
     this.getCategories()
   },
-  created() {
-    this.checkCurrentLogin()
-  },
-  updated() {
-    this.checkCurrentLogin()
-  },
   methods: {
     addToPlans(plan) {
       this.plans.push(plan);
@@ -86,11 +80,6 @@ export default {
     },
     formTypeSelector() {
       return this.formMode === 'new' ? this.submitPlanForm() : this.editPlanForm();
-    },
-    checkCurrentLogin() {
-      if (!this.currentUser) {
-        this.$router.push('login?auth_redirect=publish')
-      }
     },
     renderPlanForm() {
       this.showPlanForm = true;
