@@ -75,12 +75,11 @@ export default {
       this.showPlanForm = false;
     },
     updatePlanList(plan) {
-      console.log(plan);
       this.plans.forEach(element => {
         if (element.id === plan.id) {
           element.title = plan.title;
           element.summary = plan.summary;
-          element.topic_id = plan.topic_id;
+          element.topic.id = plan.topic.id;
         }
       }, this);
       this.showPlanForm = false;

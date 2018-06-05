@@ -58,6 +58,13 @@ export default {
       this.planTopic = this.planToEdit.topic.id;
     }
   },
+  watch: {
+    planToEdit(newValue, oldValue) {
+      this.planTitle = newValue.title;
+      this.planSummary = newValue.summary;
+      this.planTopic = newValue.topic.id;
+    }
+  },
   methods: {
     formTypeSelector() {
       if (this.planToEdit) {
@@ -86,6 +93,8 @@ export default {
           this.errorSubmittingPlan = false;
           this.planSubmittedSuccessfully = true;
           this.responseMessage = 'Your plan has been updated!';
+          console.log('returned data', response.data);
+
           this.$emit('update', response.data.plan);
           return response.data;
         })
