@@ -74,10 +74,6 @@ const router = new Router({
       name: "Publish",
       component: Publish,
       beforeEnter: (to, from, next) => {
-        console.log("to", to);
-        console.log("from", from);
-        console.log("currentUser", store.getters);
-
         if (store.getters.currentUser) {
           next();
         } else {

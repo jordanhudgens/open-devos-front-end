@@ -51,7 +51,6 @@ export default {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   created() {
-    console.log('plan to edit', this.planToEdit);
     if (this.planToEdit) {
       this.planTitle = this.planToEdit.title;
       this.planSummary = this.planToEdit.summary;
@@ -93,8 +92,6 @@ export default {
           this.errorSubmittingPlan = false;
           this.planSubmittedSuccessfully = true;
           this.responseMessage = 'Your plan has been updated!';
-          console.log('returned data', response.data);
-
           this.$emit('update', response.data.plan);
           return response.data;
         })

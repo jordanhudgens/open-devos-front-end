@@ -140,7 +140,6 @@ export default {
           }
         }).then(response => {
           this.plans.push(...response.data.plans);
-          console.log(this.plans);
         }).catch(error => {
           console.log('error: ', error);
         });
