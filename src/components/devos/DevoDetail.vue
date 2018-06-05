@@ -2,7 +2,7 @@
   <div>
     <h1>{{ devoName }}</h1>
 
-    <div v-html="devoContent"></div>
+    <div class="returned-content" v-html="devoContent"></div>
   </div>
 </template>
 
@@ -21,8 +21,6 @@ export default {
     }
   },
   beforeMount() {
-    console.log("params...", this.$route.params);
-
     this.getDevoDetails();
   },
   beforeRouteUpdate(to, from, next) {
@@ -38,7 +36,6 @@ export default {
           this.devoContent = sanitizeHtml(response.data.devo.content, {
             allowedTags: sanitizeHtml.defaults.allowedTags.concat(['h1', 'h2'])
           });
-          console.log(response);
         })
         .catch(error => {
           console.log(error);
@@ -48,6 +45,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 
 </style>

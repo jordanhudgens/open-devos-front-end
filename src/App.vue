@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <Navigation :navItems="pageElements"></Navigation>
-    <router-view/>
+
+    <div class="container">
+      <div class="content-wrapper">
+        <router-view/>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -11,11 +16,6 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'App',
-  data() {
-    return {
-      pageElements: [1, 2, 3]
-    }
-  },
   components: {
     Navigation
   },
@@ -25,12 +25,34 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 html {
   font-family: 'Oxygen', sans-serif;
 }
 
 body {
   margin: 0px;
+  width: 100vw;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+
+  .content-wrapper {
+    width: 900px;
+  }
+}
+
+@media (max-width: 48em) {
+  .container {
+    width: calc(100vw - 30px);
+    padding: 15px;
+
+    div,
+    .returned-content {
+      width: 100% !important;
+    }
+  }
 }
 </style>
