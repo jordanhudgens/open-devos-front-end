@@ -16,7 +16,7 @@
     <div class="devo-form-wrapper">
       <button v-if="showNewDevoButton" @click="renderDevoForm">Add a New Devo</button>
       <button v-if="!showNewDevoButton" @click="cancelDevoForm">Cancel</button>
-      <DevoForm v-if="showForm" :passedDevoTitle="devoToEdit.title" :devoToEdit.sync="devoToEdit" :planId="planId" :devos="devos" @new="addToDevos" @update="updateDevoList" :key="devoFormKey" />
+      <DevoForm v-if="showForm" :devoToEdit.sync="devoToEdit" :planId="planId" :devos="devos" @new="addToDevos" @update="updateDevoList" :key="devoFormKey" />
     </div>
   </div>
 </template>

@@ -69,11 +69,6 @@ export default {
       } else {
         this.submitDevoForm()
       }
-      // if (this.devoToEdit) {
-      //   this.editDevoForm()
-      // } else {
-      //   this.submitDevoForm()
-      // }
     },
     editDevoForm() {
       axios
