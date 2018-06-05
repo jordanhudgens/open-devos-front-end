@@ -14,7 +14,7 @@
           <a @click.prevent="editPlan(plan)" href="#">Edit</a>
         </div>
 
-        <div>
+        <div v-if="currentUser.id === plan.user.id">
           <a href="#" @click.prevent="deletePlan" :id="`plan-delete-${plan.slug}`">Delete</a>
         </div>
       </div>
@@ -136,7 +136,7 @@ export default {
             "Authorization": 'Bearer ' + localStorage.getItem('token')
           },
           params: {
-            user_id: 1
+            user_id: this.currentUser.id
           }
         }).then(response => {
           this.plans.push(...response.data.plans);
