@@ -16,8 +16,6 @@ import store from "@/store";
 
 Vue.use(Router);
 
-const currentUser = store.getters.currentUser;
-
 const router = new Router({
   mode: "history",
   routes: [
@@ -78,9 +76,9 @@ const router = new Router({
       beforeEnter: (to, from, next) => {
         console.log("to", to);
         console.log("from", from);
-        console.log("currentUser", currentUser);
+        console.log("currentUser", store.getters);
 
-        if (currentUser) {
+        if (store.getters.currentUser) {
           next();
         } else {
           next({ name: "Login" });
