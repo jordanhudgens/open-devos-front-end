@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     register() {
-      this.$http.post('/login', { user: this.email, password: this.password })
+      this.$http.post('/register', { user: this.email, password: this.password })
         .then(request => this.loginSuccessful(request))
         .catch(() => this.loginFailed())
     },
@@ -40,7 +40,7 @@ export default {
       }
 
       localStorage.token = req.data.token
-      this.$store.dispatch('login')
+      this.$store.dispatch('register')
       this.error = false
 
       this.$router.push({
@@ -48,7 +48,7 @@ export default {
       });
     },
     loginFailed() {
-      this.error = 'Login failed!'
+      this.error = 'Registration failed!'
       this.$store.dispatch('logout')
       delete localStorage.token
     }

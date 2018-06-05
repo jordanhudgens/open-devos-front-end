@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="navbar">
-      <a href="#" class="toggle" id="navHamburger">
+    <div class="navbar" :class="{ active: showMobileNavBar }">
+      <a href="#" class="toggle" id="navHamburger" @click.prevent="toggleNav">
         <i class="fas fa-bars"></i>
       </a>
 
@@ -63,6 +63,7 @@ export default {
     return {
       query: null,
       searchPlaceholder: `\uf002 Search Devos`,
+      showMobileNavBar: false,
       loggedInNavLinks: [
         { linkName: 'Categories', linkIcon: 'navIcon fas fa-map-signs' },
         { linkName: 'Popular', linkIcon: 'navIcon fas fa-chart-line' },
@@ -72,14 +73,18 @@ export default {
   methods: {
     submitQuery(evt) {
       this.query = evt.target.value;
-
-      console.log(this.$router);
-
       this.$router.push({
         name: "SearchResults",
         params: { query: evt.target.value }
       });
     },
+    toggleNav() {
+      if (this.showMobileNavBar) {
+        this.showMobileNavBar = !this.showMobileNavBar;
+      } else {
+        this.showMobileNavBar = !this.showMobileNavBar;
+      }
+    }
   }
 }
 </script>
@@ -197,13 +202,7 @@ export default {
   .navbar .toggle {
     display: none;
   }
-}
 
-.navbar div {
-  display: none;
-}
-
-@media (min-width: 48em) {
   .navbar div {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -211,16 +210,24 @@ export default {
   }
 }
 
+.navbar div {
+  display: none;
+}
+
 @media (max-width: 48em) {
-  .navbar.active .toggle {
-    background: #223047;
-    color: white;
+  .navbar {
+    display: flex;
   }
-  .navbar .brand {
-    text-align: left;
+
+  .navbar.active {
+    width: 100vw;
   }
+
   .navbar.active div {
-    display: block;
+    display: grid;
+    width: 100vw;
+    position: absolute;
+    top: 91px;
   }
 }
 </style>
