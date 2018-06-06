@@ -17,7 +17,7 @@ import Vue from 'vue'
 import VueAnalytics from 'vue-analytics'
 
 Vue.use(VueAnalytics, {
-  id: 'UA-XXX-X'
+  id: 'UA-120438011-1'
 })
 
 export default {
