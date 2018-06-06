@@ -15,6 +15,7 @@ import DevoDetail from "@/components/devos/DevoDetail";
 import { mapGetters } from "vuex";
 import store from "@/store";
 import VueAnalytics from "vue-analytics";
+import VueGtm from "vue-gtm";
 
 Vue.use(Router);
 
@@ -94,6 +95,10 @@ const router = new Router({
 Vue.use(VueAnalytics, {
   id: "UA-120438011-1",
   router
+});
+
+Vue.use(VueGtm, {
+  vueRouter: router
 });
 
 export default router;
