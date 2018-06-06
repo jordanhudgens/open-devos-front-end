@@ -12,7 +12,12 @@
 
 <script>
 import Navigation from '@/components/shared/Navigation';
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
+import VueAnalytics from 'vue-analytics'
+
+Vue.use(VueAnalytics, {
+  id: 'UA-120438011-1'
+})
 
 export default {
   name: 'App',
