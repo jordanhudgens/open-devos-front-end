@@ -14,6 +14,7 @@ import PlanDetail from "@/components/plans/PlanDetail";
 import DevoDetail from "@/components/devos/DevoDetail";
 import { mapGetters } from "vuex";
 import store from "@/store";
+import VueAnalytics from "vue-analytics";
 
 Vue.use(Router);
 
@@ -88,6 +89,11 @@ const router = new Router({
       }
     }
   ]
+});
+
+Vue.use(VueAnalytics, {
+  id: "UA-120438011-1",
+  router
 });
 
 export default router;
