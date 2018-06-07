@@ -9,11 +9,14 @@
         {{ devo.title }}
       </router-link>
 
-      <a @click.prevent="deleteDevo" href="#" :id="'devo-delete-' + devo.slug">Delete</a>
-      <a @click.prevent="editDevo(devo)" href="#">Edit</a>
+      <div v-if="currentUser && currentUser.id === planOwner">
+        <a @click.prevent="deleteDevo" href="#" :id="'devo-delete-' + devo.slug">Delete</a>
+        <a @click.prevent="editDevo(devo)" href="#">Edit</a>
+      </div>
+      <hr>
     </div>
 
-    <div class="devo-form-wrapper">
+    <div v-if="currentUser && currentUser.id === planOwner" class="devo-form-wrapper">
       <button v-if="showNewDevoButton" @click="renderDevoForm">Add a New Devo</button>
       <button v-if="!showNewDevoButton" @click="cancelDevoForm">Cancel</button>
       <DevoForm v-if="showForm" :devoToEdit.sync="devoToEdit" :planId="planId" :devos="devos" @new="addToDevos" @update="updateDevoList" :key="devoFormKey" />
@@ -34,6 +37,7 @@ export default {
       planSummary: null,
       planSlug: this.$route.params.plan_slug,
       planId: null,
+      planOwner: null,
       planApiUrl: 'https://open-devos-api.herokuapp.com/plans',
       devos: [],
       errorDeletingDevo: false,
@@ -120,6 +124,7 @@ export default {
           this.planName = response.data.plan.title;
           this.planSummary = response.data.plan.summary;
           this.planId = response.data.plan.id;
+          this.planOwner = response.data.plan.user.id;
           this.devos.push(...response.data.plan.devos);
         })
         .catch(error => {
