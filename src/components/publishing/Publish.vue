@@ -74,6 +74,7 @@ export default {
           element.title = plan.title;
           element.summary = plan.summary;
           element.topic.id = plan.topic.id;
+          element.status = plan.status;
         }
       }, this);
       this.showPlanForm = false;

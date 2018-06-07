@@ -17,6 +17,11 @@
 
         <textarea v-model="planSummary" cols="30" rows="10" placeholder="Plan summary"></textarea>
 
+        <div>{{ planStatus }}</div>
+        <input type="checkbox" id="checkbox" v-model="planStatus" :true-value="'published'" :false-value="'draft'">
+        <label v-if="planStatus === 'draft'" for="checkbox">Publish publicly?</label>
+        <label v-else for="checkbox">Switch to draft?</label>
+
         <select v-model="planTopic">
           <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.title }}</option>
         </select>
@@ -38,6 +43,7 @@ export default {
       planTitle: null,
       planTopic: null,
       planSummary: null,
+      planStatus: null,
       responseMessage: '',
       planSubmittedSuccessfully: false,
       errorSubmittingPlan: false,
@@ -51,10 +57,13 @@ export default {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   created() {
+    console.log('plan to edit', this.planToEdit);
+
     if (this.planToEdit) {
       this.planTitle = this.planToEdit.title;
       this.planSummary = this.planToEdit.summary;
       this.planTopic = this.planToEdit.topic.id;
+      this.planStatus = this.planToEdit.status;
     }
   },
   watch: {
@@ -62,6 +71,7 @@ export default {
       this.planTitle = newValue.title;
       this.planSummary = newValue.summary;
       this.planTopic = newValue.topic.id;
+      this.planStatus = newValue.status;
     }
   },
   methods: {
@@ -80,7 +90,8 @@ export default {
             title: this.planTitle,
             summary: this.planSummary,
             topic_id: this.planTopic,
-            user_id: this.currentUser.id
+            user_id: this.currentUser.id,
+            status: this.planStatus
           }
         },
         {
@@ -109,7 +120,8 @@ export default {
             title: this.planTitle,
             summary: this.planSummary,
             topic_id: this.planTopic,
-            user_id: this.currentUser.id
+            user_id: this.currentUser.id,
+            status: this.planStatus
           }
         },
         {
