@@ -10,7 +10,7 @@
       </router-link>
 
       <div v-if="currentUser && currentUser.id === planOwner">
-        <a @click.prevent="deleteDevo" href="#" :id="'devo-delete-' + devo.slug">Delete</a>
+        <a @click.prevent="deleteDevo(devo)" href="#">Delete</a>
         <a @click.prevent="editDevo(devo)" href="#">Edit</a>
       </div>
       <hr>
@@ -91,13 +91,10 @@ export default {
       this.showForm = true;
       this.devoToEdit = devo;
     },
-    deleteDevo(evt) {
-      let url = evt.target.id;
-      url = url.split('-');
-      const slug = url.slice(2).join('-');
-
+    deleteDevo(devo) {
+      console.log('devo', devo.slug);
       axios
-        .delete(`https://open-devos-api.herokuapp.com/devos/${evt.target.id.slice(12)}`,
+        .delete(`https://open-devos-api.herokuapp.com/devos/${devo.slug}`,
         {
           headers: {
             "Authorization": 'Bearer ' + localStorage.getItem('token'),
@@ -107,7 +104,7 @@ export default {
         .then(response => {
           this.errorDeletingDevo = false;
           this.devoDeletedSuccessfully = true;
-          this.devos = this.devos.filter(devo => devo.slug !== slug);
+          this.devos = this.devos.filter(el => el.slug !== devo.slug);
           this.devoDeletionResponseMessage = 'The devo was successfully deleted';
           return response.data;
         })
