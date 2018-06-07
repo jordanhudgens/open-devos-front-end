@@ -1,9 +1,8 @@
 <template>
   <div>
-    <h1>Publish</h1>
+    <h1>Published Plans</h1>
 
     <div class="published-plans-wrapper">
-      <h2>Published Plans</h2>
       {{ planResponseMessage }}
       <div v-for="plan in plans" :key="plan.id">
         <router-link :to="{ name: 'PlanDetail', params: { plan_slug: plan.slug}}">
