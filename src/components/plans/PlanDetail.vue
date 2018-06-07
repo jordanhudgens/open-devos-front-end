@@ -72,6 +72,7 @@ export default {
         if (element.id === devo.id) {
           element.title = devo.title;
           element.content = devo.content;
+          element.status = devo.status;
         }
       }, this);
       this.showForm = false;

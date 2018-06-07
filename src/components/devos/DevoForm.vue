@@ -13,7 +13,14 @@
 
       <form @submit.prevent="formTypeSelector" class="form-wrapper">
 
-        <input type="text" v-model="devoTitle" placeholder="Title">
+        <div>
+          <input type="text" v-model="devoTitle" placeholder="Title">
+        </div>
+
+        <div>{{ devoStatus }}</div>
+        <input type="checkbox" id="checkbox" v-model="devoStatus" :true-value="'published'" :false-value="'draft'">
+        <label v-if="devoStatus === 'published'" for="checkbox">Switch to draft?</label>
+        <label v-else for="checkbox">Publish publicly?</label>
 
         <wysiwyg v-model="devoContent" />
 
@@ -33,8 +40,9 @@ export default {
     return {
       devoTitle: '',
       devoContent: '',
-      devoSlug: '',
-      responseMessage: '',
+      devoStatus: null,
+      devoSlug: null,
+      responseMessage: null,
       devoSubmittedSuccessfully: false,
       errorSubmittingDevo: false,
     }
@@ -51,15 +59,14 @@ export default {
     if (this.devoToEdit) {
       this.devoTitle = this.devoToEdit.title;
       this.devoContent = this.devoToEdit.content;
+      this.devoStatus = this.devoToEdit.status;
     }
   },
   watch: {
     devoToEdit(newValue, oldValue) {
-      console.log('new value', newValue);
-      console.log('old value', oldValue);
-
       this.devoTitle = newValue.title;
-      this.devoContent = oldValue.content;
+      this.devoContent = newValue.content;
+      this.devoStatus = newValue.status;
     }
   },
   methods: {
@@ -79,7 +86,7 @@ export default {
             content: this.devoContent,
             position: 5,
             plan_id: this.planId,
-            status: 0,
+            status: this.devoStatus,
           }
         },
         {
@@ -109,7 +116,7 @@ export default {
             content: this.devoContent,
             position: 5,
             plan_id: this.planId,
-            status: 0,
+            status: this.devoStatus,
           }
         },
         {
