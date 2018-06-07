@@ -15,7 +15,7 @@
         </div>
 
         <div v-if="currentUser.id === plan.user.id">
-          <a href="#" @click.prevent="deletePlan" :id="`plan-delete-${plan.slug}`">Delete</a>
+          <a href="#" @click.prevent="deletePlan(plan)">Delete</a>
         </div>
       </div>
     </div>
@@ -89,13 +89,9 @@ export default {
       this.showPlanForm = true;
       this.planToEdit = plan;
     },
-    deletePlan(evt) {
-      let url = evt.target.id;
-      url = url.split('-');
-      const slug = url.slice(2).join('-');
-
+    deletePlan(plan) {
       axios
-        .delete(`https://open-devos-api.herokuapp.com/plans/${slug}`,
+        .delete(`https://open-devos-api.herokuapp.com/plans/${plan.slug}`,
         {
           headers: {
             "Authorization": 'Bearer ' + localStorage.getItem('token'),
@@ -105,7 +101,7 @@ export default {
         .then(response => {
           this.errorDeletingPlan = false;
           this.planDeletedSuccessfully = true;
-          this.plans = this.plans.filter(plan => plan.slug !== slug);
+          this.plans = this.plans.filter(el => el.slug !== plan.slug);
           this.planResponseMessage = 'The plan was successfully deleted';
           return response.data;
         })
