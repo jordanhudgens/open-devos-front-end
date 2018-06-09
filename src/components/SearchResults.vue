@@ -1,10 +1,16 @@
 <template>
   <div>
     <h1>Search results</h1>
+
+    <div v-for="devo in results" :key="devo.id">
+      <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">{{ devo.title }}</router-link>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'SearchResults',
   data() {
@@ -19,25 +25,22 @@ export default {
     this.getResults(this.query);
   },
   watch: {
-    '$route'(to, from) {
-      console.log('watcher...');
-    }
   },
   methods: {
-    getResults(q) {
+    getResults(query) {
       this.results = [];
-      console.log(q);
+      console.log(query);
 
-      // axios
-      //   .get("https://api.dailysmarty.com/search", { params: { q } })
-      //   .then(response => {
-      //     this.results.push(...response.data.posts);
-      //     this.gettingResults = false;
-      //     console.log(response.data.posts);
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
+      axios
+        .get("https://open-devos-api.herokuapp.com/search", { params: { query } })
+        .then(response => {
+          console.log(response)
+          this.results.push(...response.data.devos);
+          this.gettingResults = false;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
   }
 }

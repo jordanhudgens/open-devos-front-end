@@ -10,7 +10,7 @@
       </router-link>
 
       <div class="navSearchBar">
-        <input type="text" class="fa fa-input" :value="query" :placeholder="searchPlaceholder" @keyup.enter="submitQuery">
+        <input type="text" class="fa fa-input" v-model="query" :placeholder="searchPlaceholder" @keyup.enter="submitQuery">
       </div>
       <div class="right">
         <router-link v-for="navLink in loggedInNavLinks" :key="navLink.linkName" :to="{ name: navLink.linkName }" class="link">
@@ -65,14 +65,13 @@ export default {
   },
   destroyed() {
     console.log('destroyed...');
-
   },
   methods: {
     submitQuery(evt) {
       this.query = evt.target.value;
-      this.$router.push({
+      this.$router.replace({
         name: "SearchResults",
-        params: { query: evt.target.value }
+        params: { query: this.query }
       });
     },
     toggleNav() {
