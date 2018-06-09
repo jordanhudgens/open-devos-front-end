@@ -1,6 +1,6 @@
 <template>
   <div class="homepage-wrapper">
-    <h1>You're on the homepage</h1>
+    <h1>Welcome to Open Devos</h1>
 
     <div v-if="currentUser">
       {{ currentUser.email }}
