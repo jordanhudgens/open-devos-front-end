@@ -52,6 +52,11 @@ export default {
   created() {
     console.log(this.currentUser);
   },
+  watch: {
+    '$route': function() {
+      console.log('updated from nav');
+    }
+  },
   data() {
     return {
       query: null,
@@ -63,16 +68,13 @@ export default {
       ]
     }
   },
-  destroyed() {
-    console.log('destroyed...');
-  },
   methods: {
-    submitQuery(evt) {
-      this.query = evt.target.value;
-      this.$router.replace({
+    submitQuery() {
+      this.$router.push({
         name: "SearchResults",
         params: { query: this.query }
       });
+      this.query = '';
     },
     toggleNav() {
       if (this.showMobileNavBar) {

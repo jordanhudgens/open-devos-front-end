@@ -25,6 +25,9 @@ export default {
     this.getResults(this.query);
   },
   watch: {
+    '$route': function() {
+      console.log('updated from search results');
+    }
   },
   methods: {
     getResults(query) {

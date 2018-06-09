@@ -4,7 +4,7 @@
 
     <div class="container">
       <div class="content-wrapper">
-        <router-view/>
+        <router-view :key="$route.path" />
       </div>
     </div>
   </div>
