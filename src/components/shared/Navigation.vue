@@ -25,7 +25,7 @@
           <i class="navIcon fas fa-user-plus"></i> Register
         </router-link>
 
-        <router-link v-if="currentUser" :to="{ name: 'Profile' }" class="link">
+        <router-link v-if="currentUser" :to="`/profile/${currentUser.profile_slug}`" class="link">
           <i class="navIcon fas fa-user"></i> Profile
         </router-link>
 

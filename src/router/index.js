@@ -73,7 +73,7 @@ const router = new Router({
       component: Popular
     },
     {
-      path: "/profile",
+      path: "/profile/:user_slug",
       name: "Profile",
       component: Profile
     },
