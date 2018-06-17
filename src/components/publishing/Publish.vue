@@ -20,13 +20,17 @@
             </span>
 
             <span v-if="plan.last_published">
-              {{ plan.last_published }}
+              Last published {{ formatDate(plan.last_published) }}
+            </span>
+
+            <span v-if="plan.devos.length > 0 && plan.devos.length === 1">
+              {{ plan.devos.length }} lesson
+            </span>
+            <span v-else-if="plan.devos.length > 0">
+              {{ plan.devos.length }} lessons
             </span>
           </div>
-
         </div>
-
-        <pre>{{ plan }}</pre>
 
         <div>
           <a @click.prevent="editPlan(plan)" href="#">Edit</a>
@@ -49,6 +53,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import axios from 'axios';
+import moment from 'moment';
 import router from '@/router';
 import PlanForm from '@/components/plans/PlanForm';
 
@@ -96,6 +101,9 @@ export default {
         }
       }, this);
       this.showPlanForm = false;
+    },
+    formatDate(date) {
+      return moment(date).fromNow();
     },
     formTypeSelector() {
       return this.formMode === 'new' ? this.submitPlanForm() : this.editPlanForm();
