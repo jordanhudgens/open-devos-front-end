@@ -2,12 +2,31 @@
   <div>
     <h1>Published Plans</h1>
 
-    <div class="published-plans-wrapper">
+    <div class="card published-plans-wrapper">
       {{ planResponseMessage }}
       <div v-for="plan in plans" :key="plan.id">
-        <router-link :to="{ name: 'PlanDetail', params: { plan_slug: plan.slug}}">
-          {{ plan.title }}
-        </router-link>
+        <div class="left-column">
+          <div class="row1">
+            <router-link :to="{ name: 'PlanDetail', params: { plan_slug: plan.slug}}">
+              <span class="title">{{ plan.title }}</span>
+            </router-link>
+          </div>
+
+          <div class="row2">
+            <span>
+              <router-link :to="{ name: 'CategoryDetail', params: { category_slug: plan.topic.slug } }" class="link">
+                {{ plan.topic.title }}
+              </router-link>
+            </span>
+
+            <span v-if="plan.last_published">
+              {{ plan.last_published }}
+            </span>
+          </div>
+
+        </div>
+
+        <pre>{{ plan }}</pre>
 
         <div>
           <a @click.prevent="editPlan(plan)" href="#">Edit</a>
@@ -157,6 +176,5 @@ export default {
 <style scoped>
 .published-plans-wrapper {
   width: 400px;
-  background-color: cyan;
 }
 </style>
