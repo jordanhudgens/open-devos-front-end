@@ -26,6 +26,8 @@ export default {
 </script>
 
 <style lang="scss">
+$teal: #156356;
+
 html {
   font-family: 'Oxygen', sans-serif;
 }
@@ -41,6 +43,22 @@ body {
 
   .content-wrapper {
     width: 900px;
+
+    .card {
+      padding: 42px;
+      border-radius: 10px;
+      -webkit-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+      -moz-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+      box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+
+      a {
+        text-decoration: none;
+        .title {
+          color: $teal;
+          font-size: 1.3em;
+        }
+      }
+    }
   }
 }
 
