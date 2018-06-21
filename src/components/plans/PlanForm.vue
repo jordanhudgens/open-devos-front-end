@@ -177,12 +177,10 @@ $teal: #156356;
   }
   input[type="text"] {
     font-size: 1.2em;
-    // color: #eaeaea;
   }
   textarea {
     background-color: transparent;
     font-size: 1.2em;
-    // color: #eaeaea;
     border: 1px solid $teal;
     padding: 10px;
     border-radius: 0px;

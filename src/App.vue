@@ -35,7 +35,7 @@ html {
 
 body {
   margin: 0px;
-  width: 100vw;
+  width: 99vw;
 }
 
 .btn {

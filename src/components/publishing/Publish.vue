@@ -51,7 +51,9 @@
 
       <div class="plan-form-wrapper">
         <button @click="renderPlanForm" class="btn">Add a New Plan</button>
-        <PlanForm v-if="showPlanForm" :planToEdit="planToEdit" :categories="categories" @new="addToPlans" @update="updatePlanList" />
+        <transition name="fade">
+          <PlanForm v-if="showPlanForm" :planToEdit="planToEdit" :categories="categories" @new="addToPlans" @update="updatePlanList" />
+        </transition>
       </div>
     </div>
 
@@ -200,5 +202,13 @@ export default {
 }
 
 .published-plans-card-wrapper {
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
