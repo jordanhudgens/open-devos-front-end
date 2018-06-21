@@ -38,6 +38,15 @@ body {
   width: 100vw;
 }
 
+.btn {
+  background-color: $teal;
+  border-radius: 5px;
+  border: $teal 1px solid;
+  color: white;
+  padding: 20px;
+  font-size: 1.1em;
+}
+
 .container {
   display: flex;
   justify-content: center;

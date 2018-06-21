@@ -2,54 +2,57 @@
   <div>
     <h1>Published Plans</h1>
 
-    <div class="card published-plans-wrapper">
-      {{ planResponseMessage }}
+    <div class="published-plans-wrapper">
 
-      <div class="plans-wrapper">
-        <div v-for="plan in plans" :key="plan.id" class="split-columns">
-          <div class="left-column">
-            <div class="row1">
-              <router-link :to="{ name: 'PlanDetail', params: { plan_slug: plan.slug}}">
-                <span class="title">{{ plan.title }}</span>
-              </router-link>
-            </div>
+      <div class="card published-plans-card-wrapper">
+        {{ planResponseMessage }}
 
-            <div class="plan-metadata">
-              <span>
-                <router-link :to="{ name: 'CategoryDetail', params: { category_slug: plan.topic.slug } }" class="category-link">
-                  {{ plan.topic.title }}
+        <div class="plans-wrapper">
+          <div v-for="plan in plans" :key="plan.id" class="split-columns">
+            <div class="left-column">
+              <div class="row1">
+                <router-link :to="{ name: 'PlanDetail', params: { plan_slug: plan.slug}}">
+                  <span class="title">{{ plan.title }}</span>
                 </router-link>
-              </span>
+              </div>
 
-              <span v-if="plan.last_published">
-                Last published {{ formatDate(plan.last_published) }}
-              </span>
+              <div class="plan-metadata">
+                <span>
+                  <router-link :to="{ name: 'CategoryDetail', params: { category_slug: plan.topic.slug } }" class="category-link">
+                    {{ plan.topic.title }}
+                  </router-link>
+                </span>
 
-              <span v-if="plan.devos.length > 0 && plan.devos.length === 1">
-                {{ plan.devos.length }} lesson
-              </span>
-              <span v-else-if="plan.devos.length > 0">
-                {{ plan.devos.length }} lessons
-              </span>
+                <span v-if="plan.last_published">
+                  Last published {{ formatDate(plan.last_published) }}
+                </span>
+
+                <span v-if="plan.devos.length > 0 && plan.devos.length === 1">
+                  {{ plan.devos.length }} lesson
+                </span>
+                <span v-else-if="plan.devos.length > 0">
+                  {{ plan.devos.length }} lessons
+                </span>
+              </div>
             </div>
-          </div>
 
-          <div class="right-column">
-            <div>
-              <a @click.prevent="editPlan(plan)" href="#">Edit</a>
-            </div>
+            <div class="right-column">
+              <div>
+                <a @click.prevent="editPlan(plan)" href="#">Edit</a>
+              </div>
 
-            <div v-if="currentUser.id === plan.user.id">
-              <a href="#" @click.prevent="deletePlan(plan)">Delete</a>
+              <div v-if="currentUser.id === plan.user.id">
+                <a href="#" @click.prevent="deletePlan(plan)">Delete</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="plan-form-wrapper">
-      <button @click="renderPlanForm">Add a New Plan</button>
-      <PlanForm v-if="showPlanForm" :planToEdit="planToEdit" :categories="categories" @new="addToPlans" @update="updatePlanList" />
+      <div class="plan-form-wrapper">
+        <button @click="renderPlanForm" class="btn">Add a New Plan</button>
+        <PlanForm v-if="showPlanForm" :planToEdit="planToEdit" :categories="categories" @new="addToPlans" @update="updatePlanList" />
+      </div>
     </div>
 
   </div>
@@ -191,6 +194,11 @@ export default {
 
 <style scoped>
 .published-plans-wrapper {
-  width: 600px;
+  display: grid;
+  grid-template-columns: 600px auto;
+  grid-gap: 42px;
+}
+
+.published-plans-card-wrapper {
 }
 </style>
