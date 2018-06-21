@@ -11,25 +11,26 @@
 </template>
 
 <script>
-import Navigation from '@/components/shared/Navigation';
-import { mapGetters } from 'vuex';
+import Navigation from "@/components/shared/Navigation";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Navigation
   },
   computed: {
-    ...mapGetters({ currentUser: 'currentUser' })
+    ...mapGetters({ currentUser: "currentUser" })
   }
-}
+};
 </script>
 
 <style lang="scss">
 $teal: #156356;
+$lightgray: #686868;
 
 html {
-  font-family: 'Oxygen', sans-serif;
+  font-family: "Oxygen", sans-serif;
 }
 
 body {
@@ -56,6 +57,34 @@ body {
         .title {
           color: $teal;
           font-size: 1.3em;
+        }
+      }
+
+      .plans-wrapper {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 42px;
+
+        .plan-metadata {
+          margin-top: 15px;
+          span {
+            margin-right: 20px;
+            color: $lightgray;
+            font-size: 0.8em;
+          }
+        }
+
+        .category-link {
+          color: black;
+          font-weight: 900;
+        }
+      }
+
+      .split-columns {
+        display: flex;
+        justify-content: space-between;
+
+        .left-column {
         }
       }
     }
