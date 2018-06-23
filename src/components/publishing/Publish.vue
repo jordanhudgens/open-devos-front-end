@@ -50,7 +50,7 @@
       </div>
 
       <div class="plan-form-wrapper">
-        <button @click="renderPlanForm" class="btn">Add a New Plan</button>
+        <button @click="renderPlanForm" class="btn">{{ planBtnText }}</button>
         <transition name="fade">
           <PlanForm v-if="showPlanForm" :planToEdit="planToEdit" :categories="categories" @new="addToPlans" @update="updatePlanList" />
         </transition>
@@ -83,6 +83,7 @@ export default {
       showPlanForm: false,
       formMode: "new",
       planToEdit: null,
+      planBtnText: "Add a New Plan",
       categoryApiUrl: "https://open-devos-api.herokuapp.com/topics"
     };
   },
@@ -121,11 +122,18 @@ export default {
         : this.editPlanForm();
     },
     renderPlanForm() {
-      this.showPlanForm = true;
+      this.showPlanForm = !this.showPlanForm;
+
+      if (this.showPlanForm) {
+        this.planBtnText = "Cancel";
+      } else {
+        this.planBtnText = "Add a New Plan";
+      }
     },
     editPlan(plan) {
       this.showPlanForm = true;
       this.planToEdit = plan;
+      this.planBtnText = "Cancel";
     },
     deletePlan(plan) {
       axios
