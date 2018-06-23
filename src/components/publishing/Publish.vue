@@ -112,6 +112,7 @@ export default {
         }
       }, this);
       this.showPlanForm = false;
+      this.planBtnText = "Add a New Plan";
     },
     formatDate(date) {
       return moment(date).fromNow();
