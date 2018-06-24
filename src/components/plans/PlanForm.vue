@@ -55,13 +55,16 @@ export default {
     ...mapGetters({ currentUser: "currentUser" })
   },
   created() {
-    console.log("plan to edit", this.planToEdit);
-
     if (this.planToEdit) {
       this.planTitle = this.planToEdit.title;
       this.planSummary = this.planToEdit.summary;
       this.planTopic = this.planToEdit.topic.id;
       this.planStatus = this.planToEdit.status;
+    } else {
+      this.planTitle = null;
+      this.planSummary = null;
+      this.planTopic = null;
+      this.planStatus = null;
     }
   },
   watch: {

@@ -101,6 +101,7 @@ export default {
     addToPlans(plan) {
       this.plans.push(plan);
       this.showPlanForm = false;
+      this.planBtnText = "Add a New Plan";
     },
     updatePlanList(plan) {
       this.plans.forEach(element => {
@@ -113,6 +114,7 @@ export default {
       }, this);
       this.showPlanForm = false;
       this.planBtnText = "Add a New Plan";
+      this.planToEdit = null;
     },
     formatDate(date) {
       return moment(date).fromNow();
@@ -129,6 +131,7 @@ export default {
         this.planBtnText = "Cancel";
       } else {
         this.planBtnText = "Add a New Plan";
+        this.planToEdit = null;
       }
     },
     editPlan(plan) {
