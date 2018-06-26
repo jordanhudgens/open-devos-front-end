@@ -70,6 +70,7 @@ export default {
     addToDevos(devo) {
       this.devos.push(devo);
       this.showForm = false;
+      this.showNewDevoButton = true;
     },
     updateDevoList(devo) {
       this.devos.forEach(element => {
@@ -80,6 +81,7 @@ export default {
         }
       }, this);
       this.showForm = false;
+      this.showNewDevoButton = true;
     },
     renderDevoForm() {
       this.showNewDevoButton = false;
