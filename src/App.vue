@@ -47,6 +47,20 @@ body {
   font-size: 1.1em;
 }
 
+.btn-disabled {
+  background-color: $lightgray;
+  border-radius: 5px;
+  border: black 1px solid;
+  color: black;
+  padding: 10px 20px 10px 20px;
+  font-size: 1.1em;
+}
+
+.spacer {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
 .container {
   display: flex;
   justify-content: center;

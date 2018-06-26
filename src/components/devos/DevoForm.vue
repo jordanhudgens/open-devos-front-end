@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="devo-form-wrapper">
     <div v-if="devoSubmittedSuccessfully">
       <h2>{{ responseMessage }}</h2>
     </div>
@@ -24,7 +24,13 @@
 
         <wysiwyg v-model="devoContent" />
 
-        <button type="submit" :disabled="!devoTitle || !devoContent">Publish Devo</button>
+        <div v-if="!devoTitle || !devoContent" class="spacer">
+          <button type="submit" class="btn-disabled" disabled>Publish Devo</button>
+        </div>
+
+        <div v-else class="spacer">
+          <button type="submit" class="btn">Publish Devo</button>
+        </div>
       </form>
     </div>
   </div>
@@ -142,36 +148,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .form-wrapper {
-//   display: grid;
-//   grid-template-columns: repeat(1fr);
-//   grid-gap: 20px; // input {
-//   //   background-color: transparent;
-//   //   border-top: 1px transparent;
-//   //   border-right: 1px transparent;
-//   //   border-left: 1px transparent;
-//   //   border-bottom: 1px #42b983 solid;
-//   //   padding-bottom: 5px;
-//   //   border-radius: 0px;
-//   // }
-//   button {
-//     font-size: 1em;
-//     background-color: #42b983;
-//     border: #42b983 1px solid;
-//     color: #29394b;
-//     border-radius: 5px;
-//     height: 42px;
-//     font-weight: 900;
-//   }
-//   input[type="text"] {
-//     font-size: 1.2em; // color: #eaeaea;
-//   }
-//   textarea {
-//     // background-color: transparent;
-//     font-size: 1.2em; // color: #eaeaea;
-//     border: 1px solid #42b983;
-//     padding: 10px;
-//     border-radius: 0px;
-//   }
-// }
+.devo-form-wrapper {
+  margin-bottom: 100px;
+}
 </style>
