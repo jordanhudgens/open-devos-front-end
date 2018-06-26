@@ -4,16 +4,17 @@
 
     <h3>{{ planSummary }}</h3>
 
-    <div v-for="devo in devos" :key="devo.slug">
-      <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
-        {{ devo.title }}
-      </router-link>
+    <div class="devo-thumb-card-wrapper">
+      <div v-for="devo in devos" :key="devo.slug" class="card">
+        <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
+          {{ devo.title }}
+        </router-link>
 
-      <div v-if="currentUser && currentUser.id === planOwner">
-        <a @click.prevent="deleteDevo(devo)" href="#">Delete</a>
-        <a @click.prevent="editDevo(devo)" href="#">Edit</a>
+        <div v-if="currentUser && currentUser.id === planOwner">
+          <a @click.prevent="deleteDevo(devo)" href="#">Delete</a>
+          <a @click.prevent="editDevo(devo)" href="#">Edit</a>
+        </div>
       </div>
-      <hr>
     </div>
 
     <div v-if="currentUser && currentUser.id === planOwner" class="devo-form-wrapper">
@@ -134,6 +135,15 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.devo-thumb-card-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
+  margin-bottom: 42px;
 
+  .card {
+    padding: 20px;
+  }
+}
 </style>
