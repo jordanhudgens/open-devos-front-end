@@ -14,7 +14,7 @@
       <form @submit.prevent="formTypeSelector" class="form-wrapper">
 
         <div>
-          <input type="text" v-model="devoTitle" placeholder="Title">
+          <input type="text" v-model="devoTitle" placeholder="Title" class="full-width-element">
         </div>
 
         <div>{{ devoStatus }}</div>
@@ -25,7 +25,7 @@
         <wysiwyg v-model="devoContent" />
 
         <div v-if="!devoTitle || !devoContent" class="spacer">
-          <button type="submit" class="btn-disabled" disabled>Publish Devo</button>
+          <button type="submit" class="btn-disabled" disabled>Fill in required fields</button>
         </div>
 
         <div v-else class="spacer">

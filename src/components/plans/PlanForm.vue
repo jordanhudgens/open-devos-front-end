@@ -24,7 +24,13 @@
           <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.title }}</option>
         </select>
 
-        <button type="submit" :disabled="!planTitle || !planTopic || !planSummary">Save</button>
+        <div v-if="!planTitle || !planTopic || !planSummary">
+          <button type="submit" class="btn-disabled" disabled>Fill in required fields</button>
+        </div>
+
+        <div v-else>
+          <button type="submit" class="btn">Save</button>
+        </div>
       </form>
     </div>
   </div>
@@ -86,21 +92,21 @@ export default {
     editPlanForm() {
       axios
         .patch(
-          `https://open-devos-api.herokuapp.com/plans/${this.planToEdit.slug}`,
-          {
-            plan: {
-              title: this.planTitle,
-              summary: this.planSummary,
-              topic_id: this.planTopic,
-              user_id: this.currentUser.id,
-              status: this.planStatus
-            }
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token")
-            }
+        `https://open-devos-api.herokuapp.com/plans/${this.planToEdit.slug}`,
+        {
+          plan: {
+            title: this.planTitle,
+            summary: this.planSummary,
+            topic_id: this.planTopic,
+            user_id: this.currentUser.id,
+            status: this.planStatus
           }
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+          }
+        }
         )
         .then(response => {
           this.errorSubmittingPlan = false;
@@ -119,21 +125,21 @@ export default {
     submitPlanForm() {
       axios
         .post(
-          "https://open-devos-api.herokuapp.com/plans",
-          {
-            plan: {
-              title: this.planTitle,
-              summary: this.planSummary,
-              topic_id: this.planTopic,
-              user_id: this.currentUser.id,
-              status: this.planStatus
-            }
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token")
-            }
+        "https://open-devos-api.herokuapp.com/plans",
+        {
+          plan: {
+            title: this.planTitle,
+            summary: this.planSummary,
+            topic_id: this.planTopic,
+            user_id: this.currentUser.id,
+            status: this.planStatus
           }
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+          }
+        }
         )
         .then(response => {
           this.errorSubmittingPlan = false;
@@ -156,39 +162,6 @@ export default {
 <style lang="scss" scoped>
 $teal: #156356;
 
-.form-wrapper {
-  display: grid;
-  grid-template-columns: repeat(1fr);
-  grid-gap: 20px;
-  input {
-    background-color: transparent;
-    border-top: 1px transparent;
-    border-right: 1px transparent;
-    border-left: 1px transparent;
-    border-bottom: 1px $teal solid;
-    padding-bottom: 5px;
-    border-radius: 0px;
-  }
-  button {
-    font-size: 1em;
-    background-color: $teal;
-    border: $teal 1px solid;
-    color: white;
-    border-radius: 5px;
-    height: 42px;
-    font-weight: 900;
-  }
-  input[type="text"] {
-    font-size: 1.2em;
-  }
-  textarea {
-    background-color: transparent;
-    font-size: 1.2em;
-    border: 1px solid $teal;
-    padding: 10px;
-    border-radius: 0px;
-  }
-}
 .plan-form-wrapper {
   margin-top: 30px;
 }

@@ -61,6 +61,36 @@ body {
   margin-bottom: 15px;
 }
 
+.form-wrapper {
+  display: grid;
+  grid-template-columns: repeat(1fr);
+  grid-gap: 20px;
+
+  .full-width-element {
+    width: 100%;
+  }
+
+  input {
+    background-color: transparent;
+    border-top: 1px transparent;
+    border-right: 1px transparent;
+    border-left: 1px transparent;
+    border-bottom: 1px $teal solid;
+    padding-bottom: 5px;
+    border-radius: 0px;
+  }
+  input[type="text"] {
+    font-size: 1.2em;
+  }
+  textarea {
+    background-color: transparent;
+    font-size: 1.2em;
+    border: 1px solid $teal;
+    padding: 10px;
+    border-radius: 0px;
+  }
+}
+
 .container {
   display: flex;
   justify-content: center;
