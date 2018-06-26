@@ -43,7 +43,7 @@ body {
   border-radius: 5px;
   border: $teal 1px solid;
   color: white;
-  padding: 20px;
+  padding: 10px 20px 10px 20px;
   font-size: 1.1em;
 }
 
@@ -93,8 +93,7 @@ body {
         display: flex;
         justify-content: space-between;
 
-        .left-column {
-        }
+        .left-column {}
       }
     }
   }

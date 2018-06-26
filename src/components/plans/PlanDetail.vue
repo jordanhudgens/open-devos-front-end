@@ -17,8 +17,8 @@
     </div>
 
     <div v-if="currentUser && currentUser.id === planOwner" class="devo-form-wrapper">
-      <button v-if="showNewDevoButton" @click="renderDevoForm">Add a New Devo</button>
-      <button v-if="!showNewDevoButton" @click="cancelDevoForm">Cancel</button>
+      <button v-if="showNewDevoButton" @click="renderDevoForm" class="btn">Add a New Devo</button>
+      <button v-if="!showNewDevoButton" @click="cancelDevoForm" class="btn">Cancel</button>
       <DevoForm v-if="showForm" :devoToEdit.sync="devoToEdit" :planId="planId" :devos="devos" @new="addToDevos" @update="updateDevoList" :key="devoFormKey" />
     </div>
   </div>
