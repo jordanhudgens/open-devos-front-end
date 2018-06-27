@@ -17,6 +17,13 @@
           <input type="text" v-model="devoTitle" placeholder="Title" class="full-width-element">
         </div>
 
+        <div>
+          <p>Featured Image:
+            <file-select v-model="devoFeaturedImage"></file-select>
+          </p>
+          <p v-if="devoFeaturedImage">{{devoFeaturedImage.name}}</p>
+        </div>
+
         <div>{{ devoStatus }}</div>
         <input type="checkbox" id="checkbox" v-model="devoStatus" :true-value="'published'" :false-value="'draft'">
         <label v-if="devoStatus === 'published'" for="checkbox">Switch to draft?</label>
@@ -39,6 +46,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import axios from 'axios';
+import FileSelect from '@/components/shared/FileSelect';
 
 export default {
   name: 'DevoForm',
@@ -47,6 +55,7 @@ export default {
       devoTitle: '',
       devoContent: '',
       devoStatus: null,
+      devoFeaturedImage: null,
       devoSlug: null,
       responseMessage: null,
       devoSubmittedSuccessfully: false,
@@ -61,11 +70,18 @@ export default {
   computed: {
     ...mapGetters({ currentUser: 'currentUser' })
   },
+  components: {
+    FileSelect
+  },
+  updated() {
+    console.log('Updated', this.devoFeaturedImage);
+  },
   created() {
     if (this.devoToEdit) {
       this.devoTitle = this.devoToEdit.title;
       this.devoContent = this.devoToEdit.content;
       this.devoStatus = this.devoToEdit.status;
+      this.devoFeaturedImage = this.devoToEdit.devoFeaturedImage;
     }
   },
   watch: {
@@ -73,6 +89,7 @@ export default {
       this.devoTitle = newValue.title;
       this.devoContent = newValue.content;
       this.devoStatus = newValue.status;
+      this.devoFeaturedImage = newValue.devoFeaturedImage;
     }
   },
   methods: {
@@ -83,18 +100,25 @@ export default {
         this.submitDevoForm()
       }
     },
+    buildForm() {
+      let formData = new FormData();
+
+      formData.append('devo[title]', this.devoTitle);
+      formData.append('devo[content]', this.devoContent);
+      formData.append('devo[position]', 5);
+      formData.append('devo[plan_id]', this.planId);
+      formData.append('devo[status]', this.devoStatus);
+
+      if (this.devoFeaturedImage) {
+        formData.append('devo[devo_image]', this.devoFeaturedImage);
+      }
+
+      return formData;
+    },
     editDevoForm() {
       axios
         .patch(`https://open-devos-api.herokuapp.com/devos/${this.devoToEdit.slug}`,
-        {
-          devo: {
-            title: this.devoTitle,
-            content: this.devoContent,
-            position: 5,
-            plan_id: this.planId,
-            status: this.devoStatus,
-          }
-        },
+        this.buildForm(),
         {
           headers: {
             "Authorization": 'Bearer ' + localStorage.getItem('token')
@@ -105,6 +129,7 @@ export default {
           this.devoSubmittedSuccessfully = true;
           this.responseMessage = 'Your devo has been published!';
           this.$emit('update', response.data.devo);
+          console.log('returned data from api', response.data.devo);
           return response.data;
         })
         .catch(error => {
@@ -116,18 +141,10 @@ export default {
     submitDevoForm() {
       axios
         .post("https://open-devos-api.herokuapp.com/devos",
-        {
-          devo: {
-            title: this.devoTitle,
-            content: this.devoContent,
-            position: 5,
-            plan_id: this.planId,
-            status: this.devoStatus,
-          }
-        },
+        this.buildForm(),
         {
           headers: {
-            "Authorization": 'Bearer ' + localStorage.getItem('token')
+            "Authorization": 'Bearer ' + localStorage.getItem('token'),
           }
         })
         .then(response => {
@@ -135,6 +152,7 @@ export default {
           this.devoSubmittedSuccessfully = true;
           this.responseMessage = 'Your devo has been published!';
           this.$emit('new', response.data.devo);
+
           return response.data;
         })
         .catch(error => {
