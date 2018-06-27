@@ -36,13 +36,17 @@
               </div>
             </div>
 
-            <div class="right-column">
+            <div class="right-column action-icon-wrapper">
               <div>
-                <a @click.prevent="editPlan(plan)" href="#">Edit</a>
+                <a @click.prevent="editPlan(plan)" href="#" class="action-icon">
+                  <i class="fas fa-pen-square"></i>
+                </a>
               </div>
 
               <div v-if="currentUser.id === plan.user.id">
-                <a href="#" @click.prevent="deletePlan(plan)">Delete</a>
+                <a href="#" @click.prevent="deletePlan(plan)" class="action-icon">
+                  <i class="fas fa-trash"></i>
+                </a>
               </div>
             </div>
           </div>
@@ -213,14 +217,18 @@ export default {
   grid-gap: 42px;
 }
 
-.published-plans-card-wrapper {
-}
+.published-plans-card-wrapper {}
 
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+
+.fade-enter,
+.fade-leave-to
+/* .fade-leave-active below version 2.1.8 */
+
+{
   opacity: 0;
 }
 </style>

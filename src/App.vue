@@ -28,6 +28,7 @@ export default {
 <style lang="scss">
 $teal: #156356;
 $lightgray: #686868;
+$blue: #4286f4;
 
 html {
   font-family: "Oxygen", sans-serif;
@@ -45,15 +46,31 @@ body {
   color: white;
   padding: 10px 20px 10px 20px;
   font-size: 1.1em;
+
+  &:hover {
+    background-color: $blue;
+    border: $blue 1px solid;
+  }
 }
 
 .btn-disabled {
   background-color: $lightgray;
   border-radius: 5px;
   border: black 1px solid;
-  color: black;
+  color: white;
   padding: 10px 20px 10px 20px;
   font-size: 1.1em;
+}
+
+.action-icon-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.action-icon {
+  color: $teal;
+  font-size: 1.5em;
 }
 
 .spacer {
@@ -110,6 +127,13 @@ body {
         .title {
           color: $teal;
           font-size: 1.3em;
+          &:hover {
+            color: $blue;
+          }
+        }
+
+        &:hover {
+          color: $blue;
         }
       }
 
@@ -136,6 +160,7 @@ body {
       .split-columns {
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
         .left-column {}
       }
