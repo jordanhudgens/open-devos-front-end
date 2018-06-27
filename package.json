@@ -21,6 +21,7 @@
     "vue-axios": "^2.1.1",
     "vue-gtm": "^1.0.2",
     "vue-router": "^3.0.1",
+    "vue-sweetalert2": "^1.4.2",
     "vue-wysiwyg": "^1.7.0",
     "vuex": "^3.0.1"
   },
