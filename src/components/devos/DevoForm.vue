@@ -73,9 +73,6 @@ export default {
   components: {
     FileSelect
   },
-  updated() {
-    console.log('Updated', this.devoFeaturedImage);
-  },
   created() {
     if (this.devoToEdit) {
       this.devoTitle = this.devoToEdit.title;
@@ -129,7 +126,6 @@ export default {
           this.devoSubmittedSuccessfully = true;
           this.responseMessage = 'Your devo has been published!';
           this.$emit('update', response.data.devo);
-          console.log('returned data from api', response.data.devo);
           return response.data;
         })
         .catch(error => {

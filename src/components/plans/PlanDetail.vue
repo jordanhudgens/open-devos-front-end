@@ -5,14 +5,19 @@
     <div class="plan-summary">{{ planSummary }}</div>
 
     <div class="devo-thumb-card-wrapper">
-      <div v-for="devo in devos" :key="devo.slug" class="card">
-        <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
-          {{ devo.title }}
-        </router-link>
+      <div v-for="devo in devos" :key="devo.slug">
+        <img v-if="devo.featured_image" :src="devo.featured_image" class="devo-thumb-img">
+        <img v-else src="@/assets/teal-placeholder.jpg" class="devo-thumb-img">
 
-        <div v-if="currentUser && currentUser.id === planOwner">
-          <a @click.prevent="deleteDevo(devo)" href="#">Delete</a>
-          <a @click.prevent="editDevo(devo)" href="#">Edit</a>
+        <div class="devo-thumb-card">
+          <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
+            {{ devo.title }}
+          </router-link>
+
+          <div v-if="currentUser && currentUser.id === planOwner">
+            <a @click.prevent="deleteDevo(devo)" href="#">Delete</a>
+            <a @click.prevent="editDevo(devo)" href="#">Edit</a>
+          </div>
         </div>
       </div>
     </div>
@@ -79,6 +84,7 @@ export default {
           element.title = devo.title;
           element.content = devo.content;
           element.status = devo.status;
+          element.featured_image = devo.featured_image;
         }
       }, this);
       this.showForm = false;
@@ -143,14 +149,29 @@ export default {
   margin-bottom: 42px;
 }
 
+.devo-thumb-img {
+  width: 100%;
+  -webkit-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.devo-thumb-card {
+  margin-top: -4px;
+  padding: 20px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  -webkit-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+}
+
 .devo-thumb-card-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 20px;
   margin-bottom: 42px;
-
-  .card {
-    padding: 20px;
-  }
 }
 </style>
