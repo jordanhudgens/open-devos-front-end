@@ -14,9 +14,14 @@
             <span class="devo-title">{{ devo.title }}</span>
           </router-link>
 
-          <div v-if="currentUser && currentUser.id === planOwner">
-            <a @click.prevent="deleteDevo(devo)" href="#">Delete</a>
-            <a @click.prevent="editDevo(devo)" href="#">Edit</a>
+          <div v-if="currentUser && currentUser.id === planOwner" class='devo-thumb-action-icons-wrapper'>
+            <a @click.prevent="editDevo(devo)" href="#">
+              <i class="fas fa-pen-square"></i>
+            </a>
+
+            <a @click.prevent="deleteDevo(devo)" href="#">
+              <i class="fas fa-trash"></i>
+            </a>
           </div>
         </div>
       </div>
@@ -189,6 +194,20 @@ a {
 
   &:hover {
     color: $blue;
+  }
+}
+
+.devo-thumb-action-icons-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+
+  a {
+    color: $teal;
+    font-size: 1.3em;
+    &:hover {
+      color: $blue;
+    }
   }
 }
 </style>
