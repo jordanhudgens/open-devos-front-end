@@ -6,7 +6,9 @@
       <div class="content-wrapper">
         <router-view :key="$route.path" />
       </div>
+
     </div>
+    <div class="bottom-spacer"></div>
   </div>
 </template>
 
@@ -37,6 +39,10 @@ html {
 body {
   margin: 0px;
   width: 99vw;
+}
+
+.bottom-spacer {
+  margin-top: 100px;
 }
 
 .btn {
