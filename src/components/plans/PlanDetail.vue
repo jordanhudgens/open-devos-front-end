@@ -2,7 +2,7 @@
   <div>
     <h1>{{ planName }}</h1>
 
-    <h3>{{ planSummary }}</h3>
+    <div class="plan-summary">{{ planSummary }}</div>
 
     <div class="devo-thumb-card-wrapper">
       <div v-for="devo in devos" :key="devo.slug" class="card">
@@ -136,6 +136,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import url('https://fonts.googleapis.com/css?family=Merriweather');
+
+.plan-summary {
+  font-family: 'Merriweather', serif;
+  margin-bottom: 42px;
+}
+
 .devo-thumb-card-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
