@@ -106,27 +106,42 @@ export default {
       this.devoToEdit = devo;
     },
     deleteDevo(devo) {
-      console.log('devo', devo.slug);
-      axios
-        .delete(`https://open-devos-api.herokuapp.com/devos/${devo.slug}`,
-        {
-          headers: {
-            "Authorization": 'Bearer ' + localStorage.getItem('token'),
-            'Content-Type': 'application/json'
-          }
-        })
-        .then(response => {
-          this.errorDeletingDevo = false;
-          this.devoDeletedSuccessfully = true;
-          this.devos = this.devos.filter(el => el.slug !== devo.slug);
-          this.devoDeletionResponseMessage = 'The devo was successfully deleted';
-          return response.data;
-        })
-        .catch(error => {
-          console.log(error);
-          this.devoDeletionResponseMessage = 'There was an error deleting the devo';
-          this.errorDeletingDevo = true;
-        })
+      this.$swal({
+        title: 'Are you sure you want to delete this devotional?',
+        text: "This will permanently delete the devotional and you won't be able to get it back",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes Delete it!',
+        cancelButtonText: 'No, Keep it!',
+        showCloseButton: true,
+        showLoaderOnConfirm: true
+      }).then((result) => {
+        if (result.value) {
+          axios
+            .delete(`https://open-devos-api.herokuapp.com/devos/${devo.slug}`,
+            {
+              headers: {
+                "Authorization": 'Bearer ' + localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+              }
+            })
+            .then(response => {
+              this.errorDeletingDevo = false;
+              this.devoDeletedSuccessfully = true;
+              this.devos = this.devos.filter(el => el.slug !== devo.slug);
+              this.devoDeletionResponseMessage = 'The devotional was successfully deleted';
+              return response.data;
+            })
+            .catch(error => {
+              console.log(error);
+              this.devoDeletionResponseMessage = 'There was an error deleting the devotional';
+              this.errorDeletingDevo = true;
+            })
+          this.$swal('Deleted', 'You successfully deleted the devotional', 'success')
+        } else {
+          this.$swal('Cancelled', 'Your devotional is still intact!', 'info')
+        }
+      })
     },
     getPlanDetails() {
       axios
