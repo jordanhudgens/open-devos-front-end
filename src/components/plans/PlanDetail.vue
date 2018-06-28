@@ -11,7 +11,7 @@
 
         <div class="devo-thumb-card">
           <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
-            {{ devo.title }}
+            <span class="devo-title">{{ devo.title }}</span>
           </router-link>
 
           <div v-if="currentUser && currentUser.id === planOwner">
@@ -143,6 +143,8 @@ export default {
 
 <style scoped lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Merriweather');
+$teal: #156356;
+$blue: #4286f4;
 
 .plan-summary {
   font-family: 'Merriweather', serif;
@@ -173,5 +175,20 @@ export default {
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 20px;
   margin-bottom: 42px;
+}
+
+a {
+  text-decoration: none;
+  .devo-title {
+    color: $teal;
+    font-size: 1.3em;
+    &:hover {
+      color: $blue;
+    }
+  }
+
+  &:hover {
+    color: $blue;
+  }
 }
 </style>
