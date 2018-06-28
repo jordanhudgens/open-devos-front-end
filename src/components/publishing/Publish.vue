@@ -144,25 +144,41 @@ export default {
       this.planBtnText = "Cancel";
     },
     deletePlan(plan) {
-      axios
-        .delete(`https://open-devos-api.herokuapp.com/plans/${plan.slug}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-            "Content-Type": "application/json"
-          }
-        })
-        .then(response => {
-          this.errorDeletingPlan = false;
-          this.planDeletedSuccessfully = true;
-          this.plans = this.plans.filter(el => el.slug !== plan.slug);
-          this.planResponseMessage = "The plan was successfully deleted";
-          return response.data;
-        })
-        .catch(error => {
-          console.log(error);
-          this.planResponseMessage = "There was an error deleting the plan";
-          this.errorDeletingPlan = true;
-        });
+      this.$swal({
+        title: 'Are you sure you want to delete this plan?',
+        text: "This will permanently delete the plan and you won't be able to get it back",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes Delete it!',
+        cancelButtonText: 'No, Keep it!',
+        showCloseButton: true,
+        showLoaderOnConfirm: true
+      }).then((result) => {
+        if (result.value) {
+          axios
+            .delete(`https://open-devos-api.herokuapp.com/plans/${plan.slug}`, {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("token"),
+                "Content-Type": "application/json"
+              }
+            })
+            .then(response => {
+              this.errorDeletingPlan = false;
+              this.planDeletedSuccessfully = true;
+              this.plans = this.plans.filter(el => el.slug !== plan.slug);
+              this.planResponseMessage = "The plan was successfully deleted";
+              return response.data;
+            })
+            .catch(error => {
+              console.log(error);
+              this.planResponseMessage = "There was an error deleting the plan";
+              this.errorDeletingPlan = true;
+            });
+          this.$swal('Deleted', 'You successfully deleted the plan', 'success')
+        } else {
+          this.$swal('Cancelled', 'Your plan is still intact!', 'info')
+        }
+      })
     },
     togglePlanForm(plan = null, edit = false) {
       if (edit) {
