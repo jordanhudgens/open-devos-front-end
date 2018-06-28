@@ -104,7 +104,10 @@ export default {
       formData.append('devo[content]', this.devoContent);
       formData.append('devo[position]', 5);
       formData.append('devo[plan_id]', this.planId);
-      formData.append('devo[status]', this.devoStatus);
+
+      if (this.devoStatus) {
+        formData.append('devo[status]', this.devoStatus);
+      }
 
       if (this.devoFeaturedImage) {
         formData.append('devo[devo_image]', this.devoFeaturedImage);
