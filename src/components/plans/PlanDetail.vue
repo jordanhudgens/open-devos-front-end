@@ -210,4 +210,18 @@ a {
     }
   }
 }
+
+@media (max-width: 48em) {
+  .devo-thumb-card-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+    margin-bottom: 42px;
+  }
+
+  .devo-thumb-card {
+    padding: 10px 10px 10px 10px;
+    max-width: calc(100% - 20px);
+  }
+}
 </style>
