@@ -14,27 +14,39 @@
       </div>
       <div class="right">
         <router-link v-for="navLink in loggedInNavLinks" :key="navLink.linkName" :to="{ name: navLink.linkName }" class="link">
-          <i :class="navLink.linkIcon"></i> {{ navLink.linkName }}
+          <span @click="toggleNav">
+            <i :class="navLink.linkIcon"></i> {{ navLink.linkName }}
+          </span>
         </router-link>
 
         <router-link v-if="!currentUser" :to="{ name: 'Login' }" class="link">
-          <i class="navIcon fas fa-sign-in-alt"></i> Login
+          <span @click="toggleNav">
+            <i class="navIcon fas fa-sign-in-alt"></i> Login
+          </span>
         </router-link>
 
         <router-link v-if="!currentUser" :to="{ name: 'Register' }" class="link">
-          <i class="navIcon fas fa-user-plus"></i> Register
+          <span @click="toggleNav">
+            <i class="navIcon fas fa-user-plus"></i> Register
+          </span>
         </router-link>
 
         <router-link v-if="currentUser" :to="`/profile/${currentUser.profile_slug}`" class="link">
-          <i class="navIcon fas fa-user"></i> Profile
+          <span @click="toggleNav">
+            <i class="navIcon fas fa-user"></i> Profile
+          </span>
         </router-link>
 
         <router-link v-if="currentUser" :to="{ name: 'Publish' }" class="link">
-          <i class="navIcon fas fa-plus-square"></i> Publish
+          <span @click="toggleNav">
+            <i class="navIcon fas fa-plus-square"></i> Publish
+          </span>
         </router-link>
 
         <router-link v-if="currentUser" :to="{ name: 'Logout' }" class="link">
-          <i class="navIcon fas fa-sign-out-alt"></i> Logout
+          <span @click="toggleNav">
+            <i class="navIcon fas fa-sign-out-alt"></i> Logout
+          </span>
         </router-link>
       </div>
     </div>
@@ -49,14 +61,6 @@ export default {
   computed: {
     ...mapGetters({ currentUser: 'currentUser' })
   },
-  created() {
-    console.log(this.currentUser);
-  },
-  watch: {
-    '$route': function() {
-      console.log('updated from nav');
-    }
-  },
   data() {
     return {
       query: null,
@@ -69,6 +73,9 @@ export default {
     }
   },
   methods: {
+    navLinkClicked() {
+      console.log('nav link clicked');
+    },
     submitQuery() {
       this.$router.push({
         name: "SearchResults",
