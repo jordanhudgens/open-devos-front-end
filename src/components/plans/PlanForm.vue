@@ -20,6 +20,13 @@
         <label v-if="planStatus === 'draft'" for="checkbox">Publish publicly?</label>
         <label v-else for="checkbox">Switch to draft?</label>
 
+        <div>
+          <p>Featured Image:
+            <file-select v-model="planFeaturedImage"></file-select>
+          </p>
+          <p v-if="planFeaturedImage">{{ planFeaturedImage.name }}</p>
+        </div>
+
         <select v-model="planTopic">
           <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.title }}</option>
         </select>
@@ -39,6 +46,7 @@
 <script>
 import { mapGetters } from "vuex";
 import axios from "axios";
+import FileSelect from '@/components/shared/FileSelect';
 
 export default {
   name: "PlanForm",
@@ -48,6 +56,7 @@ export default {
       planTopic: null,
       planSummary: null,
       planStatus: null,
+      planFeaturedImage: null,
       responseMessage: "",
       planSubmittedSuccessfully: false,
       errorSubmittingPlan: false
@@ -60,17 +69,22 @@ export default {
   computed: {
     ...mapGetters({ currentUser: "currentUser" })
   },
+  components: {
+    FileSelect
+  },
   created() {
     if (this.planToEdit) {
       this.planTitle = this.planToEdit.title;
       this.planSummary = this.planToEdit.summary;
       this.planTopic = this.planToEdit.topic.id;
       this.planStatus = this.planToEdit.status;
+      this.planFeaturedImage = this.planToEdit.planFeaturedImage;
     } else {
       this.planTitle = null;
       this.planSummary = null;
       this.planTopic = null;
       this.planStatus = null;
+      this.planFeaturedImage = null;
     }
   },
   watch: {
@@ -79,6 +93,7 @@ export default {
       this.planSummary = newValue.summary;
       this.planTopic = newValue.topic.id;
       this.planStatus = newValue.status;
+      this.planFeaturedImage = newValue.planFeaturedImage;
     }
   },
   methods: {
@@ -89,25 +104,34 @@ export default {
         this.submitPlanForm();
       }
     },
+    buildForm() {
+      let formData = new FormData();
+
+      formData.append('plan[title]', this.planTitle);
+      formData.append('plan[summary]', this.planSummary);
+      formData.append('plan[topic_id]', this.planTopic);
+      formData.append('plan[user_id]', this.currentUser.id);
+
+      if (this.planStatus) {
+        formData.append('plan[status]', this.planStatus);
+      }
+
+      if (this.planFeaturedImage) {
+        formData.append('plan[plan_image]', this.planFeaturedImage);
+      }
+
+      return formData;
+    },
     editPlanForm() {
       axios
         .patch(
         `https://open-devos-api.herokuapp.com/plans/${this.planToEdit.slug}`,
-        {
-          plan: {
-            title: this.planTitle,
-            summary: this.planSummary,
-            topic_id: this.planTopic,
-            user_id: this.currentUser.id,
-            status: this.planStatus
-          }
-        },
+        this.buildForm(),
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token")
           }
-        }
-        )
+        })
         .then(response => {
           this.errorSubmittingPlan = false;
           this.planSubmittedSuccessfully = true;
@@ -126,15 +150,7 @@ export default {
       axios
         .post(
         "https://open-devos-api.herokuapp.com/plans",
-        {
-          plan: {
-            title: this.planTitle,
-            summary: this.planSummary,
-            topic_id: this.planTopic,
-            user_id: this.currentUser.id,
-            status: this.planStatus
-          }
-        },
+        this.buildForm(),
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token")
