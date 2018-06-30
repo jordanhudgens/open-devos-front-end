@@ -6,8 +6,10 @@
 
     <div class="devo-thumb-card-wrapper">
       <div v-for="devo in devos" :key="devo.slug">
-        <img v-if="devo.featured_image" :src="devo.featured_image" class="devo-thumb-img">
-        <img v-else src="@/assets/teal-placeholder.jpg" class="devo-thumb-img">
+        <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
+          <img v-if="devo.featured_image" :src="devo.featured_image" class="devo-thumb-img">
+          <img v-else src="@/assets/teal-placeholder.jpg" class="devo-thumb-img">
+        </router-link>
 
         <div class="devo-thumb-card">
           <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
