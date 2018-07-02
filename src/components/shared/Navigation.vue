@@ -13,7 +13,7 @@
         <input type="text" class="fa fa-input" v-model="query" :placeholder="searchPlaceholder" @keyup.enter="submitQuery">
       </div>
       <div class="right">
-        <router-link v-for="navLink in loggedInNavLinks" :key="navLink.linkName" :to="{ name: navLink.linkName }" class="link">
+        <router-link v-for="navLink in navLinks" :key="navLink.linkName" :to="{ name: navLink.linkName }" class="link">
           <span @click="toggleNav">
             <i :class="navLink.linkIcon"></i> {{ navLink.linkName }}
           </span>
@@ -66,7 +66,7 @@ export default {
       query: null,
       searchPlaceholder: `\uf002 Search Devos`,
       showMobileNavBar: false,
-      loggedInNavLinks: [
+      navLinks: [
         { linkName: 'Categories', linkIcon: 'navIcon fas fa-map-signs' },
         { linkName: 'Popular', linkIcon: 'navIcon fas fa-chart-line' },
       ]
