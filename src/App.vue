@@ -28,6 +28,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css?family=Merriweather');
+
 $teal: #156356;
 $lightgray: #686868;
 $blue: #4286f4;
@@ -82,6 +84,61 @@ body {
 .spacer {
   margin-top: 15px;
   margin-bottom: 15px;
+}
+
+.thumb-img {
+  width: 100%;
+  -webkit-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.thumb-card {
+  margin-top: -4px;
+  padding: 20px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  -webkit-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+}
+
+.thumb-card-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
+  margin-bottom: 42px;
+}
+
+a {
+  text-decoration: none;
+  .title {
+    color: $teal;
+    font-size: 1.3em;
+    &:hover {
+      color: $blue;
+    }
+  }
+
+  &:hover {
+    color: $blue;
+  }
+}
+
+.thumb-action-icons-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+
+  a {
+    color: $teal;
+    font-size: 1.3em;
+    &:hover {
+      color: $blue;
+    }
+  }
 }
 
 .form-wrapper {
@@ -175,6 +232,17 @@ body {
 }
 
 @media (max-width: 48em) {
+  .thumb-card-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+    margin-bottom: 42px;
+  }
+
+  .thumb-card {
+    padding: 10px 10px 10px 10px;
+    max-width: calc(100% - 20px);
+  }
   .container {
     width: calc(100vw - 30px);
     padding: 15px;

@@ -4,19 +4,19 @@
 
     <div class="plan-summary">{{ planSummary }}</div>
 
-    <div class="devo-thumb-card-wrapper">
+    <div class="thumb-card-wrapper">
       <div v-for="devo in devos" :key="devo.slug">
         <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
-          <img v-if="devo.featured_image" :src="devo.featured_image" class="devo-thumb-img">
-          <img v-else src="@/assets/teal-placeholder.jpg" class="devo-thumb-img">
+          <img v-if="devo.featured_image" :src="devo.featured_image" class="thumb-img">
+          <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img">
         </router-link>
 
-        <div class="devo-thumb-card">
+        <div class="thumb-card">
           <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
-            <span class="devo-title">{{ devo.title }}</span>
+            <span class="title">{{ devo.title }}</span>
           </router-link>
 
-          <div v-if="currentUser && currentUser.id === planOwner" class='devo-thumb-action-icons-wrapper'>
+          <div v-if="currentUser && currentUser.id === planOwner" class='thumb-action-icons-wrapper'>
             <a @click.prevent="editDevo(devo)" href="#">
               <i class="fas fa-pen-square"></i>
             </a>
@@ -164,81 +164,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Merriweather');
-$teal: #156356;
-$blue: #4286f4;
-
 .plan-summary {
   font-family: 'Merriweather', serif;
   margin-bottom: 42px;
-}
-
-.devo-thumb-img {
-  width: 100%;
-  -webkit-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
-  box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.devo-thumb-card {
-  margin-top: -4px;
-  padding: 20px;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  -webkit-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
-  box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
-}
-
-.devo-thumb-card-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 20px;
-  margin-bottom: 42px;
-}
-
-a {
-  text-decoration: none;
-  .devo-title {
-    color: $teal;
-    font-size: 1.3em;
-    &:hover {
-      color: $blue;
-    }
-  }
-
-  &:hover {
-    color: $blue;
-  }
-}
-
-.devo-thumb-action-icons-wrapper {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-
-  a {
-    color: $teal;
-    font-size: 1.3em;
-    &:hover {
-      color: $blue;
-    }
-  }
-}
-
-@media (max-width: 48em) {
-  .devo-thumb-card-wrapper {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
-    margin-bottom: 42px;
-  }
-
-  .devo-thumb-card {
-    padding: 10px 10px 10px 10px;
-    max-width: calc(100% - 20px);
-  }
 }
 </style>
