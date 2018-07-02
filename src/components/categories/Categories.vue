@@ -2,10 +2,18 @@
   <div>
     <h1>Categories</h1>
 
-    <div v-for="category in categories" :key="category.id">
-      <router-link :to="{ name: 'CategoryDetail', params: { category_slug: category.slug } }" class="link">
-        {{ category.title }}
-      </router-link>
+    <div class="thumb-card-wrapper">
+      <div v-for="category in categories" :key="category.id">
+        <router-link :to="{ name: 'CategoryDetail', params: { category_slug: category.slug } }" class="link">
+          <img src="@/assets/teal-placeholder.jpg" class="thumb-img">
+        </router-link>
+
+        <div class="thumb-card">
+          <router-link :to="{ name: 'CategoryDetail', params: { category_slug: category.slug } }" class="link">
+            <span class="title">{{ category.title }}</span>
+          </router-link>
+        </div>
+      </div>
     </div>
   </div>
 </template>
