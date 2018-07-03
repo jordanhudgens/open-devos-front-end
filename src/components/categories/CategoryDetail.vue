@@ -1,5 +1,6 @@
 <template>
   <div>
+    <img src="https://s3.amazonaws.com/open-devos-static/categories/banner-pride.jpg" width="100%">
     <h1>{{ categoryName }}</h1>
   </div>
 </template>
