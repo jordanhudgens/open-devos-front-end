@@ -5,7 +5,7 @@
     <div class="thumb-card-wrapper">
       <div v-for="category in categories" :key="category.id">
         <router-link :to="{ name: 'CategoryDetail', params: { category_slug: category.slug } }" class="link">
-          <img src="https://s3.amazonaws.com/open-devos-static/categories/thumb-pride.jpg" class="thumb-img">
+          <img :src="category.thumbnail" class="thumb-img">
         </router-link>
 
         <div class="thumb-card">

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img src="https://s3.amazonaws.com/open-devos-static/categories/banner-pride.jpg" width="100%">
+    <img :src="categoryBannerUrl" width="100%">
     <h1>{{ categoryName }}</h1>
   </div>
 </template>
@@ -13,6 +13,7 @@ export default {
   data() {
     return {
       categoryName: null,
+      categoryBannerUrl: null,
       categorySlug: this.$route.params.category_slug,
       categoryApiUrl: 'https://open-devos-api.herokuapp.com/topics',
       plans: []
@@ -33,6 +34,7 @@ export default {
         .get(`${this.categoryApiUrl}/${this.categorySlug}`)
         .then(response => {
           this.categoryName = response.data.topic.title;
+          this.categoryBannerUrl = response.data.topic.banner;
           console.log(response);
         })
         .catch(error => {
