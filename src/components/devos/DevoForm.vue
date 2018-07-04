@@ -127,7 +127,7 @@ export default {
         .then(response => {
           this.errorSubmittingDevo = false;
           this.devoSubmittedSuccessfully = true;
-          this.responseMessage = 'Your devo has been published!';
+          this.responseMessage = 'Your devo has been updated!';
           this.$emit('update', response.data.devo);
           return response.data;
         })
