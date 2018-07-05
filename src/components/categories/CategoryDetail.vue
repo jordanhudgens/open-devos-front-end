@@ -1,7 +1,23 @@
 <template>
   <div>
-    <img :src="categoryBannerUrl" width="100%">
-    <h1>{{ categoryName }}</h1>
+    <div class="banner-img-wrapper">
+      <img :src="categoryBannerUrl" width="100%">
+    </div>
+
+    <div class="thumb-card-wrapper">
+      <div v-for="plan in plans" :key="plan.id">
+        <router-link :to="{ name: 'PlanDetail', params: { plan_slug: plan.slug } }">
+          <img v-if="plan.featured_image" :src="plan.featured_image" class="thumb-img">
+          <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img">
+        </router-link>
+
+        <div class="thumb-card">
+          <router-link :to="{ name: 'PlanDetail', params: { plan_slug: plan.slug } }">
+            <span class="title">{{ plan.title }}</span>
+          </router-link>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -20,8 +36,6 @@ export default {
     }
   },
   beforeMount() {
-    console.log("params...", this.$route.params);
-
     this.getCategoryPlans();
   },
   beforeRouteUpdate(to, from, next) {
@@ -35,6 +49,7 @@ export default {
         .then(response => {
           this.categoryName = response.data.topic.title;
           this.categoryBannerUrl = response.data.topic.banner;
+          this.plans.push(...response.data.topic.plans);
           console.log(response);
         })
         .catch(error => {

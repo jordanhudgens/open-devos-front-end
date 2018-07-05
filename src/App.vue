@@ -231,6 +231,10 @@ a {
   }
 }
 
+.banner-img-wrapper {
+  margin-bottom: 42px;
+}
+
 @media (max-width: 48em) {
   .thumb-card-wrapper {
     display: grid;
