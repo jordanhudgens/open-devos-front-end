@@ -58,7 +58,7 @@ const router = new Router({
       component: CategoryDetail
     },
     {
-      path: "/plan/:plan_slug",
+      path: "/plan/:slug",
       name: "PlanDetail",
       component: PlanDetail
     },

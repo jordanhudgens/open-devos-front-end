@@ -11,7 +11,7 @@
           <div v-for="plan in plans" :key="plan.id" class="split-columns">
             <div class="left-column">
               <div class="row1">
-                <router-link :to="{ name: 'PlanDetail', params: { plan_slug: plan.slug}}">
+                <router-link :to="{ name: 'PlanDetail', params: { slug: plan.slug}}">
                   <span class="title">{{ plan.title }}</span>
                 </router-link>
               </div>

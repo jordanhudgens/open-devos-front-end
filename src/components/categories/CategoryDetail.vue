@@ -4,25 +4,13 @@
       <img :src="categoryBannerUrl" width="100%">
     </div>
 
-    <div class="thumb-card-wrapper">
-      <div v-for="plan in plans" :key="plan.id">
-        <router-link :to="{ name: 'PlanDetail', params: { plan_slug: plan.slug } }">
-          <img v-if="plan.featured_image" :src="plan.featured_image" class="thumb-img">
-          <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img">
-        </router-link>
-
-        <div class="thumb-card">
-          <router-link :to="{ name: 'PlanDetail', params: { plan_slug: plan.slug } }">
-            <span class="title">{{ plan.title }}</span>
-          </router-link>
-        </div>
-      </div>
-    </div>
+    <ThumbCards :collection="plans" routeName="PlanDetail" />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import ThumbCards from '@/components/shared/ThumbCards';
 
 export default {
   name: 'CategoryDetail',
@@ -41,6 +29,9 @@ export default {
   beforeRouteUpdate(to, from, next) {
     this.categorySlug = this.$route.params.category_slug
     next()
+  },
+  components: {
+    ThumbCards
   },
   methods: {
     getCategoryPlans() {

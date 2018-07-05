@@ -48,7 +48,7 @@ export default {
     return {
       planName: null,
       planSummary: null,
-      planSlug: this.$route.params.plan_slug,
+      planSlug: this.$route.params.slug,
       planId: null,
       planOwner: null,
       planApiUrl: 'https://open-devos-api.herokuapp.com/plans',
@@ -69,7 +69,7 @@ export default {
     this.getPlanDetails();
   },
   beforeRouteUpdate(to, from, next) {
-    this.planSlug = this.$route.params.plan_slug
+    this.planSlug = this.$route.params.slug
     next()
   },
   computed: {
