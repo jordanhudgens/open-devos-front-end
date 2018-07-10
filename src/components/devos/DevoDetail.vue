@@ -15,6 +15,7 @@ export default {
   data() {
     return {
       devoName: null,
+      testContent: null,
       devoSlug: this.$route.params.devo_slug,
       devoApiUrl: 'https://open-devos-api.herokuapp.com/devos',
       devoContent: null
@@ -34,7 +35,8 @@ export default {
         .then(response => {
           this.devoName = response.data.devo.title;
           this.devoContent = sanitizeHtml(response.data.devo.content, {
-            allowedTags: sanitizeHtml.defaults.allowedTags.concat(['h1', 'h2'])
+            allowedTags: sanitizeHtml.defaults.allowedTags.concat(['h1', 'h2', 'img', 'div', 'a']),
+            allowedSchemes: ['data', 'http']
           });
         })
         .catch(error => {
@@ -55,5 +57,9 @@ export default {
 
 .returned-content {
   font-family: 'Merriweather', serif;
+}
+
+.returned-content img {
+  width: 100%;
 }
 </style>
