@@ -171,6 +171,16 @@ a {
   }
 }
 
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  i {
+    color: $teal;
+  }
+}
+
 .container {
   display: flex;
   justify-content: center;

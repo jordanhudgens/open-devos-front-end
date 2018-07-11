@@ -2,6 +2,10 @@
   <div class="devo-detail-wrapper">
     <h1>{{ devo.name }}</h1>
 
+    <div v-if="!devo.name" class="spinner-wrapper">
+      <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
+    </div>
+
     <div class="returned-content" v-html="devo.content"></div>
   </div>
 </template>
