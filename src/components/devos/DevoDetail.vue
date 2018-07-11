@@ -1,8 +1,8 @@
 <template>
   <div class="devo-detail-wrapper">
-    <h1>{{ devoName }}</h1>
+    <h1>{{ devo.name }}</h1>
 
-    <div class="returned-content" v-html="devoContent"></div>
+    <div class="returned-content" v-html="devo.content"></div>
   </div>
 </template>
 
@@ -14,27 +14,28 @@ export default {
   name: 'DevoDetail',
   data() {
     return {
-      devoName: null,
-      testContent: null,
-      devoSlug: this.$route.params.devo_slug,
+      devo: {
+        name: null,
+        slug: this.$route.params.devo_slug,
+        content: null
+      },
       devoApiUrl: 'https://open-devos-api.herokuapp.com/devos',
-      devoContent: null
     }
   },
   beforeMount() {
     this.getDevoDetails();
   },
   beforeRouteUpdate(to, from, next) {
-    this.devoSlug = this.$route.params.devo_slug
+    this.devo.slug = this.$route.params.devo_slug
     next()
   },
   methods: {
     getDevoDetails() {
       axios
-        .get(`${this.devoApiUrl}/${this.devoSlug}`)
+        .get(`${this.devoApiUrl}/${this.devo.slug}`)
         .then(response => {
-          this.devoName = response.data.devo.title;
-          this.devoContent = sanitizeHtml(response.data.devo.content, {
+          this.devo.name = response.data.devo.title;
+          this.devo.content = sanitizeHtml(response.data.devo.content, {
             allowedTags: sanitizeHtml.defaults.allowedTags.concat(['h1', 'h2', 'img', 'div', 'a']),
             allowedSchemes: ['data', 'http']
           });
