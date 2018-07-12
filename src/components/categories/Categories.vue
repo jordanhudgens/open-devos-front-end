@@ -2,6 +2,10 @@
   <div>
     <h1>Categories</h1>
 
+    <div v-if="categories.length === 0" class="spinner-wrapper">
+      <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
+    </div>
+
     <div class="thumb-card-wrapper">
       <div v-for="category in categories" :key="category.id">
         <router-link :to="{ name: 'CategoryDetail', params: { category_slug: category.slug } }" class="link">

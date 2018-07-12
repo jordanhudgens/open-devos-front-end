@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="banner-img-wrapper">
-      <img :src="categoryBannerUrl" width="100%">
+      <img :src="category.bannerUrl" width="100%">
+    </div>
+
+    <div v-if="!category.bannerUrl" class="spinner-wrapper">
+      <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
     </div>
 
     <ThumbCards :collection="plans" routeName="PlanDetail" />
@@ -16,9 +20,11 @@ export default {
   name: 'CategoryDetail',
   data() {
     return {
-      categoryName: null,
-      categoryBannerUrl: null,
-      categorySlug: this.$route.params.category_slug,
+      category: {
+        name: null,
+        bannerUrl: null,
+        slug: this.$route.params.category_slug,
+      },
       categoryApiUrl: 'https://open-devos-api.herokuapp.com/topics',
       plans: []
     }
@@ -27,7 +33,7 @@ export default {
     this.getCategoryPlans();
   },
   beforeRouteUpdate(to, from, next) {
-    this.categorySlug = this.$route.params.category_slug
+    this.category.slug = this.$route.params.category_slug
     next()
   },
   components: {
@@ -36,10 +42,10 @@ export default {
   methods: {
     getCategoryPlans() {
       axios
-        .get(`${this.categoryApiUrl}/${this.categorySlug}`)
+        .get(`${this.categoryApiUrl}/${this.category.slug}`)
         .then(response => {
-          this.categoryName = response.data.topic.title;
-          this.categoryBannerUrl = response.data.topic.banner;
+          this.category.name = response.data.topic.title;
+          this.category.bannerUrl = response.data.topic.banner;
           this.plans.push(...response.data.topic.plans);
           console.log(response);
         })
@@ -50,7 +56,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
