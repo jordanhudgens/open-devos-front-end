@@ -7,6 +7,10 @@
       <div class="card published-plans-card-wrapper">
         {{ planResponseMessage }}
 
+        <div v-if="plans.length === 0" class="spinner-wrapper">
+          <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
+        </div>
+
         <div class="plans-wrapper">
           <div v-for="plan in plans" :key="plan.id" class="split-columns">
             <div class="left-column">
@@ -232,8 +236,6 @@ export default {
   grid-template-columns: 600px auto;
   grid-gap: 42px;
 }
-
-.published-plans-card-wrapper {}
 
 .fade-enter-active,
 .fade-leave-active {
