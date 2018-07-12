@@ -1,8 +1,13 @@
 <template>
   <div>
-    <h1>{{ planName }}</h1>
+    <div class="spacer"></div>
+    <div v-if="!plan.name" class="spinner-wrapper">
+      <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
+    </div>
 
-    <div class="plan-summary">{{ planSummary }}</div>
+    <h1>{{ plan.name }}</h1>
+
+    <div class="plan-summary">{{ plan.summary }}</div>
 
     <div class="thumb-card-wrapper">
       <div v-for="devo in devos" :key="devo.slug">
@@ -16,7 +21,7 @@
             <span class="title">{{ devo.title }}</span>
           </router-link>
 
-          <div v-if="currentUser && currentUser.id === planOwner" class='thumb-action-icons-wrapper'>
+          <div v-if="currentUser && currentUser.id === plan.owner" class='thumb-action-icons-wrapper'>
             <a @click.prevent="editDevo(devo)" href="#">
               <i class="fas fa-pen-square"></i>
             </a>
@@ -29,10 +34,10 @@
       </div>
     </div>
 
-    <div v-if="currentUser && currentUser.id === planOwner" class="devo-form-wrapper">
+    <div v-if="currentUser && currentUser.id === plan.owner" class="devo-form-wrapper">
       <button v-if="showNewDevoButton" @click="renderDevoForm" class="btn">Add a New Devo</button>
       <button v-if="!showNewDevoButton" @click="cancelDevoForm" class="btn">Cancel</button>
-      <DevoForm v-if="showForm" :devoToEdit.sync="devoToEdit" :planId="planId" :devos="devos" @new="addToDevos" @update="updateDevoList" :key="devoFormKey" />
+      <DevoForm v-if="showForm" :devoToEdit.sync="devoToEdit" :planId="plan.id" :devos="devos" @new="addToDevos" @update="updateDevoList" :key="devoFormKey" />
     </div>
   </div>
 </template>
@@ -46,11 +51,13 @@ export default {
   name: 'PlanDetail',
   data() {
     return {
-      planName: null,
-      planSummary: null,
-      planSlug: this.$route.params.slug,
-      planId: null,
-      planOwner: null,
+      plan: {
+        name: null,
+        summary: null,
+        slug: this.$route.params.slug,
+        id: null,
+        owner: null,
+      },
       planApiUrl: 'https://open-devos-api.herokuapp.com/plans',
       devos: [],
       errorDeletingDevo: false,
@@ -69,7 +76,7 @@ export default {
     this.getPlanDetails();
   },
   beforeRouteUpdate(to, from, next) {
-    this.planSlug = this.$route.params.slug
+    this.plan.slug = this.$route.params.slug
     next()
   },
   computed: {
@@ -147,12 +154,12 @@ export default {
     },
     getPlanDetails() {
       axios
-        .get(`${this.planApiUrl}/${this.planSlug}`)
+        .get(`${this.planApiUrl}/${this.plan.slug}`)
         .then(response => {
-          this.planName = response.data.plan.title;
-          this.planSummary = response.data.plan.summary;
-          this.planId = response.data.plan.id;
-          this.planOwner = response.data.plan.user.id;
+          this.plan.name = response.data.plan.title;
+          this.plan.summary = response.data.plan.summary;
+          this.plan.id = response.data.plan.id;
+          this.plan.owner = response.data.plan.user.id;
           this.devos.push(...response.data.plan.devos);
         })
         .catch(error => {
