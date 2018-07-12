@@ -2,6 +2,10 @@
   <div>
     <h2>Plans published by {{ profileSlug }}</h2>
 
+    <div v-if="plans.length === 0" class="spinner-wrapper">
+      <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
+    </div>
+
     <ThumbCards :collection="plans" routeName="PlanDetail" />
   </div>
 </template>
