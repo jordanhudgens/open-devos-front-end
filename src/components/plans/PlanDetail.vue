@@ -98,7 +98,34 @@ export default {
   },
   methods: {
     startPlan() {
-      console.log('Starting plan...');
+      // TODO Make data live
+      axios
+        .post("https://open-devos-api.herokuapp.com/plan_assignments",
+        {
+          'plan_assignment': {
+            'plan_id': 1,
+            'user_id': this.currentUser.id
+          }
+        },
+        {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token'),
+          }
+        })
+        .then(response => {
+          // this.errorSubmittingDevo = false;
+          // this.devoSubmittedSuccessfully = true;
+          // this.responseMessage = 'Your devo has been published!';
+          // this.$emit('new', response.data.devo);
+
+          console.log(response.data);
+          return response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          // this.responseMessage = 'There was an error submitting the form, make sure you filled out all required fields.';
+          // this.errorSubmittingDevo = true;
+        })
     },
     cancelDevoForm() {
       this.showNewDevoButton = true;
