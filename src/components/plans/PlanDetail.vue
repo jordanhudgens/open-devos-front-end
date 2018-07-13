@@ -12,7 +12,14 @@
       </div>
 
       <div class="right-column">
-        <button class="btn">Start Plan</button>
+        <div v-if="currentUser">
+          <button @click.prevent="startPlan" class="btn">Start Plan</button>
+        </div>
+        <div v-else>
+          <router-link :to="{ name: 'Register' }">
+            Sign Up to Take Plan
+          </router-link>
+        </div>
       </div>
     </div>
 
@@ -90,6 +97,9 @@ export default {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   methods: {
+    startPlan() {
+      console.log('Starting plan...');
+    },
     cancelDevoForm() {
       this.showNewDevoButton = true;
       this.showForm = false;
@@ -185,7 +195,8 @@ export default {
 
 .plan-header-wrapper {
   display: grid;
-  grid-template-columns: 0.8fr 0.2fr;
+  grid-template-columns: 0.7fr 0.3fr;
+  grid-gap: 20px;
 
   .right-column {
     display: flex;

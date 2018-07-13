@@ -114,6 +114,8 @@ body {
 
 a {
   text-decoration: none;
+  color: $teal;
+
   .title {
     color: $teal;
     font-size: 1.3em;
