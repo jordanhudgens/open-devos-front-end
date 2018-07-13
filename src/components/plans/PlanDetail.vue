@@ -5,9 +5,16 @@
       <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
     </div>
 
-    <h1>{{ plan.name }}</h1>
+    <div class="plan-header-wrapper">
+      <div class="left-column">
+        <h1>{{ plan.name }}</h1>
+        <div class="plan-summary">{{ plan.summary }}</div>
+      </div>
 
-    <div class="plan-summary">{{ plan.summary }}</div>
+      <div class="right-column">
+        <button class="btn">Start Plan</button>
+      </div>
+    </div>
 
     <div class="thumb-card-wrapper">
       <div v-for="devo in devos" :key="devo.slug">
@@ -174,5 +181,16 @@ export default {
 .plan-summary {
   font-family: 'Merriweather', serif;
   margin-bottom: 42px;
+}
+
+.plan-header-wrapper {
+  display: grid;
+  grid-template-columns: 0.8fr 0.2fr;
+
+  .right-column {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
 }
 </style>
