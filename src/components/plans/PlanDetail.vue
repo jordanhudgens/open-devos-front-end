@@ -92,6 +92,7 @@ export default {
   },
   beforeMount() {
     this.getPlanDetails();
+    this.getCurrentUserPlans();
   },
   beforeRouteUpdate(to, from, next) {
     this.plan.slug = this.$route.params.slug
@@ -101,8 +102,26 @@ export default {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   methods: {
+    getCurrentUserPlans() {
+      axios
+        .get('https://open-devos-api.herokuapp.com/plan_assignments',
+        {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token'),
+          }
+        })
+        .then(response => {
+          response.data.plans.forEach(plan => {
+            if (plan.id === this.plan.id) {
+              this.planStarted = true;
+            }
+          })
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     startPlan() {
-      // TODO Make data live
       axios
         .post("https://open-devos-api.herokuapp.com/plan_assignments",
         {
