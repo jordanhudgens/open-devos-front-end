@@ -114,6 +114,8 @@ export default {
           response.data.plans.forEach(plan => {
             if (plan.id === this.plan.id) {
               this.planStarted = true;
+            } else {
+              this.planStarted = false;
             }
           })
         })
