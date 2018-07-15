@@ -12,8 +12,11 @@
       </div>
 
       <div class="right-column">
-        <div v-if="currentUser">
+        <div v-if="currentUser && !planStarted">
           <button @click.prevent="startPlan" class="btn">Start Plan</button>
+        </div>
+        <div v-else-if="currentUser && planStarted">
+          <button @click.prevent="archivePlan" class="btn">Archive Plan</button>
         </div>
         <div v-else>
           <router-link :to="{ name: 'Register' }">
@@ -72,6 +75,7 @@ export default {
         id: null,
         owner: null,
       },
+      planStarted: null,
       planApiUrl: 'https://open-devos-api.herokuapp.com/plans',
       devos: [],
       errorDeletingDevo: false,
@@ -103,7 +107,7 @@ export default {
         .post("https://open-devos-api.herokuapp.com/plan_assignments",
         {
           'plan_assignment': {
-            'plan_id': 1,
+            'plan_id': this.plan.id,
             'user_id': this.currentUser.id
           }
         },
@@ -113,10 +117,8 @@ export default {
           }
         })
         .then(response => {
-          // this.errorSubmittingDevo = false;
-          // this.devoSubmittedSuccessfully = true;
+          this.planStarted = true;
           // this.responseMessage = 'Your devo has been published!';
-          // this.$emit('new', response.data.devo);
 
           console.log(response.data);
           return response.data;
