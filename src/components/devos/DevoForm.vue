@@ -14,24 +14,24 @@
       <form @submit.prevent="formTypeSelector" class="form-wrapper">
 
         <div>
-          <input type="text" v-model="devoTitle" placeholder="Title" class="full-width-element">
+          <input type="text" v-model="devo.title" placeholder="Title" class="full-width-element">
         </div>
 
         <div>
           <p>Featured Image:
-            <file-select v-model="devoFeaturedImage"></file-select>
+            <file-select v-model="devo.featuredImage"></file-select>
           </p>
-          <p v-if="devoFeaturedImage">{{devoFeaturedImage.name}}</p>
+          <p v-if="devo.featuredImage">{{ devo.featuredImage.name}}</p>
         </div>
 
-        <div>{{ devoStatus }}</div>
-        <input type="checkbox" id="checkbox" v-model="devoStatus" :true-value="'published'" :false-value="'draft'">
-        <label v-if="devoStatus === 'published'" for="checkbox">Switch to draft?</label>
+        <div>{{ devo.status }}</div>
+        <input type="checkbox" id="checkbox" v-model="devo.status" :true-value="'published'" :false-value="'draft'">
+        <label v-if="devo.status === 'published'" for="checkbox">Switch to draft?</label>
         <label v-else for="checkbox">Publish publicly?</label>
 
-        <wysiwyg v-model="devoContent" />
+        <wysiwyg v-model="devo.content" />
 
-        <div v-if="!devoTitle || !devoContent" class="spacer">
+        <div v-if="!devo.title || !devo.content" class="spacer">
           <button type="submit" class="btn-disabled" disabled>Fill in required fields</button>
         </div>
 
@@ -52,10 +52,12 @@ export default {
   name: 'DevoForm',
   data() {
     return {
-      devoTitle: '',
-      devoContent: '',
-      devoStatus: null,
-      devoFeaturedImage: null,
+      devo: {
+        title: null,
+        content: null,
+        status: null,
+        featuredImage: null,
+      },
       devoSlug: null,
       responseMessage: null,
       devoSubmittedSuccessfully: false,
@@ -75,18 +77,12 @@ export default {
   },
   created() {
     if (this.devoToEdit) {
-      this.devoTitle = this.devoToEdit.title;
-      this.devoContent = this.devoToEdit.content;
-      this.devoStatus = this.devoToEdit.status;
-      this.devoFeaturedImage = this.devoToEdit.devoFeaturedImage;
+      this.devo = this.devoToEdit;
     }
   },
   watch: {
     devoToEdit(newValue, oldValue) {
-      this.devoTitle = newValue.title;
-      this.devoContent = newValue.content;
-      this.devoStatus = newValue.status;
-      this.devoFeaturedImage = newValue.devoFeaturedImage;
+      this.devo = newValue;
     }
   },
   methods: {
@@ -100,17 +96,17 @@ export default {
     buildForm() {
       let formData = new FormData();
 
-      formData.append('devo[title]', this.devoTitle);
-      formData.append('devo[content]', this.devoContent);
+      formData.append('devo[title]', this.devo.title);
+      formData.append('devo[content]', this.devo.content);
       formData.append('devo[position]', 5);
       formData.append('devo[plan_id]', this.planId);
 
-      if (this.devoStatus) {
-        formData.append('devo[status]', this.devoStatus);
+      if (this.devo.status) {
+        formData.append('devo[status]', this.devo.status);
       }
 
-      if (this.devoFeaturedImage) {
-        formData.append('devo[devo_image]', this.devoFeaturedImage);
+      if (this.devo.featuredImage) {
+        formData.append('devo[devo_image]', this.devo.featuredImage);
       }
 
       return formData;
