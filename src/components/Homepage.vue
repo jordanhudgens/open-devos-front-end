@@ -11,7 +11,7 @@
       <!--TODO Finish homepage  -->
 
       <div class="right-column">
-        <router-link :to="{ name: 'Homepage' }">
+        <router-link class="btn-clear" :to="{ name: 'Homepage' }">
           Continue
         </router-link>
       </div>

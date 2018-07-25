@@ -61,6 +61,21 @@ body {
   }
 }
 
+.btn-clear {
+  border: 2px solid white;
+  border-radius: 8px;
+  padding: 10px 20px 10px 20px;
+  transition: 0.5s;
+
+  &:hover {
+    -webkit-box-shadow: 6px 6px 34px 1px rgba(0, 0, 0, 0.66);
+    -moz-box-shadow: 6px 6px 34px 1px rgba(0, 0, 0, 0.66);
+    box-shadow: 6px 6px 34px 1px rgba(0, 0, 0, 0.66);
+    background-color: white;
+    color: $teal !important;
+  }
+}
+
 .btn-disabled {
   background-color: $lightgray;
   border-radius: 5px;
