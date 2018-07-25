@@ -2,7 +2,7 @@
   <div class="homepage-wrapper">
     <div class="notification">
       <div class="left-column">
-        <h1>Daily Living</h1>
+        <div class="title">Daily Living</div>
 
         <div class="progress">
           Lesson 2 of 8
@@ -45,9 +45,10 @@ export default {
 $teal: #156356;
 
 .notification {
-  border-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   background-color: $teal;
-  padding: 5px 20px 20px 20px;
+  padding: 20px;
   display: flex;
   justify-content: space-between;
   align-content: center;
