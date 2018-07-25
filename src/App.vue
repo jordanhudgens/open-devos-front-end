@@ -54,10 +54,14 @@ body {
   color: white;
   padding: 10px 20px 10px 20px;
   font-size: 1.1em;
+  transition: 0.5s;
 
   &:hover {
     background-color: $blue;
     border: $blue 1px solid;
+    -webkit-box-shadow: 7px 7px 34px 1px rgba(0, 0, 0, 0.38);
+    -moz-box-shadow: 7px 7px 34px 1px rgba(0, 0, 0, 0.38);
+    box-shadow: 7px 7px 34px 1px rgba(0, 0, 0, 0.38);
   }
 }
 
