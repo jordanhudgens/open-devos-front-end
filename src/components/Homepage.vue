@@ -52,6 +52,13 @@ $teal: #156356;
   display: flex;
   justify-content: space-between;
   align-content: center;
+  color: white;
+
+  .title {
+    font-weight: 900;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+  }
 
   .right-column {
     display: flex;
