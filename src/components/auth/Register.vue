@@ -1,16 +1,24 @@
 <template>
-  <div>
-    <h2>Register</h2>
+  <div class="auth-page-wrapper">
+    <div class="auth-form-elements">
+      <h2>Register</h2>
 
-    <div v-if="error">{{ error }}</div>
+      <div v-if="error">{{ error }}</div>
 
-    <form @submit.prevent="register">
-      <input v-model="email" type="email" placeholder="Email address" required autofocus>
-      <input v-model="password" type="password" placeholder="Password" required>
-      <input v-model="passwordConfirmation" type="password" placeholder="Confirmn password" required>
+      <form class="auth-form" @submit.prevent="register">
+        <input v-model="email" type="email" placeholder="Email address" required autofocus>
+        <label for="email">Your email</label>
 
-      <button type="submit">Register</button>
-    </form>
+        <input v-model="password" type="password" placeholder="Password" required>
+        <label for="password">Your password</label>
+
+        <input v-model="passwordConfirmation" type="password" placeholder="Confirmn password" required>
+        <label for="passwordConfirmation">Confirm your password</label>
+
+        <div class="sm-bottom-spacer"></div>
+        <button type="submit" class="btn">Register</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -59,6 +67,6 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+@import '../../styles/auth.scss';
 </style>
