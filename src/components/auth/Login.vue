@@ -7,9 +7,13 @@
 
       <form class="auth-form" @submit.prevent="login">
         <input v-model="email" type="email" placeholder="Email address" required autofocus>
-        <input v-model="password" type="password" placeholder="Password" required autofocus>
+        <label for="email">Email</label>
 
-        <button type="submit">Login</button>
+        <input v-model="password" type="password" placeholder="Password" required>
+        <label for="password">Password</label>
+
+        <div class="sm-bottom-spacer"></div>
+        <button type="submit" class="btn">Login</button>
       </form>
     </div>
   </div>
@@ -60,20 +64,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.auth-page-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-
-  input {
-    margin-top: 15px;
-    margin-bottom: 15px;
-  }
-}
+@import '../../styles/auth.scss';
 </style>
