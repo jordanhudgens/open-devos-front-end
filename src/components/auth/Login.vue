@@ -48,7 +48,7 @@ export default {
       this.error = false
 
       this.$router.push({
-        name: "SearchResults"
+        name: "Homepage"
       });
     },
     loginFailed() {
