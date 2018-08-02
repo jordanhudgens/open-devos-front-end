@@ -92,6 +92,8 @@ export default {
   },
   beforeMount() {
     this.getPlanDetails();
+  },
+  mounted() {
     this.getCurrentUserPlans();
   },
   beforeRouteUpdate(to, from, next) {
@@ -111,6 +113,8 @@ export default {
           }
         })
         .then(response => {
+          console.log(response.data.plans);
+          console.log(this.plan.id);
           response.data.plans.forEach(plan => {
             if (plan.id === this.plan.id) {
               this.planStarted = true;
@@ -223,10 +227,12 @@ export default {
       axios
         .get(`${this.planApiUrl}/${this.plan.slug}`)
         .then(response => {
+          console.log(response.data.plan);
           this.plan.name = response.data.plan.title;
           this.plan.summary = response.data.plan.summary;
           this.plan.id = response.data.plan.id;
           this.plan.owner = response.data.plan.user.id;
+          console.log(this.plan.id);
           this.devos.push(...response.data.plan.devos);
         })
         .catch(error => {
