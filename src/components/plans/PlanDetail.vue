@@ -26,30 +26,32 @@
       </div>
     </div>
 
-    <div class="thumb-card-wrapper">
-      <div v-for="devo in devos" :key="devo.slug">
-        <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
-          <img v-if="devo.featured_image" :src="devo.featured_image" class="thumb-img">
-          <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img">
-        </router-link>
-
-        <div class="thumb-card">
+    <draggable v-model="devos">
+      <transition-group name="thumb-card-wrapper" class="thumb-card-wrapper">
+        <div v-for="devo in devos" :key="devo.slug">
           <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
-            <span class="title">{{ devo.title }}</span>
+            <img v-if="devo.featured_image" :src="devo.featured_image" class="thumb-img">
+            <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img">
           </router-link>
 
-          <div v-if="currentUser && currentUser.id === plan.owner" class='thumb-action-icons-wrapper'>
-            <a @click.prevent="editDevo(devo)" href="#">
-              <i class="fas fa-pen-square"></i>
-            </a>
+          <div class="thumb-card">
+            <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
+              <span class="title">{{ devo.title }}</span>
+            </router-link>
 
-            <a @click.prevent="deleteDevo(devo)" href="#">
-              <i class="fas fa-trash"></i>
-            </a>
+            <div v-if="currentUser && currentUser.id === plan.owner" class='thumb-action-icons-wrapper'>
+              <a @click.prevent="editDevo(devo)" href="#">
+                <i class="fas fa-pen-square"></i>
+              </a>
+
+              <a @click.prevent="deleteDevo(devo)" href="#">
+                <i class="fas fa-trash"></i>
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </transition-group>
+    </draggable>
 
     <div v-if="currentUser && currentUser.id === plan.owner" class="devo-form-wrapper">
       <button v-if="showNewDevoButton" @click="renderDevoForm" class="btn">Add a New Devo</button>
@@ -63,6 +65,7 @@
 import { mapGetters } from 'vuex';
 import axios from 'axios';
 import DevoForm from '@/components/devos/DevoForm';
+import draggable from 'vuedraggable';
 
 export default {
   name: 'PlanDetail',
@@ -88,7 +91,8 @@ export default {
     }
   },
   components: {
-    DevoForm
+    DevoForm,
+    draggable
   },
   beforeMount() {
     this.getPlanDetails();
