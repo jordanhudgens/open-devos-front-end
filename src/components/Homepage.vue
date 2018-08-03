@@ -1,11 +1,12 @@
 <template>
   <div class="homepage-wrapper">
-    <div class="notification">
+
+    <div v-if="lastPlan.title" class="notification">
       <div class="left-column">
-        <div class="title">Daily Living</div>
+        <div class="title">{{ lastPlan.title }}</div>
 
         <div class="progress">
-          Lesson 2 of 8
+          Lesson 2 of {{ lastPlan.devoCount }}
         </div>
       </div>
       <!--TODO Finish homepage  -->
@@ -27,16 +28,51 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import axios from 'axios';
 
 export default {
   name: 'Homepage',
   computed: {
     ...mapGetters({ currentUser: 'currentUser' })
   },
+  mounted() {
+    this.getLastPlan();
+  },
   data() {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      lastPlan: {
+        title: null,
+        devoCount: null
+      }
     }
+  },
+  methods: {
+    getLastPlan() {
+      // TODO
+      // Take care of situation where a user isn't logged in
+      // Possibly in the component mount lifecycle hook
+      axios
+        .get('https://open-devos-api.herokuapp.com/last-plan',
+        {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token'),
+          }
+        })
+        .then(response => {
+          if (response.data.plan_assignment) {
+            console.log('plannnnns')
+            const { title, } = response.data.plan_assignment.plan;
+            const devo_count = response.data.plan_assignment.devo_count;
+            this.lastPlan.title = title;
+            this.lastPlan.devoCount = devo_count;
+          } else {
+            console.log('No plans yet!')
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
   }
 }
 </script>
