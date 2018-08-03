@@ -78,32 +78,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$teal: #156356;
-
-.notification {
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  background-color: $teal;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-content: center;
-  color: white;
-
-  .title {
-    font-weight: 900;
-    font-size: 1.5em;
-    margin-bottom: 15px;
-  }
-
-  .right-column {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-
-    a {
-      color: white;
-    }
-  }
-}
+@import './../styles/homepage.scss';
 </style>
