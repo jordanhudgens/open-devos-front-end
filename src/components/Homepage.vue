@@ -9,10 +9,8 @@
           Lesson 2 of {{ lastPlan.devoCount }}
         </div>
       </div>
-      <!--TODO Finish homepage  -->
-
       <div class="right-column">
-        <router-link class="btn-clear" :to="{ name: 'Homepage' }">
+        <router-link class="btn-clear" :to="{ name: 'PlanDetail', params: { slug: lastPlan.slug } }">
           Continue
         </router-link>
       </div>
@@ -42,6 +40,7 @@ export default {
     return {
       lastPlan: {
         title: null,
+        slug: null,
         devoCount: null
       }
     }
@@ -61,9 +60,10 @@ export default {
         .then(response => {
           if (response.data.plan_assignment) {
             console.log('plannnnns')
-            const { title, } = response.data.plan_assignment.plan;
+            const { title, slug } = response.data.plan_assignment.plan;
             const devo_count = response.data.plan_assignment.devo_count;
             this.lastPlan.title = title;
+            this.lastPlan.slug = slug;
             this.lastPlan.devoCount = devo_count;
           } else {
             console.log('No plans yet!')
