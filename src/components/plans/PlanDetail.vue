@@ -243,21 +243,6 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.plan-summary {
-  font-family: 'Merriweather', serif;
-  margin-bottom: 42px;
-}
-
-.plan-header-wrapper {
-  display: grid;
-  grid-template-columns: 0.7fr 0.3fr;
-  grid-gap: 20px;
-
-  .right-column {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-}
+<style lang="scss">
+@import '../../styles/plan_detail.scss';
 </style>
