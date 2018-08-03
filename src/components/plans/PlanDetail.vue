@@ -110,6 +110,27 @@ export default {
   methods: {
     updatePosition() {
       console.log('Positions updated!!')
+      axios
+        .patch(`https://open-devos-api.herokuapp.com/devo_positions/${this.plan.slug}`,
+        { devos: this.devos },
+        {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token')
+          }
+        })
+        .then(response => {
+          console.log(response.data);
+          // this.errorSubmittingDevo = false;
+          // this.devoSubmittedSuccessfully = true;
+          // this.responseMessage = 'Your devo has been updated!';
+          // this.$emit('update', response.data.devo);
+          return response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          // this.responseMessage = 'There was an error submitting the form, make sure you filled out all required fields.';
+          // this.errorSubmittingDevo = true;
+        })
     },
     getCurrentUserPlans() {
       axios
