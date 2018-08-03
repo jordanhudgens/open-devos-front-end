@@ -39,6 +39,8 @@
               <span class="title">{{ devo.title }}</span>
             </router-link>
 
+            <pre>{{ devo.position }}</pre>
+
             <div v-if="currentUser && currentUser.id === plan.owner" class='thumb-action-icons-wrapper'>
               <a @click.prevent="editDevo(devo)" href="#">
                 <i class="fas fa-pen-square"></i>
@@ -76,6 +78,7 @@ export default {
         summary: null,
         slug: this.$route.params.slug,
         id: null,
+        owner: null,
         owner: null,
       },
       planStarted: null,
@@ -251,6 +254,13 @@ export default {
         }
       })
     },
+    sortDevosByPosition(devos) {
+      devos.sort((prev, next) => {
+        return prev.position - next.position;
+      })
+
+      return devos;
+    },
     getPlanDetails() {
       axios
         .get(`${this.planApiUrl}/${this.plan.slug}`)
@@ -260,6 +270,7 @@ export default {
           this.plan.id = response.data.plan.id;
           this.plan.owner = response.data.plan.user.id;
           this.devos.push(...response.data.plan.devos);
+          this.devos = this.sortDevosByPosition(this.devos);
         })
         .catch(error => {
           console.log(error);
