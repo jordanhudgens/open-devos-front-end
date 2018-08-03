@@ -28,7 +28,7 @@
 
     <draggable v-model="devos">
       <transition-group name="thumb-card-wrapper" class="thumb-card-wrapper">
-        <div v-for="devo in devos" :key="devo.slug">
+        <div v-for="devo in devos" :key="devo.slug" class="thumb-card-demo">
           <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
             <img v-if="devo.featured_image" :src="devo.featured_image" class="thumb-img">
             <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img">
@@ -231,12 +231,10 @@ export default {
       axios
         .get(`${this.planApiUrl}/${this.plan.slug}`)
         .then(response => {
-          console.log(response.data.plan);
           this.plan.name = response.data.plan.title;
           this.plan.summary = response.data.plan.summary;
           this.plan.id = response.data.plan.id;
           this.plan.owner = response.data.plan.user.id;
-          console.log(this.plan.id);
           this.devos.push(...response.data.plan.devos);
         })
         .catch(error => {
@@ -249,4 +247,8 @@ export default {
 
 <style lang="scss">
 @import '../../styles/plan_detail.scss';
+
+.thumb-card-demo {
+  transition: all 1s;
+}
 </style>
