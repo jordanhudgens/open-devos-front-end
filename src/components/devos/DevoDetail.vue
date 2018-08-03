@@ -53,18 +53,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Merriweather');
-
-.devo-detail-wrapper {
-  padding-left: 80px;
-  padding-right: 80px;
-}
-
-.returned-content {
-  font-family: 'Merriweather', serif;
-}
-
-.returned-content img {
-  width: 100%;
-}
+@import '../../styles/devo_detail.scss';
 </style>
