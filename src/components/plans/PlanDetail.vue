@@ -26,6 +26,10 @@
       </div>
     </div>
 
+    <!-- TODO: -->
+    <!-- build algo for auto updating positions -->
+    <!-- then send the devos and their positions to the update action -->
+
     <draggable v-model="devos" @end="updatePosition">
       <transition-group name="thumb-card-wrapper" class="thumb-card-wrapper">
         <div v-for="devo in devos" :key="devo.slug" class="animated-draggable-thumb-card">
@@ -39,7 +43,9 @@
               <span class="title">{{ devo.title }}</span>
             </router-link>
 
-            <pre>{{ devo.position }}</pre>
+            <div class="dayCountDescription">
+              Day {{ devo.position + 1 }} of {{ devos.length }}
+            </div>
 
             <div v-if="currentUser && currentUser.id === plan.owner" class='thumb-action-icons-wrapper'>
               <a @click.prevent="editDevo(devo)" href="#">
