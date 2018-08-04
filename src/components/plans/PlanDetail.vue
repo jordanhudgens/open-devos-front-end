@@ -32,7 +32,7 @@
 
     <draggable v-model="devos" @end="updatePosition">
       <transition-group name="thumb-card-wrapper" class="thumb-card-wrapper">
-        <div v-for="devo in devos" :key="devo.slug" class="animated-draggable-thumb-card">
+        <div v-for="devo in devos" :key="devo.slug" class="animated-draggable-thumb-card" :id="devo.id">
           <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
             <img v-if="devo.featured_image" :src="devo.featured_image" class="thumb-img">
             <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img">
@@ -117,28 +117,27 @@ export default {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   methods: {
-    updatePosition() {
-      console.log('Positions updated!!')
+    updatePosition(event) {
+      const updatedPositions = [];
+
+      for (var i = 0; i < event.target.children.length; i++) {
+        updatedPositions.push(event.target.children[i].id);
+      }
+
+      console.log(updatedPositions);
       axios
         .patch(`https://open-devos-api.herokuapp.com/devo_positions/${this.plan.slug}`,
-        { devos: this.devos },
+        { devos: updatedPositions },
         {
           headers: {
             "Authorization": 'Bearer ' + localStorage.getItem('token')
           }
         })
         .then(response => {
-          console.log(response.data);
-          // this.errorSubmittingDevo = false;
-          // this.devoSubmittedSuccessfully = true;
-          // this.responseMessage = 'Your devo has been updated!';
-          // this.$emit('update', response.data.devo);
           return response.data;
         })
         .catch(error => {
           console.log(error);
-          // this.responseMessage = 'There was an error submitting the form, make sure you filled out all required fields.';
-          // this.errorSubmittingDevo = true;
         })
     },
     getCurrentUserPlans() {
