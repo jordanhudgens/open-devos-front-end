@@ -6,11 +6,11 @@
         <div class="title">{{ lastPlan.title }}</div>
 
         <div class="progress">
-          Lesson 2 of {{ lastPlan.devoCount }}
+          Lesson {{ lastPlan.currentDevo.position + 1 }} of {{ lastPlan.devoCount }}
         </div>
       </div>
       <div class="right-column">
-        <router-link class="btn-clear" :to="{ name: 'PlanDetail', params: { slug: lastPlan.slug } }">
+        <router-link class="btn-clear" :to="{ name: 'DevoDetail', params: { devo_slug: lastPlan.currentDevo.slug } }">
           Continue
         </router-link>
       </div>
@@ -41,7 +41,8 @@ export default {
       lastPlan: {
         title: null,
         slug: null,
-        devoCount: null
+        devoCount: null,
+        currentDevo: null
       }
     }
   },
@@ -60,10 +61,13 @@ export default {
         .then(response => {
           if (response.data.plan_assignment) {
             console.log('plannnnns')
+            console.log('plan_assignment', response.data.plan_assignment)
             const { title, slug } = response.data.plan_assignment.plan;
             const devo_count = response.data.plan_assignment.devo_count;
+            const current_devo = response.data.plan_assignment.devo;
             this.lastPlan.title = title;
             this.lastPlan.slug = slug;
+            this.lastPlan.currentDevo = current_devo;
             this.lastPlan.devoCount = devo_count;
           } else {
             console.log('No plans yet!')
