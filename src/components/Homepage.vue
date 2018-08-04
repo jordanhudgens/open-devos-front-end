@@ -16,7 +16,8 @@
       </div>
     </div>
 
-    <h1>Welcome to Open Devos, your home for discovering and publishing daily devotionals</h1>
+    <h1>Welcome to Open Devos, your home for discovering and publishing daily devotionals. We're currently finishing up the application and adding content. We're launching soon. In the meantime, all of our devos are being published on our
+      <a href="https://www.instagram.com/opendevos/">Instagram account</a>.</h1>
 
     <div v-if="currentUser">
       {{ currentUser.email }}
