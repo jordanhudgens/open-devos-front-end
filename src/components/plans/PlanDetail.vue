@@ -26,10 +26,6 @@
       </div>
     </div>
 
-    <!-- TODO: -->
-    <!-- build algo for auto updating positions -->
-    <!-- then send the devos and their positions to the update action -->
-
     <draggable v-model="devos" @end="updatePosition">
       <transition-group name="thumb-card-wrapper" class="thumb-card-wrapper">
         <div v-for="devo in devos" :key="devo.slug" class="animated-draggable-thumb-card" :id="devo.id">
@@ -43,8 +39,12 @@
               <span class="title">{{ devo.title }}</span>
             </router-link>
 
-            <div class="dayCountDescription">
+            <div v-if="positionsUpdated" class="dayCountDescription">
               Day {{ devo.position + 1 }} of {{ devos.length }}
+            </div>
+
+            <div v-else class="dayCountDescription">
+              Updating...
             </div>
 
             <div v-if="currentUser && currentUser.id === plan.owner" class='thumb-action-icons-wrapper'>
@@ -96,7 +96,8 @@ export default {
       showForm: false,
       devoToEdit: null,
       showNewDevoButton: true,
-      devoFormKey: null
+      devoFormKey: null,
+      positionsUpdated: true
     }
   },
   components: {
@@ -118,13 +119,13 @@ export default {
   },
   methods: {
     updatePosition(event) {
+      this.positionsUpdated = false;
       const updatedPositions = [];
 
       for (var i = 0; i < event.target.children.length; i++) {
         updatedPositions.push(event.target.children[i].id);
       }
 
-      console.log(updatedPositions);
       axios
         .patch(`https://open-devos-api.herokuapp.com/devo_positions/${this.plan.slug}`,
         { devos: updatedPositions },
@@ -134,6 +135,8 @@ export default {
           }
         })
         .then(response => {
+          this.devos = response.data.devos;
+          this.positionsUpdated = true;
           return response.data;
         })
         .catch(error => {
@@ -276,6 +279,7 @@ export default {
           this.plan.owner = response.data.plan.user.id;
           this.devos.push(...response.data.plan.devos);
           this.devos = this.sortDevosByPosition(this.devos);
+          console.log(this.devos);
         })
         .catch(error => {
           console.log(error);
