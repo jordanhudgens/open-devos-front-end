@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 import axios from 'axios';
 
 export default {
@@ -35,7 +35,14 @@ export default {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   mounted() {
-    this.getLastPlan();
+    console.log('Mounted');
+
+    if (this.currentUser) {
+      console.log('currentUser', this.currentUser);
+      this.getLastPlan();
+    } else {
+      console.log("not logged in");
+    }
   },
   data() {
     return {
