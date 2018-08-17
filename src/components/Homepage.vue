@@ -1,5 +1,5 @@
 <template>
-  <div class="homepage-wrapper">
+  <div class="x">
 
     <div v-if="lastPlan.title" class="notification">
       <div class="left-column">
@@ -16,11 +16,38 @@
       </div>
     </div>
 
-    <h1>Welcome to Open Devos, your home for discovering and publishing daily devotionals. We're currently finishing up the application and adding content. We're launching soon. In the meantime, all of our devos are being published on our
-      <a href="https://www.instagram.com/opendevos/">Instagram account</a>.</h1>
+    <div class="homepage-wrapper">
+      <div class="left-column">
+        <div class="two-column-grid">
+          <div class="single-card-wrapper">
+            <router-link :to="{ name: 'PlanDetail', params: { slug: 'living-with-humility' } }">
+              <!-- <img v-if="element.featured_image" :src="element.featured_image" class="thumb-img"> -->
+              <!-- <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img"> -->
+              <img src="@/assets/teal-placeholder.jpg" class="thumb-img">
+            </router-link>
 
-    <div v-if="currentUser">
-      {{ currentUser.email }}
+            <div class="thumb-card">
+              <router-link :to="{ name: 'PlanDetail', params: { slug: 'living-with-humility' } }">
+                <span class="title">{{ 'Some Title' }}</span>
+              </router-link>
+            </div>
+          </div>
+
+          <div class="single-card-wrapper">
+            <router-link :to="{ name: 'PlanDetail', params: { slug: 'living-with-humility' } }">
+              <!-- <img v-if="element.featured_image" :src="element.featured_image" class="thumb-img"> -->
+              <!-- <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img"> -->
+              <img src="@/assets/teal-placeholder.jpg" class="thumb-img">
+            </router-link>
+
+            <div class="thumb-card">
+              <router-link :to="{ name: 'PlanDetail', params: { slug: 'living-with-humility' } }">
+                <span class="title">{{ 'Some Title' }}</span>
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -90,5 +117,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import './../styles/grid.scss';
 @import './../styles/homepage.scss';
+@import './../styles/card.scss';
 </style>
