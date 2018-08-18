@@ -18,6 +18,7 @@
 
     <div class="homepage-wrapper">
       <div class="left-column">
+
         <div class="two-column-grid">
           <div class="single-card-wrapper">
             <router-link :to="{ name: 'PlanDetail', params: { slug: 'living-with-humility' } }">
@@ -45,6 +46,16 @@
                 <span class="title">{{ 'Some Title' }}</span>
               </router-link>
             </div>
+          </div>
+        </div>
+
+        <div class="spacer40"></div>
+
+        <div class="one-column-grid">
+          <div class="card">
+            <router-link :to="{ name: 'PlanDetail', params: { slug: 'living-with-humility' } }">
+              <span class="title">{{ 'Some Title' }}</span>
+            </router-link>
           </div>
         </div>
       </div>
@@ -120,4 +131,5 @@ export default {
 @import './../styles/grid.scss';
 @import './../styles/homepage.scss';
 @import './../styles/card.scss';
+@import './../styles/helpers.scss';
 </style>

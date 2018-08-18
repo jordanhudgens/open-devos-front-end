@@ -1,3 +1,8 @@
+.one-column-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
 .two-column-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
