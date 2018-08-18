@@ -75,6 +75,8 @@ export default {
   mounted() {
     console.log('Mounted');
 
+    this.getRandomPlans();
+
     if (this.currentUser) {
       console.log('currentUser', this.currentUser);
       this.getLastPlan();
@@ -89,10 +91,21 @@ export default {
         slug: null,
         devoCount: null,
         currentDevo: null
-      }
+      },
+      randomPlans: []
     }
   },
   methods: {
+    getRandomPlans() {
+      axios
+        .get('https://open-devos-api.herokuapp.com/random_plans')
+        .then(response => {
+          this.randomPlans.push(...response.data.plans);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     getLastPlan() {
       // TODO
       // Take care of situation where a user isn't logged in
