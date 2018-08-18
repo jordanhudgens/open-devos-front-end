@@ -20,30 +20,15 @@
       <div class="left-column">
 
         <div class="two-column-grid">
-          <div class="single-card-wrapper">
-            <router-link :to="{ name: 'PlanDetail', params: { slug: 'living-with-humility' } }">
-              <!-- <img v-if="element.featured_image" :src="element.featured_image" class="thumb-img"> -->
-              <!-- <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img"> -->
-              <img src="@/assets/teal-placeholder.jpg" class="thumb-img">
+          <div v-for="plan in randomPlans" :key="plan.id" class="single-card-wrapper">
+            <router-link :to="{ name: 'PlanDetail', params: { slug: plan.slug } }">
+              <img v-if="plan.featured_image" :src="plan.featured_image" class="thumb-img">
+              <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img">
             </router-link>
 
             <div class="thumb-card">
-              <router-link :to="{ name: 'PlanDetail', params: { slug: 'living-with-humility' } }">
-                <span class="title">{{ 'Some Title' }}</span>
-              </router-link>
-            </div>
-          </div>
-
-          <div class="single-card-wrapper">
-            <router-link :to="{ name: 'PlanDetail', params: { slug: 'living-with-humility' } }">
-              <!-- <img v-if="element.featured_image" :src="element.featured_image" class="thumb-img"> -->
-              <!-- <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img"> -->
-              <img src="@/assets/teal-placeholder.jpg" class="thumb-img">
-            </router-link>
-
-            <div class="thumb-card">
-              <router-link :to="{ name: 'PlanDetail', params: { slug: 'living-with-humility' } }">
-                <span class="title">{{ 'Some Title' }}</span>
+              <router-link :to="{ name: 'PlanDetail', params: { slug: plan.slug } }">
+                <span class="title">{{ plan.title }}</span>
               </router-link>
             </div>
           </div>
