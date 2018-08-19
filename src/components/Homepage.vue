@@ -61,6 +61,7 @@ export default {
     console.log('Mounted');
 
     this.getRandomPlans();
+    this.getRecentPlans();
 
     if (this.currentUser) {
       console.log('currentUser', this.currentUser);
@@ -77,7 +78,8 @@ export default {
         devoCount: null,
         currentDevo: null
       },
-      randomPlans: []
+      randomPlans: [],
+      recentPlans: []
     }
   },
   methods: {
@@ -86,6 +88,18 @@ export default {
         .get('https://open-devos-api.herokuapp.com/random_plans')
         .then(response => {
           this.randomPlans.push(...response.data.plans);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getRecentPlans() {
+      axios
+        .get('https://open-devos-api.herokuapp.com/plans')
+        .then(response => {
+          this.recentPlans.push(...response.data.plans);
+
+          console.log(this.recentPlans);
         })
         .catch(error => {
           console.log(error);
