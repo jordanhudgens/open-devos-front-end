@@ -182,4 +182,5 @@ export default {
 @import './../styles/homepage.scss';
 @import './../styles/card.scss';
 @import './../styles/helpers.scss';
+@import './../styles/media-queries.scss';
 </style>
