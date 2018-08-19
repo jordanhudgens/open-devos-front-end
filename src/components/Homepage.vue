@@ -38,9 +38,15 @@
 
         <div class="one-column-grid">
           <div class="card">
-            <router-link :to="{ name: 'PlanDetail', params: { slug: 'living-with-humility' } }">
-              <span class="title">{{ 'Some Title' }}</span>
-            </router-link>
+            <div class="plan-list-wrapper">
+
+              <div v-for="plan in recentPlans" :key="plan.id" class="plan-list-item">
+                <router-link :to="{ name: 'PlanDetail', params: { slug: plan.slug } }">
+                  <span class="title">{{ plan.title }}</span>
+                </router-link>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
@@ -98,8 +104,6 @@ export default {
         .get('https://open-devos-api.herokuapp.com/plans')
         .then(response => {
           this.recentPlans.push(...response.data.plans);
-
-          console.log(this.recentPlans);
         })
         .catch(error => {
           console.log(error);
