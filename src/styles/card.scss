@@ -1,5 +1,4 @@
-.single-card-wrapper {
-}
+@import "./variables.scss";
 
 .card {
   padding: 42px;
@@ -7,4 +6,44 @@
   -webkit-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
   box-shadow: 6px 6px 40px 2px rgba(0, 0, 0, 0.2);
+
+  .plan-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 30px;
+
+    border-bottom: 1px $off-white solid;
+
+    .right-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 15px;
+
+      i {
+        font-size: 2.5em;
+      }
+    }
+
+    .left-column {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-gap: 10px;
+
+      .topic {
+        color: $lightgray;
+        font-weight: 900;
+      }
+
+      .plan-details span {
+        margin-right: 20px;
+      }
+
+      .plan-detail-item {
+        color: $lightgray;
+        font-size: 0.8em;
+      }
+    }
+  }
 }

@@ -41,9 +41,38 @@
             <div class="plan-list-wrapper">
 
               <div v-for="plan in recentPlans" :key="plan.id" class="plan-list-item">
-                <router-link :to="{ name: 'PlanDetail', params: { slug: plan.slug } }">
-                  <span class="title">{{ plan.title }}</span>
-                </router-link>
+                <div class="left-column">
+                  <div class="link">
+                    <router-link :to="{ name: 'PlanDetail', params: { slug: plan.slug } }">
+                      <span class="title">{{ plan.title }}</span>
+                    </router-link>
+                  </div>
+
+                  <div class="plan-details">
+                    <span class="topic">
+                      {{ plan.topic.title }}
+                    </span>
+
+                    <span class="plan-detail-item">
+                      Last published {{ formatDate(plan.last_published) }}
+                    </span>
+
+                    <span class="plan-detail-item">
+                      {{ plan.devos.length }} lessons
+                    </span>
+                  </div>
+                </div>
+
+                <div class="right-column">
+                  <router-link :to="{ name: 'PlanDetail', params: { slug: plan.slug } }">
+                    <i class="far fa-bookmark"></i>
+                  </router-link>
+
+                  <router-link :to="{ name: 'PlanDetail', params: { slug: plan.slug } }">
+                    <i class="far fa-play-circle"></i>
+                  </router-link>
+                </div>
+
               </div>
 
             </div>
@@ -57,6 +86,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import axios from 'axios';
+import moment from "moment";
 
 export default {
   name: 'Homepage',
@@ -89,6 +119,9 @@ export default {
     }
   },
   methods: {
+    formatDate(date) {
+      return moment(date).fromNow();
+    },
     getRandomPlans() {
       axios
         .get('https://open-devos-api.herokuapp.com/random_plans')
@@ -104,6 +137,7 @@ export default {
         .get('https://open-devos-api.herokuapp.com/plans')
         .then(response => {
           this.recentPlans.push(...response.data.plans);
+          console.log(this.recentPlans);
         })
         .catch(error => {
           console.log(error);
