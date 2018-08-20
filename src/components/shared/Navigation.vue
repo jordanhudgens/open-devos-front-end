@@ -37,6 +37,12 @@
           </span>
         </router-link>
 
+        <router-link v-if="currentUser" :to="{ name: 'Bookmarks' }" class="link">
+          <span @click="toggleNav">
+            <i class="navIcon fas fa-bookmark"></i> Bookmarks
+          </span>
+        </router-link>
+
         <router-link v-if="currentUser" :to="{ name: 'Publish' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-plus-square"></i> Publish
