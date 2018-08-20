@@ -12,6 +12,7 @@ import Publish from "@/components/publishing/Publish";
 import Logout from "@/components/auth/Logout";
 import PlanDetail from "@/components/plans/PlanDetail";
 import DevoDetail from "@/components/devos/DevoDetail";
+import Bookmarks from "@/components/Bookmarks";
 import { mapGetters } from "vuex";
 import store from "@/store";
 import VueAnalytics from "vue-analytics";
@@ -76,6 +77,11 @@ const router = new Router({
       path: "/profile/:user_slug",
       name: "Profile",
       component: Profile
+    },
+    {
+      path: "/bookmarks",
+      name: "Bookmarks",
+      component: Bookmarks
     },
     {
       path: "/publish",
