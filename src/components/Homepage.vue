@@ -98,6 +98,7 @@ export default {
 
     this.getRandomPlans();
     this.getRecentPlans();
+    this.getBookmarks();
 
     if (this.currentUser) {
       console.log('currentUser', this.currentUser);
@@ -115,10 +116,27 @@ export default {
         currentDevo: null
       },
       randomPlans: [],
-      recentPlans: []
+      recentPlans: [],
+      bookmarks: []
     }
   },
   methods: {
+    getBookmarks() {
+      axios
+        .get(`https://open-devos-api.herokuapp.com/bookmarks?user_id=${this.currentUser.id}`,
+        {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token'),
+          }
+        })
+        .then(response => {
+          this.bookmarks.push(...response.data.bookmarks);
+          console.log('this.bookmarks', this.bookmarks);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     addBookmark(id) {
       console.log("clicked...", id);
       axios
@@ -136,8 +154,9 @@ export default {
         })
         .then(response => {
           // this.responseMessage = 'Your devo has been published!';
+          this.bookmarks.push(...response.data.bookmark);
 
-          console.log(response.data);
+          console.log(this.bookmarks);
           return response.data;
         })
         .catch(error => {
