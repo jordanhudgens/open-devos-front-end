@@ -64,9 +64,9 @@
                 </div>
 
                 <div class="right-column">
-                  <router-link :to="{ name: 'PlanDetail', params: { slug: plan.slug } }">
+                  <a class="vueLink" v-on:click="addBookmark(plan.id)">
                     <i class="far fa-bookmark"></i>
-                  </router-link>
+                  </a>
 
                   <router-link :to="{ name: 'PlanDetail', params: { slug: plan.slug } }">
                     <i class="far fa-play-circle"></i>
@@ -119,6 +119,33 @@ export default {
     }
   },
   methods: {
+    addBookmark(id) {
+      console.log("clicked...", id);
+      axios
+        .post("https://open-devos-api.herokuapp.com/bookmarks",
+        {
+          'bookmark': {
+            'plan_id': id,
+            'user_id': this.currentUser.id
+          }
+        },
+        {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token'),
+          }
+        })
+        .then(response => {
+          // this.responseMessage = 'Your devo has been published!';
+
+          console.log(response.data);
+          return response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          // this.responseMessage = 'There was an error submitting the form, make sure you filled out all required fields.';
+          // this.errorSubmittingDevo = true;
+        })
+    },
     formatDate(date) {
       return moment(date).fromNow();
     },
