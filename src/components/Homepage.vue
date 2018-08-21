@@ -64,8 +64,9 @@
                 </div>
 
                 <div class="right-column">
-                  <a class="vueLink" v-on:click="addBookmark(plan.id)">
-                    <i class="far fa-bookmark"></i>
+                  <a class="vueLink" v-on:click="addBookmark($event, plan.id)">
+                    <i v-if="bookmarkPlanIds.includes(plan.id)" class="fas fa-bookmark"></i>
+                    <i v-else class="far fa-bookmark"></i>
                   </a>
 
                   <router-link :to="{ name: 'PlanDetail', params: { slug: plan.slug } }">
@@ -117,7 +118,7 @@ export default {
       },
       randomPlans: [],
       recentPlans: [],
-      bookmarks: []
+      bookmarkPlanIds: []
     }
   },
   methods: {
@@ -130,15 +131,15 @@ export default {
           }
         })
         .then(response => {
-          this.bookmarks.push(...response.data.bookmarks);
-          console.log('this.bookmarks', this.bookmarks);
+          response.data.bookmarks.forEach(bookmark => {
+            this.bookmarkPlanIds.push(bookmark.plan.id)
+          });
         })
         .catch(error => {
           console.log(error);
         });
     },
-    addBookmark(id) {
-      console.log("clicked...", id);
+    addBookmark(e, id) {
       axios
         .post("https://open-devos-api.herokuapp.com/bookmarks",
         {
@@ -153,8 +154,8 @@ export default {
           }
         })
         .then(response => {
-          // this.responseMessage = 'Your devo has been published!';
-          this.bookmarks.push(...response.data.bookmark);
+          this.bookmarkPlanIds.push(response.data.bookmark.plan.id);
+          e.target.className = "fas fa-bookmark";
 
           console.log(this.bookmarks);
           return response.data;
