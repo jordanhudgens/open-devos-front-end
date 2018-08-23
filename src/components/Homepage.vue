@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="right-column">
-                  <a class="vueLink" v-on:click="addBookmark($event, plan.id)">
+                  <a class="vueLink" v-on:click="handleBookmarkClick($event, plan.id)">
                     <i v-if="bookmarkPlanIds.includes(plan.id)" class="fas fa-bookmark"></i>
                     <i v-else class="far fa-bookmark"></i>
                   </a>
@@ -118,10 +118,24 @@ export default {
       },
       randomPlans: [],
       recentPlans: [],
-      bookmarkPlanIds: []
+      bookmarkPlanIds: [],
+      planIdBookmarks: []
     }
   },
   methods: {
+    handleBookmarkClick(e, planId) {
+      if (this.planIdBookmarks.length === 0) {
+        this.addBookmark(e, planId);
+      }
+
+      this.planIdBookmarks.forEach(el => {
+        if (el.plan_id === planId) {
+          this.removeBookmark(e, el.bookmark_id);
+        } else {
+          this.addBookmark(e, planId);
+        }
+      })
+    },
     getBookmarks() {
       axios
         .get(`https://open-devos-api.herokuapp.com/bookmarks?user_id=${this.currentUser.id}`,
@@ -131,9 +145,13 @@ export default {
           }
         })
         .then(response => {
+          this.planIdBookmarks = response.data.bookmarks.map(bookmark => ({ plan_id: bookmark.plan.id, bookmark_id: bookmark.id }));
+
           response.data.bookmarks.forEach(bookmark => {
-            this.bookmarkPlanIds.push(bookmark.plan.id)
+            this.bookmarkPlanIds.push(bookmark.plan.id);
           });
+
+          console.log('Initial bookmarks with plan ids', this.planIdBookmarks);
         })
         .catch(error => {
           console.log(error);
@@ -157,13 +175,35 @@ export default {
           this.bookmarkPlanIds.push(response.data.bookmark.plan.id);
           e.target.className = "fas fa-bookmark";
 
-          console.log(this.bookmarks);
           return response.data;
         })
         .catch(error => {
           console.log(error);
           // this.responseMessage = 'There was an error submitting the form, make sure you filled out all required fields.';
           // this.errorSubmittingDevo = true;
+        })
+    },
+    removeBookmark(e, id) {
+      axios
+        .delete(`https://open-devos-api.herokuapp.com/bookmarks/${id}`,
+        {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          let i = this.bookmarkPlanIds.indexOf(id);
+
+          if (i != -1) {
+            this.bookmarkPlanIds.splice(i, 1);
+          }
+
+          e.target.className = "far fa-bookmark";
+          return response.data;
+        })
+        .catch(error => {
+          console.log(error);
         })
     },
     formatDate(date) {
