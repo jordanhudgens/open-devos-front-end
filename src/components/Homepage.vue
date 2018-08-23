@@ -65,7 +65,7 @@
 
                 <div class="right-column">
                   <a class="vueLink" v-on:click="handleBookmarkClick($event, plan.id)">
-                    <i v-if="bookmarkPlanIds.includes(plan.id)" class="fas fa-bookmark"></i>
+                    <i v-if="planIdBookmarks.map(bookmark => bookmark.plan_id).includes(plan.id)" class="fas fa-bookmark"></i>
                     <i v-else class="far fa-bookmark"></i>
                   </a>
 
@@ -118,13 +118,12 @@ export default {
       },
       randomPlans: [],
       recentPlans: [],
-      bookmarkPlanIds: [],
       planIdBookmarks: []
     }
   },
   methods: {
     handleBookmarkClick(e, planId) {
-      if (this.bookmarkPlanIds.length === 0) {
+      if (this.planIdBookmarks.length === 0) {
         console.log('handle bookmark from iniside guard', e, planId);
         this.addBookmark(e, planId);
       }
@@ -154,12 +153,6 @@ export default {
         })
         .then(response => {
           this.planIdBookmarks = response.data.bookmarks.map(bookmark => ({ plan_id: bookmark.plan.id, bookmark_id: bookmark.id }));
-
-          response.data.bookmarks.forEach(bookmark => {
-            this.bookmarkPlanIds.push(bookmark.plan.id);
-          });
-
-          console.log('Initial bookmarks with plan ids', this.planIdBookmarks);
         })
         .catch(error => {
           console.log(error);
@@ -180,7 +173,6 @@ export default {
           }
         })
         .then(response => {
-          this.bookmarkPlanIds.push(response.data.bookmark.plan.id);
           this.planIdBookmarks.push({ plan_id: response.data.bookmark.plan.id, bookmark_id: response.data.bookmark.id });
           e.target.className = "fas fa-bookmark";
 
@@ -202,12 +194,6 @@ export default {
           }
         })
         .then(response => {
-          let i = this.bookmarkPlanIds.indexOf(id);
-
-          if (i != -1) {
-            this.bookmarkPlanIds.splice(i, 1);
-          }
-
           this.planIdBookmarks.forEach(planIdBookmark => {
             if (planIdBookmark.bookmark_id === id) {
               let i = this.planIdBookmarks.indexOf(planIdBookmark);
