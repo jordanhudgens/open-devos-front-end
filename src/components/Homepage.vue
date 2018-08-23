@@ -124,17 +124,25 @@ export default {
   },
   methods: {
     handleBookmarkClick(e, planId) {
-      if (this.planIdBookmarks.length === 0) {
+      if (this.bookmarkPlanIds.length === 0) {
+        console.log('handle bookmark from iniside guard', e, planId);
         this.addBookmark(e, planId);
       }
 
-      this.planIdBookmarks.forEach(el => {
-        if (el.plan_id === planId) {
-          this.removeBookmark(e, el.bookmark_id);
-        } else {
-          this.addBookmark(e, planId);
-        }
-      })
+      if (e.target.className === "fas fa-bookmark") {
+        let bookmarkId = null;
+
+        this.planIdBookmarks.forEach(planIdBookmark => {
+          if (planIdBookmark.plan_id === planId) {
+            bookmarkId = planIdBookmark.bookmark_id;
+          }
+        })
+
+        this.removeBookmark(e, bookmarkId);
+      } else {
+        this.addBookmark(e, planId);
+      }
+
     },
     getBookmarks() {
       axios
@@ -173,6 +181,7 @@ export default {
         })
         .then(response => {
           this.bookmarkPlanIds.push(response.data.bookmark.plan.id);
+          this.planIdBookmarks.push({ plan_id: response.data.bookmark.plan.id, bookmark_id: response.data.bookmark.id });
           e.target.className = "fas fa-bookmark";
 
           return response.data;
@@ -198,6 +207,15 @@ export default {
           if (i != -1) {
             this.bookmarkPlanIds.splice(i, 1);
           }
+
+          this.planIdBookmarks.forEach(planIdBookmark => {
+            if (planIdBookmark.bookmark_id === id) {
+              let i = this.planIdBookmarks.indexOf(planIdBookmark);
+              if (i != -1) {
+                this.planIdBookmarks.splice(i, 1);
+              }
+            }
+          })
 
           e.target.className = "far fa-bookmark";
           return response.data;
