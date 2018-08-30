@@ -198,6 +198,7 @@ export default {
       this.showForm = false;
     },
     addToDevos(devo) {
+      console.log('new devos coming through!', devo);
       this.devos.push(devo);
       this.showForm = false;
       this.showNewDevoButton = true;

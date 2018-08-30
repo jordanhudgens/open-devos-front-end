@@ -98,7 +98,6 @@ export default {
 
       formData.append('devo[title]', this.devo.title);
       formData.append('devo[content]', this.devo.content);
-      formData.append('devo[position]', 5);
       formData.append('devo[plan_id]', this.planId);
 
       if (this.devo.status) {
