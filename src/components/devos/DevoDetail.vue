@@ -54,4 +54,5 @@ export default {
 
 <style lang="scss">
 @import '../../styles/devo_detail.scss';
+@import '../../styles/media-queries.scss';
 </style>
