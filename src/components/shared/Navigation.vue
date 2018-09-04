@@ -78,6 +78,9 @@ export default {
       ]
     }
   },
+  beforeMount() {
+    console.log('current user', this.currentUser);
+  },
   methods: {
     navLinkClicked() {
       console.log('nav link clicked');
