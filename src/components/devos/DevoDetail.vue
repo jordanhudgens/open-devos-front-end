@@ -66,6 +66,12 @@ export default {
         .then(response => {
           // this.responseMessage = 'Your devo has been published!';
           console.log('Response data', response.data);
+
+          this.$router.push({
+            name: "PlanDetail",
+            params: { slug: response.data.plan.slug }
+          });
+
           return response.data;
         })
         .catch(error => {
