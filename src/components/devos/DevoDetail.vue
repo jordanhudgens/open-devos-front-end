@@ -4,7 +4,8 @@
       <h1>{{ devo.name }}</h1>
 
       <div class="mark-completed-wrapper">
-        <button @click="markCompleted(devo.id)" class="btn">Mark Completed</button>
+        <button v-if="!devoCompletions.includes(devo.id)" @click="markCompleted(devo.id)" class="btn">Mark Completed</button>
+        <button v-else @click="markNotCompleted(devo.id)" class="btn-warning">Devo Completed</button>
       </div>
     </div>
 
