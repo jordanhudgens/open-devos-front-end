@@ -73,6 +73,27 @@ export default {
           // this.responseMessage = 'There was an error submitting the form, make sure you filled out all required fields.';
         })
     },
+    markNotCompleted(devo_id) {
+      axios
+        .delete(`https://open-devos-api.herokuapp.com/devo_completions/${devo_id}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => {
+          // this.errorDeletingPlan = false;
+          // this.planDeletedSuccessfully = true;
+          this.devoCompletions = this.devoCompletions.filter(el => el !== devo_id);
+          // this.planResponseMessage = "The plan was successfully deleted";
+          return response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          // this.planResponseMessage = "There was an error deleting the plan";
+          // this.errorDeletingPlan = true;
+        });
+    },
     getUserDevoCompletions() {
       if (this.currentUser) {
         axios

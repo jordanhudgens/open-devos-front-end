@@ -27,8 +27,7 @@ body {
   font-size: 1.1em;
   transition: 0.5s;
 
-  &:active,
-  &:focus {
+  &:active {
     background-color: $blue;
     border: $blue 1px solid;
     -webkit-box-shadow: 7px 7px 34px 1px rgba(0, 0, 0, 0.38);
@@ -47,8 +46,7 @@ body {
   font-size: 1.1em;
   transition: 0.5s;
 
-  &:active,
-  &:focus {
+  &:active {
     background-color: $darkred;
     border: $darkred 1px solid;
     -webkit-box-shadow: 7px 7px 34px 1px rgba(0, 0, 0, 0.38);
