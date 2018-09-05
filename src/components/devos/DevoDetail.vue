@@ -19,29 +19,78 @@
 <script>
 import axios from 'axios';
 import sanitizeHtml from 'sanitize-html';
+import { mapGetters } from "vuex";
 
 export default {
   name: 'DevoDetail',
   data() {
     return {
       devo: {
+        id: null,
         name: null,
         slug: this.$route.params.devo_slug,
         content: null
       },
+      devoCompletions: [],
       devoApiUrl: 'https://open-devos-api.herokuapp.com/devos',
     }
   },
   beforeMount() {
     this.getDevoDetails();
+    this.getUserDevoCompletions();
   },
   beforeRouteUpdate(to, from, next) {
     this.devo.slug = this.$route.params.devo_slug
     next()
   },
+  computed: {
+    ...mapGetters({ currentUser: "currentUser" })
+  },
   methods: {
     markCompleted(devo_id) {
       console.log('Marking completedl...', devo_id);
+      axios
+        .post("https://open-devos-api.herokuapp.com/devo_completions",
+        {
+          devo_completion: {
+            devo_id: this.devo.id,
+            user_id: this.currentUser.id
+          }
+        },
+        {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token'),
+          }
+        })
+        .then(response => {
+          // this.responseMessage = 'Your devo has been published!';
+          console.log('Response data', response.data);
+          return response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          // this.responseMessage = 'There was an error submitting the form, make sure you filled out all required fields.';
+        })
+    },
+    getUserDevoCompletions() {
+      if (this.currentUser) {
+        axios
+          .get(`https://open-devos-api.herokuapp.com/devo_completions?user_id=${this.currentUser.id}`,
+          {
+            headers: {
+              "Authorization": 'Bearer ' + localStorage.getItem('token'),
+            }
+          })
+          .then(response => {
+            console.log(response.data);
+            this.devoCompletions.push(...response.data);
+            console.log(this.devoCompletions);
+            return response.data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     },
     getDevoDetails() {
       axios
