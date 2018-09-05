@@ -1,6 +1,12 @@
 <template>
   <div class="devo-detail-wrapper">
-    <h1>{{ devo.name }}</h1>
+    <div class="heading">
+      <h1>{{ devo.name }}</h1>
+
+      <div class="mark-completed-wrapper">
+        <button @click="markCompleted(devo.id)" class="btn">Mark Completed</button>
+      </div>
+    </div>
 
     <div v-if="!devo.name" class="spinner-wrapper">
       <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
@@ -34,10 +40,14 @@ export default {
     next()
   },
   methods: {
+    markCompleted(devo_id) {
+      console.log('Marking completedl...', devo_id);
+    },
     getDevoDetails() {
       axios
         .get(`${this.devoApiUrl}/${this.devo.slug}`)
         .then(response => {
+          this.devo.id = response.data.devo.id;
           this.devo.name = response.data.devo.title;
           this.devo.content = sanitizeHtml(response.data.devo.content, {
             allowedTags: sanitizeHtml.defaults.allowedTags.concat(['h1', 'h2', 'img', 'div', 'a']),
