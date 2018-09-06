@@ -4,8 +4,13 @@
       <h1>{{ devo.name }}</h1>
 
       <div class="mark-completed-wrapper">
-        <button v-if="!devoCompletions.includes(devo.id)" @click="markCompleted(devo.id)" class="btn">Mark Completed</button>
-        <button v-else @click="markNotCompleted(devo.id)" class="btn-warning">Devo Completed</button>
+        <button v-if="currentUser && !devoCompletions.includes(devo.id)" @click="markCompleted(devo.id)" class="btn">Mark Completed</button>
+        <button v-else-if="currentUser && devoCompletions.includes(devo.id)" @click="markNotCompleted(devo.id)" class="btn-warning">Devo Completed</button>
+
+        <pre>{{devo}}</pre>
+        <!-- <router-link :to="{ name: 'PlanDetail', params: { slug: devo.plan.slug } }" class="">
+            View plan: TODO
+          </router-link> -->
       </div>
     </div>
 

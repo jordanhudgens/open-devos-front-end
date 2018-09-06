@@ -3,6 +3,12 @@
 .devo-detail-wrapper {
   padding-left: 80px;
   padding-right: 80px;
+
+  .heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 .returned-content {
