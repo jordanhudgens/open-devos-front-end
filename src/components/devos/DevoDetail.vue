@@ -1,23 +1,25 @@
 <template>
   <div class="devo-detail-wrapper">
-    <div class="heading">
-      <h1>{{ devo.name }}</h1>
+    <div class="devo-detail-content">
+      <div class="heading">
+        <h1>{{ devo.name }}</h1>
 
-      <div class="mark-completed-wrapper">
-        <button v-if="currentUser && !devoCompletions.includes(devo.id)" @click="markCompleted(devo.id)" class="btn">Mark Completed</button>
-        <button v-else-if="currentUser && devoCompletions.includes(devo.id)" @click="markNotCompleted(devo.id)" class="btn-warning">Devo Completed</button>
+        <div class="mark-completed-wrapper">
+          <button v-if="currentUser && !devoCompletions.includes(devo.id)" @click="markCompleted(devo.id)" class="btn">Mark Completed</button>
+          <button v-else-if="currentUser && devoCompletions.includes(devo.id)" @click="markNotCompleted(devo.id)" class="btn-warning">Devo Completed</button>
 
-        <router-link :to="{ name: 'PlanDetail', params: { slug: devo.plan.slug } }" class="">
-          {{ devo.plan.title }}
-        </router-link>
+          <router-link :to="{ name: 'PlanDetail', params: { slug: devo.plan.slug } }" class="">
+            {{ devo.plan.title }}
+          </router-link>
+        </div>
       </div>
-    </div>
 
-    <div v-if="!devo.name" class="spinner-wrapper">
-      <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
-    </div>
+      <div v-if="!devo.name" class="spinner-wrapper">
+        <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
+      </div>
 
-    <div class="returned-content" v-html="devo.content"></div>
+      <div class="returned-content" v-html="devo.content"></div>
+    </div>
   </div>
 </template>
 

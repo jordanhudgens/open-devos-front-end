@@ -3,6 +3,12 @@
 .devo-detail-wrapper {
   padding-left: 80px;
   padding-right: 80px;
+  display: flex;
+  justify-content: center;
+
+  .devo-detail-content {
+    width: 800px;
+  }
 
   .heading {
     margin-top: 60px;
