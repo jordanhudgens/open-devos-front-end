@@ -7,10 +7,9 @@
         <button v-if="currentUser && !devoCompletions.includes(devo.id)" @click="markCompleted(devo.id)" class="btn">Mark Completed</button>
         <button v-else-if="currentUser && devoCompletions.includes(devo.id)" @click="markNotCompleted(devo.id)" class="btn-warning">Devo Completed</button>
 
-        <pre>{{devo}}</pre>
-        <!-- <router-link :to="{ name: 'PlanDetail', params: { slug: devo.plan.slug } }" class="">
-            View plan: TODO
-          </router-link> -->
+        <router-link :to="{ name: 'PlanDetail', params: { slug: devo.plan.slug } }" class="">
+          {{ devo.plan.title }}
+        </router-link>
       </div>
     </div>
 
@@ -35,7 +34,8 @@ export default {
         id: null,
         name: null,
         slug: this.$route.params.devo_slug,
-        content: null
+        content: null,
+        plan: null
       },
       devoCompletions: [],
       devoApiUrl: 'https://open-devos-api.herokuapp.com/devos',
@@ -131,6 +131,7 @@ export default {
         .then(response => {
           this.devo.id = response.data.devo.id;
           this.devo.name = response.data.devo.title;
+          this.devo.plan = response.data.devo.plan;
           this.devo.content = sanitizeHtml(response.data.devo.content, {
             allowedTags: sanitizeHtml.defaults.allowedTags.concat(['h1', 'h2', 'img', 'div', 'a']),
             allowedSchemes: ['data', 'http']
