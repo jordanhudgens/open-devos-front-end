@@ -88,6 +88,7 @@
 import { mapGetters } from 'vuex';
 import axios from 'axios';
 import moment from "moment";
+import loggedIn from '@/mixins/loggedIn';
 
 export default {
   name: 'Homepage',
@@ -98,13 +99,13 @@ export default {
     this.getRandomPlans();
     this.getRecentPlans();
 
-    if (this.loggedIn()) {
-      this.getLastPlan();
-      this.getBookmarks();
-      this.userLoggedIn = true;
-    } else {
-      this.userLoggedIn = false;
-    }
+    // if (loggedIn()) {
+    //   this.getLastPlan();
+    //   this.getBookmarks();
+    //   this.userLoggedIn = true;
+    // } else {
+    //   this.userLoggedIn = false;
+    // }
   },
   data() {
     return {

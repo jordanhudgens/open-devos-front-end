@@ -14,34 +14,6 @@ import "../node_modules/vue-wysiwyg/dist/vueWysiwyg.css";
 
 Vue.config.productionTip = false;
 
-Vue.mixin({
-  methods: {
-    loggedIn() {
-      if (localStorage.getItem("token")) {
-        axios
-          .get("https://open-devos-api.herokuapp.com/logged_in", {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token")
-            }
-          })
-          .then(response => {
-            console.log("from loggedIn", response.data.logged_in);
-            if (response.data.logged_in === true) {
-              return true;
-            } else {
-              return false;
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      } else {
-        return false;
-      }
-    }
-  }
-});
-
 /* eslint-disable no-new */
 new Vue({
   el: "#app",

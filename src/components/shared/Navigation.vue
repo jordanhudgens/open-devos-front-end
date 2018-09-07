@@ -61,6 +61,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import loggedIn from '@/mixins/loggedIn';
 
 export default {
   name: 'Navigation',
@@ -68,7 +69,9 @@ export default {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   mounted() {
-    if (this.loggedIn()) {
+    console.log('logged in el', loggedIn());
+
+    if (loggedIn()) {
       this.userLoggedIn = true;
     } else {
       this.userLoggedIn = false;
