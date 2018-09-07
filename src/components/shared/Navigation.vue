@@ -80,6 +80,7 @@ export default {
       query: null,
       searchPlaceholder: `\uf002 Search Devos`,
       showMobileNavBar: false,
+      userLoggedIn: null,
       navLinks: [
         { linkName: 'Categories', linkIcon: 'navIcon fas fa-map-signs' },
         { linkName: 'Popular', linkIcon: 'navIcon fas fa-chart-line' },
