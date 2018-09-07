@@ -6,7 +6,7 @@ import App from "./App";
 import router from "./router";
 import store from "@/store";
 import wysiwyg from "vue-wysiwyg";
-import axios from "axios";
+import axios from "@/data/vue-axios";
 Vue.use(wysiwyg, {});
 Vue.use(VueSweetalert2);
 

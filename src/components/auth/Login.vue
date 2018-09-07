@@ -21,7 +21,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import axios from "@/data/vue-axios";
 
 export default {
   name: 'Login',

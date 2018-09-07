@@ -69,8 +69,6 @@ export default {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   mounted() {
-    console.log('logged in el', loggedIn());
-
     if (loggedIn()) {
       this.userLoggedIn = true;
     } else {

@@ -11,13 +11,9 @@ const loggedIn = () => {
         }
       })
       .then(response => {
-        console.log("from loggedIn", response.data.logged_in);
         if (response.data.logged_in === true) {
-          console.log("from trueeeeee");
-
           return true;
         } else {
-          console.log("from falseeeee");
           return false;
         }
       })
@@ -26,7 +22,6 @@ const loggedIn = () => {
         console.log(error);
       });
   } else {
-    console.log("from falseeeee");
     return false;
   }
 

@@ -99,13 +99,13 @@ export default {
     this.getRandomPlans();
     this.getRecentPlans();
 
-    // if (loggedIn()) {
-    //   this.getLastPlan();
-    //   this.getBookmarks();
-    //   this.userLoggedIn = true;
-    // } else {
-    //   this.userLoggedIn = false;
-    // }
+    if (loggedIn()) {
+      this.getLastPlan();
+      this.getBookmarks();
+      this.userLoggedIn = true;
+    } else {
+      this.userLoggedIn = false;
+    }
   },
   data() {
     return {
