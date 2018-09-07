@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="right-column">
-                  <a class="vueLink" v-on:click="handleBookmarkClick($event, plan.id)">
+                  <a class="vueLink" v-if="userLoggedIn" v-on:click="handleBookmarkClick($event, plan.id)">
                     <i v-if="planIdBookmarks.map(bookmark => bookmark.plan_id).includes(plan.id)" class="fas fa-bookmark"></i>
                     <i v-else class="far fa-bookmark"></i>
                   </a>
@@ -95,17 +95,13 @@ export default {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   mounted() {
-    console.log('Mounted');
-
     this.getRandomPlans();
     this.getRecentPlans();
-    this.getBookmarks();
 
     if (this.loggedIn()) {
-      console.log('currentUser', this.currentUser);
       this.getLastPlan();
-    } else {
-      console.log("not logged in");
+      this.getBookmarks();
+      this.userLoggedIn = true;
     }
   },
   data() {
@@ -118,13 +114,13 @@ export default {
       },
       randomPlans: [],
       recentPlans: [],
-      planIdBookmarks: []
+      planIdBookmarks: [],
+      userLoggedIn: null
     }
   },
   methods: {
     handleBookmarkClick(e, planId) {
       if (this.planIdBookmarks.length === 0) {
-        console.log('handle bookmark from iniside guard', e, planId);
         this.addBookmark(e, planId);
       }
 
