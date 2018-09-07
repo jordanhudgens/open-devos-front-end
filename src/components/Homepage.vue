@@ -101,7 +101,7 @@ export default {
     this.getRecentPlans();
     this.getBookmarks();
 
-    if (this.currentUser) {
+    if (this.loggedIn()) {
       console.log('currentUser', this.currentUser);
       this.getLastPlan();
     } else {
