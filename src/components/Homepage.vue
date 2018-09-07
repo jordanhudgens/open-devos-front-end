@@ -247,8 +247,6 @@ export default {
         })
         .then(response => {
           if (response.data.plan_assignment) {
-            console.log('plannnnns')
-            console.log('plan_assignment', response.data.plan_assignment)
             const { title, slug } = response.data.plan_assignment.plan;
             const devo_count = response.data.plan_assignment.devo_count;
             const current_devo = response.data.plan_assignment.devo;
