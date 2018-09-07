@@ -102,6 +102,8 @@ export default {
       this.getLastPlan();
       this.getBookmarks();
       this.userLoggedIn = true;
+    } else {
+      this.userLoggedIn = false;
     }
   },
   data() {
