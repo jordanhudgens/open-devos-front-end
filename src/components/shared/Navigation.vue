@@ -19,37 +19,37 @@
           </span>
         </router-link>
 
-        <router-link v-if="!userLoggedIn" :to="{ name: 'Login' }" class="link">
+        <router-link v-if="!userLoggedIn || !currentUser" :to="{ name: 'Login' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-sign-in-alt"></i> Login
           </span>
         </router-link>
 
-        <router-link v-if="!userLoggedIn" :to="{ name: 'Register' }" class="link">
+        <router-link v-if="!userLoggedIn || !currentUser" :to="{ name: 'Register' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-user-plus"></i> Register
           </span>
         </router-link>
 
-        <router-link v-if="userLoggedIn" :to="`/profile/${currentUser.profile_slug}`" class="link">
+        <router-link v-if="userLoggedIn && currentUser" :to="`/profile/${currentUser.profile_slug}`" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-user"></i> Profile
           </span>
         </router-link>
 
-        <router-link v-if="userLoggedIn" :to="{ name: 'Bookmarks' }" class="link">
+        <router-link v-if="userLoggedIn && currentUser" :to="{ name: 'Bookmarks' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-bookmark"></i> Bookmarks
           </span>
         </router-link>
 
-        <router-link v-if="userLoggedIn" :to="{ name: 'Publish' }" class="link">
+        <router-link v-if="userLoggedIn && currentUser" :to="{ name: 'Publish' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-plus-square"></i> Publish
           </span>
         </router-link>
 
-        <router-link v-if="userLoggedIn" :to="{ name: 'Logout' }" class="link">
+        <router-link v-if="userLoggedIn && currentUser" :to="{ name: 'Logout' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-sign-out-alt"></i> Logout
           </span>
@@ -80,7 +80,6 @@ export default {
       query: null,
       searchPlaceholder: `\uf002 Search Devos`,
       showMobileNavBar: false,
-      userLoggedIn: null,
       navLinks: [
         { linkName: 'Categories', linkIcon: 'navIcon fas fa-map-signs' },
         { linkName: 'Popular', linkIcon: 'navIcon fas fa-chart-line' },
