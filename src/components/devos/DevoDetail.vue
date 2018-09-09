@@ -5,10 +5,10 @@
         <h1>{{ devo.name }}</h1>
 
         <div class="mark-completed-wrapper">
-          <button v-if="currentUser && !devoCompletions.includes(devo.id)" @click="markCompleted(devo.id)" class="btn">Mark Completed</button>
-          <button v-else-if="currentUser && devoCompletions.includes(devo.id)" @click="markNotCompleted(devo.id)" class="btn-warning">Devo Completed</button>
+          <button v-if="currentUser && !devoCompletions.includes(devo.id) && devo.plan" @click="markCompleted(devo.id)" class="btn">Mark Completed</button>
+          <button v-else-if="currentUser && devoCompletions.includes(devo.id) && devo.plan" @click="markNotCompleted(devo.id)" class="btn-warning">Devo Completed</button>
 
-          <router-link :to="{ name: 'PlanDetail', params: { slug: devo.plan.slug } }" class="">
+          <router-link v-if="devo.plan" :to="{ name: 'PlanDetail', params: { slug: devo.plan.slug } }" class="">
             {{ devo.plan.title }}
           </router-link>
         </div>
@@ -56,7 +56,6 @@ export default {
   },
   methods: {
     markCompleted(devo_id) {
-      console.log('Marking completedl...', devo_id);
       axios
         .post("https://open-devos-api.herokuapp.com/devo_completions",
         {
@@ -72,7 +71,6 @@ export default {
         })
         .then(response => {
           // this.responseMessage = 'Your devo has been published!';
-          console.log('Response data', response.data);
 
           this.$router.push({
             name: "PlanDetail",
@@ -117,9 +115,7 @@ export default {
             }
           })
           .then(response => {
-            console.log(response.data);
             this.devoCompletions.push(...response.data);
-            console.log(this.devoCompletions);
             return response.data;
           })
           .catch(error => {
