@@ -1,20 +1,7 @@
 <template>
   <div class="homepage">
 
-    <div v-if="lastPlan.title" class="notification">
-      <div class="left-column">
-        <div class="title">{{ lastPlan.title }}</div>
-
-        <div class="progress">
-          Lesson {{ lastPlan.currentDevo.position + 1 }} of {{ lastPlan.devoCount }}
-        </div>
-      </div>
-      <div class="right-column">
-        <router-link class="btn-clear" :to="{ name: 'DevoDetail', params: { devo_slug: lastPlan.currentDevo.slug } }">
-          Continue
-        </router-link>
-      </div>
-    </div>
+    <notification v-if="lastPlan.title" :title="lastPlan.title" :subtitle="`Lesson ${lastPlan.currentDevo.position + 1 } of ${lastPlan.devoCount}`" routeName="DevoDetail" :slug="lastPlan.currentDevo.slug" buttonText="Continue" />
 
     <div class="homepage-wrapper">
       <div class="left-column">
@@ -89,11 +76,15 @@ import { mapGetters } from 'vuex';
 import axios from 'axios';
 import moment from "moment";
 import loggedIn from '@/mixins/loggedIn';
+import Notification from '@/components/shared/Notification';
 
 export default {
   name: 'Homepage',
   computed: {
     ...mapGetters({ currentUser: 'currentUser' })
+  },
+  components: {
+    'notification': Notification
   },
   mounted() {
     this.getRandomPlans();
