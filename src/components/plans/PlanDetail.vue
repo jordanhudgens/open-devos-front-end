@@ -74,6 +74,7 @@ import { mapGetters } from 'vuex';
 import axios from 'axios';
 import DevoForm from '@/components/devos/DevoForm';
 import draggable from 'vuedraggable';
+import loggedIn from '@/mixins/loggedIn';
 
 export default {
   name: 'PlanDetail',
@@ -108,7 +109,9 @@ export default {
     this.getPlanDetails();
   },
   mounted() {
-    this.getCurrentUserPlans();
+    if (loggedIn()) {
+      this.getCurrentUserPlans();
+    }
   },
   beforeRouteUpdate(to, from, next) {
     this.plan.slug = this.$route.params.slug
@@ -152,8 +155,6 @@ export default {
           }
         })
         .then(response => {
-          console.log(response.data.plans);
-          console.log(this.plan.id);
           response.data.plans.forEach(plan => {
             if (plan.id === this.plan.id) {
               this.planStarted = true;
@@ -183,8 +184,6 @@ export default {
         .then(response => {
           this.planStarted = true;
           // this.responseMessage = 'Your devo has been published!';
-
-          console.log(response.data);
           return response.data;
         })
         .catch(error => {
@@ -198,7 +197,6 @@ export default {
       this.showForm = false;
     },
     addToDevos(devo) {
-      console.log('new devos coming through!', devo);
       this.devos.push(devo);
       this.showForm = false;
       this.showNewDevoButton = true;
@@ -280,7 +278,6 @@ export default {
           this.plan.owner = response.data.plan.user.id;
           this.devos.push(...response.data.plan.devos);
           this.devos = this.sortDevosByPosition(this.devos);
-          console.log(this.devos);
         })
         .catch(error => {
           console.log(error);
