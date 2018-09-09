@@ -1,5 +1,5 @@
 <template>
-  <div class="x">
+  <div class="homepage">
 
     <div v-if="lastPlan.title" class="notification">
       <div class="left-column">
