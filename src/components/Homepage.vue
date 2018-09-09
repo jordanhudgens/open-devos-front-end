@@ -218,7 +218,6 @@ export default {
         .get('https://open-devos-api.herokuapp.com/plans')
         .then(response => {
           this.recentPlans.push(...response.data.plans);
-          console.log(this.recentPlans);
         })
         .catch(error => {
           console.log(error);

@@ -3,6 +3,7 @@
     <div class="left-column">
       <div class="title">{{ title }}</div>
 
+      <!--https://snipcart.com/blog/vuejs-transitions-animations  -->
       <div class="progress">
         {{ subtitle }}
       </div>
