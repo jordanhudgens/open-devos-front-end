@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <draggable v-model="devos" @end="updatePosition">
+    <draggable v-model="devos" @end="updatePosition" v-if="ownerOnPage">
       <transition-group name="thumb-card-wrapper" class="thumb-card-wrapper">
         <div v-for="devo in devos" :key="devo.slug" class="animated-draggable-thumb-card" :id="devo.id">
           <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
@@ -47,7 +47,7 @@
               Updating...
             </div>
 
-            <div v-if="currentUser && currentUser.id === plan.owner" class='thumb-action-icons-wrapper'>
+            <div class='thumb-action-icons-wrapper'>
               <a @click.prevent="editDevo(devo)" href="#">
                 <i class="fas fa-pen-square"></i>
               </a>
@@ -60,6 +60,25 @@
         </div>
       </transition-group>
     </draggable>
+
+    <div class="thumb-card-wrapper" v-else>
+      <div v-for="devo in devos" :key="devo.slug" class="animated-draggable-thumb-card" :id="devo.id">
+        <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
+          <img v-if="devo.featured_image" :src="devo.featured_image" class="thumb-img">
+          <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img">
+        </router-link>
+
+        <div class="thumb-card">
+          <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
+            <span class="title">{{ devo.title }}</span>
+          </router-link>
+
+          <div v-if="positionsUpdated" class="dayCountDescription">
+            Day {{ devo.position + 1 }} of {{ devos.length }}
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div v-if="currentUser && currentUser.id === plan.owner" class="devo-form-wrapper">
       <button v-if="showNewDevoButton" @click="renderDevoForm" class="btn">Add a New Devo</button>
@@ -85,8 +104,7 @@ export default {
         summary: null,
         slug: this.$route.params.slug,
         id: null,
-        owner: null,
-        owner: null,
+        owner: null
       },
       planStarted: null,
       planApiUrl: 'https://open-devos-api.herokuapp.com/plans',
@@ -98,7 +116,8 @@ export default {
       devoToEdit: null,
       showNewDevoButton: true,
       devoFormKey: null,
-      positionsUpdated: true
+      positionsUpdated: true,
+      ownerOnPage: false
     }
   },
   components: {
@@ -278,6 +297,12 @@ export default {
           this.plan.owner = response.data.plan.user.id;
           this.devos.push(...response.data.plan.devos);
           this.devos = this.sortDevosByPosition(this.devos);
+
+          if (this.currentUser.id === this.plan.owner) {
+            this.ownerOnPage = true;
+          }
+
+          return response;
         })
         .catch(error => {
           console.log(error);
