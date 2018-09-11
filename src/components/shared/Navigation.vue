@@ -75,6 +75,15 @@ export default {
       this.userLoggedIn = false;
     }
   },
+  watch: {
+    '$route'(to, from) {
+      if (loggedIn()) {
+        this.userLoggedIn = true;
+      } else {
+        this.userLoggedIn = false;
+      }
+    }
+  },
   data() {
     return {
       query: null,
