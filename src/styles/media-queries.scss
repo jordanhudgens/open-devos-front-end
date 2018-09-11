@@ -14,9 +14,28 @@
     width: 100vw;
 
     .content-wrapper {
+      padding: 15px;
+
       .devo-detail-wrapper {
         padding-left: 0px !important;
         padding-right: 0px !important;
+
+        .devo-detail-content {
+          .heading {
+            flex-direction: column;
+            margin-top: 0px;
+            margin-bottom: 0px;
+
+            h1 {
+              order: 2;
+            }
+
+            .mark-completed-wrapper {
+              order: 1;
+              margin-bottom: 10px;
+            }
+          }
+        }
       }
     }
 
@@ -69,7 +88,7 @@
   }
 
   .plan-header-wrapper {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
 
     .right-column {
       order: 1;
