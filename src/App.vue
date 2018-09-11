@@ -30,4 +30,5 @@ export default {
 
 <style lang="scss">
 @import './styles/common.scss';
+@import './styles/media-queries.scss';
 </style>
