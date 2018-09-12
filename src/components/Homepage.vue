@@ -89,6 +89,7 @@ export default {
     this.getRandomPlans();
     this.getRecentPlans();
     this.loggedIn();
+    this.getAuthors();
 
     if (this.userLoggedIn) {
       this.getLastPlan();
@@ -106,7 +107,8 @@ export default {
       randomPlans: [],
       recentPlans: [],
       planIdBookmarks: [],
-      userLoggedIn: null
+      userLoggedIn: null,
+      authors: []
     }
   },
   methods: {
@@ -227,6 +229,16 @@ export default {
     formatDate(date) {
       return moment(date).fromNow();
     },
+    getAuthors() {
+      axios
+        .get('https://open-devos-api.herokuapp.com/authors')
+        .then(response => {
+          this.authors.push(...response.data.users);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     getRandomPlans() {
       axios
         .get('https://open-devos-api.herokuapp.com/random_plans')
@@ -248,9 +260,6 @@ export default {
         });
     },
     getLastPlan() {
-      // TODO
-      // Take care of situation where a user isn't logged in
-      // Possibly in the component mount lifecycle hook
       axios
         .get('https://open-devos-api.herokuapp.com/last-plan',
         {
