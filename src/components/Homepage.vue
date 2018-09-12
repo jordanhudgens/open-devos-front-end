@@ -75,7 +75,6 @@
 import { mapGetters } from 'vuex';
 import axios from 'axios';
 import moment from "moment";
-import loggedIn from '@/mixins/loggedIn';
 import Notification from '@/components/shared/Notification';
 
 export default {
@@ -89,13 +88,11 @@ export default {
   mounted() {
     this.getRandomPlans();
     this.getRecentPlans();
+    this.loggedIn();
 
-    if (loggedIn()) {
+    if (this.userLoggedIn) {
       this.getLastPlan();
       this.getBookmarks();
-      this.userLoggedIn = true;
-    } else {
-      this.userLoggedIn = false;
     }
   },
   data() {
@@ -113,6 +110,33 @@ export default {
     }
   },
   methods: {
+    loggedIn() {
+      if (localStorage.getItem("token")) {
+        axios
+          .get("https://open-devos-api.herokuapp.com/logged_in", {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token")
+            }
+          })
+          .then(response => {
+            if (response.data.logged_in === true) {
+              console.log(response.data);
+              this.userLoggedIn = true;
+              return true;
+            } else {
+              this.userLoggedIn = false;
+              return false;
+            }
+          })
+          .catch(error => {
+            this.userLoggedIn = false;
+            return false;
+          });
+      } else {
+        this.userLoggedIn = false;
+        return false;
+      }
+    },
     handleBookmarkClick(e, planId) {
       if (this.planIdBookmarks.length === 0) {
         this.addBookmark(e, planId);

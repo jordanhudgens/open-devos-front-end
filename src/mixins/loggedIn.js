@@ -1,10 +1,9 @@
 import axios from "axios";
 
 const loggedIn = () => {
-  let res;
-
+  var res;
   if (localStorage.getItem("token")) {
-    res = axios
+    axios
       .get("https://open-devos-api.herokuapp.com/logged_in", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
@@ -12,19 +11,28 @@ const loggedIn = () => {
       })
       .then(response => {
         if (response.data.logged_in === true) {
+          res = true;
+          console.log("1 ressss", res);
           return true;
         } else {
+          res = false;
+          console.log("2 ressss", res);
           return false;
         }
       })
       .catch(error => {
-        return false;
+        res = false;
+        console.log("3 ressss", res);
         console.log(error);
+        return false;
       });
   } else {
+    res = false;
+    console.log("4 ressss", res);
     return false;
   }
 
+  console.log("5 ressss", res);
   return res;
 };
 

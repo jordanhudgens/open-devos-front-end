@@ -19,37 +19,37 @@
           </span>
         </router-link>
 
-        <router-link v-if="!userLoggedIn || !currentUser" :to="{ name: 'Login' }" class="link">
+        <router-link v-if="!userLoggedIn" :to="{ name: 'Login' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-sign-in-alt"></i> Login
           </span>
         </router-link>
 
-        <router-link v-if="!userLoggedIn || !currentUser" :to="{ name: 'Register' }" class="link">
+        <router-link v-if="!userLoggedIn" :to="{ name: 'Register' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-user-plus"></i> Register
           </span>
         </router-link>
 
-        <router-link v-if="userLoggedIn && currentUser" :to="`/profile/${currentUser.profile_slug}`" class="link">
+        <router-link v-if="userLoggedIn" :to="`/profile/${currentUser.profile_slug}`" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-user"></i> Profile
           </span>
         </router-link>
 
-        <router-link v-if="userLoggedIn && currentUser" :to="{ name: 'Bookmarks' }" class="link">
+        <router-link v-if="userLoggedIn" :to="{ name: 'Bookmarks' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-bookmark"></i> Bookmarks
           </span>
         </router-link>
 
-        <router-link v-if="userLoggedIn && currentUser" :to="{ name: 'Publish' }" class="link">
+        <router-link v-if="userLoggedIn" :to="{ name: 'Publish' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-plus-square"></i> Publish
           </span>
         </router-link>
 
-        <router-link v-if="userLoggedIn && currentUser" :to="{ name: 'Logout' }" class="link">
+        <router-link v-if="userLoggedIn" :to="{ name: 'Logout' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-sign-out-alt"></i> Logout
           </span>
@@ -60,8 +60,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import loggedIn from '@/mixins/loggedIn';
+import { mapGetters } from 'vuex';
+import axios from 'axios';
+// import loggedIn from '@/mixins/loggedIn';
 
 export default {
   name: 'Navigation',
@@ -69,19 +70,11 @@ export default {
     ...mapGetters({ currentUser: 'currentUser' })
   },
   mounted() {
-    if (loggedIn()) {
-      this.userLoggedIn = true;
-    } else {
-      this.userLoggedIn = false;
-    }
+    this.loggedIn();
   },
   watch: {
     '$route'(to, from) {
-      if (loggedIn()) {
-        this.userLoggedIn = true;
-      } else {
-        this.userLoggedIn = false;
-      }
+      this.loggedIn();
     }
   },
   data() {
@@ -110,8 +103,35 @@ export default {
       } else {
         this.showMobileNavBar = !this.showMobileNavBar;
       }
+    },
+    loggedIn() {
+      if (localStorage.getItem("token")) {
+        axios
+          .get("https://open-devos-api.herokuapp.com/logged_in", {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token")
+            }
+          })
+          .then(response => {
+            if (response.data.logged_in === true) {
+              console.log(response.data);
+              this.userLoggedIn = true;
+              return true;
+            } else {
+              this.userLoggedIn = false;
+              return false;
+            }
+          })
+          .catch(error => {
+            this.userLoggedIn = false;
+            return false;
+          });
+      } else {
+        this.userLoggedIn = false;
+        return false;
+      }
     }
-  }
+  },
 }
 </script>
 
