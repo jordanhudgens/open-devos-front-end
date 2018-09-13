@@ -71,7 +71,13 @@
       <div class="right-column">
         <div class="authors-wrapper">
           <div v-for="author in authors" :key="author.id" class="author">
-            <pre>{{ author }}</pre>
+            <router-link :to="{ name: 'Profile', params: { user_slug: author.slug } }">
+              {{ author.full_name }}
+            </router-link>
+
+            <div class="author-plan-count">
+              {{ author.plans.length }} plans
+            </div>
           </div>
         </div>
       </div>
