@@ -1,5 +1,7 @@
 import axios from "axios";
 
+// TODO
+// Call resolve for promise
 const loggedIn = () => {
   var res;
   if (localStorage.getItem("token")) {

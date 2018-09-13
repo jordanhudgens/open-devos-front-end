@@ -67,6 +67,14 @@
           </div>
         </div>
       </div>
+
+      <div class="right-column">
+        <div class="authors-wrapper">
+          <div v-for="author in authors" :key="author.id" class="author">
+            <pre>{{ author }}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
