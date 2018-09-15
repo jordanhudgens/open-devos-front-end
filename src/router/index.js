@@ -4,6 +4,7 @@ import Homepage from "@/components/Homepage";
 import SearchResults from "@/components/SearchResults";
 import Login from "@/components/auth/Login";
 import Register from "@/components/auth/Register";
+import Account from "@/components/auth/Account";
 import Categories from "@/components/categories/Categories";
 import CategoryDetail from "@/components/categories/CategoryDetail";
 import Popular from "@/components/Popular";
@@ -42,6 +43,11 @@ const router = new Router({
       path: "/register",
       name: "Register",
       component: Register
+    },
+    {
+      path: "/account-settings",
+      name: "Account",
+      component: Account
     },
     {
       path: "/logout",
