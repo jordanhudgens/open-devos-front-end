@@ -32,9 +32,12 @@ export default {
   methods: {
     getResults(user_slug) {
       axios
-        .get(`https://open-devos-api.herokuapp.com/profile/${user_slug}`)
+        .get(`https://open-devos-api.herokuapp.com/profile/${user_slug}`, {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token'),
+          }
+        })
         .then(response => {
-          console.log(response.data.plans)
           this.plans.push(...response.data.plans);
         })
         .catch(error => {
