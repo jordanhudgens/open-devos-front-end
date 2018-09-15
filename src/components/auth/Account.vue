@@ -1,19 +1,98 @@
 <template>
-  <div>
-    Account
+  <div class="auth-page-wrapper">
+    <div class="auth-form-elements">
+      <h2>Account Settings</h2>
+
+      <div v-if="error">{{ error }}</div>
+
+      <form class="auth-form" @submit.prevent="updateAccount">
+        <input id="email" v-model="user.email" type="email" placeholder="Email address" required autofocus>
+        <label for="email">Your email</label>
+
+        <input id="fullName" v-model="user.fullName" type="text" placeholder="Full Name" required>
+        <label for="fullName">Your full name</label>
+
+        <input id="password" v-model="user.password" type="password" placeholder="Password" required>
+        <label for="password">Your password</label>
+
+        <input id="passwordConfirmation" v-model="user.passwordConfirmation" type="password" placeholder="Confirm password" required>
+        <label for="passwordConfirmation">Confirm your password</label>
+
+        <div>
+          <p>Avatar:
+            <file-select v-model="user.avatar"></file-select>
+          </p>
+          <p v-if="user.avatar">{{ user.avatar.name }}</p>
+        </div>
+
+        <div class="sm-bottom-spacer"></div>
+        <button type="submit" class="btn">Update Account</button>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import axios from 'axios';
+import FileSelect from '@/components/shared/FileSelect';
+
 export default {
   name: 'Account',
   data() {
     return {
+      user: {
+        email: null,
+        fullName: null,
+        password: null,
+        passwordConfirmation: null,
+        avatar: null,
+      },
+      error: false
     }
+  },
+  components: {
+    FileSelect
+  },
+  beforeMount() {
+    console.log('user loading...', this.currentUser);
+  },
+  methods: {
+    buildForm() {
+      let formData = new FormData();
+
+      formData.append('user[email]', this.user.email);
+      formData.append('user[full_name]', this.user.fullName);
+      formData.append('user[password]', this.user.password);
+      formData.append('user[password_confirmation]', this.user.passwordConfirmation);
+      formData.append('user[avatar]', this.user.avatar);
+
+      return formData;
+    },
+    updateAccount() {
+      axios
+        .patch(`https://open-devos-api.herokuapp.com/users/${this.currentUser.id}`,
+        this.buildForm(),
+        {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token'),
+          }
+        })
+        .then(response => {
+          console.log('responsee from account', response);
+          return response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    },
+  },
+  computed: {
+    ...mapGetters({ currentUser: 'currentUser' })
   }
 }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+@import '../../styles/auth.scss';
 </style>
