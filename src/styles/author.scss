@@ -1,0 +1,32 @@
+@import "./variables.scss";
+
+.authors-wrapper {
+  .headline {
+    color: $lightgray;
+  }
+
+  .author {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 10px;
+
+    img {
+      width: 80%;
+      border-radius: 100%;
+    }
+
+    div {
+      align-self: center;
+
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-gap: 15px;
+
+      .author-plan-count {
+        font-size: 0.8em;
+        color: $lightgray;
+        font-weight: 900;
+      }
+    }
+  }
+}

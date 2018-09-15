@@ -70,13 +70,21 @@
 
       <div class="right-column">
         <div class="authors-wrapper">
-          <div v-for="author in authors" :key="author.id" class="author">
-            <router-link :to="{ name: 'Profile', params: { user_slug: author.slug } }">
-              {{ author.full_name }}
-            </router-link>
+          <h2 class="headline">Top Authors</h2>
 
-            <div class="author-plan-count">
-              {{ author.plans.length }} plans
+          <div v-for="author in authors" :key="author.id" class="author">
+            <div>
+              <img :src="author.avatar_url">
+            </div>
+
+            <div>
+              <router-link :to="{ name: 'Profile', params: { user_slug: author.slug } }">
+                {{ author.full_name }}
+              </router-link>
+
+              <div class="author-plan-count">
+                {{ author.plans.length }} plans
+              </div>
             </div>
           </div>
         </div>
@@ -210,8 +218,6 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          // this.responseMessage = 'There was an error submitting the form, make sure you filled out all required fields.';
-          // this.errorSubmittingDevo = true;
         })
     },
     removeBookmark(e, id) {
@@ -247,6 +253,7 @@ export default {
       axios
         .get('https://open-devos-api.herokuapp.com/authors')
         .then(response => {
+          console.log('authors', response.data.users);
           this.authors.push(...response.data.users);
         })
         .catch(error => {
@@ -306,6 +313,7 @@ export default {
 @import './../styles/grid.scss';
 @import './../styles/homepage.scss';
 @import './../styles/card.scss';
+@import './../styles/author.scss';
 @import './../styles/helpers.scss';
 @import './../styles/media-queries.scss';
 </style>
