@@ -8,7 +8,10 @@
 
       <div class="thumb-card">
         <router-link :to="{ name: routeName, params: { slug: element.slug } }">
-          <span class="title">{{ element.title }}</span>
+          <span v-if="element.status === 'published'" class="title">{{ element.title }}</span>
+          <span v-else class="title">
+            <span class='draft-label'>Draft</span> {{ element.title }}
+          </span>
         </router-link>
       </div>
     </div>
@@ -28,3 +31,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@import '../../styles/helpers.scss';
+</style>
