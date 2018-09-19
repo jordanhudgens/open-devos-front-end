@@ -47,7 +47,6 @@ export default {
           this.category.name = response.data.topic.title;
           this.category.bannerUrl = response.data.topic.banner;
           this.plans.push(...response.data.topic.plans);
-          console.log(response);
         })
         .catch(error => {
           console.log(error);
