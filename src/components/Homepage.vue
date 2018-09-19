@@ -112,11 +112,6 @@ export default {
     this.getRecentPlans();
     this.loggedIn();
     this.getAuthors();
-
-    if (this.userLoggedIn) {
-      this.getLastPlan();
-      this.getBookmarks();
-    }
   },
   data() {
     return {
@@ -144,8 +139,10 @@ export default {
           })
           .then(response => {
             if (response.data.logged_in === true) {
-              console.log(response.data);
               this.userLoggedIn = true;
+
+              this.getLastPlan();
+              this.getBookmarks();
               return true;
             } else {
               this.userLoggedIn = false;
