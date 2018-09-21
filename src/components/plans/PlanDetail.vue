@@ -289,7 +289,12 @@ export default {
     },
     getPlanDetails() {
       axios
-        .get(`${this.planApiUrl}/${this.plan.slug}`, { withCredentials: true })
+        .get(`${this.planApiUrl}/${this.plan.slug}`, {
+          headers: {
+            "Authorization": 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json'
+          }
+        })
         .then(response => {
           this.plan.name = response.data.plan.title;
           this.plan.summary = response.data.plan.summary;
