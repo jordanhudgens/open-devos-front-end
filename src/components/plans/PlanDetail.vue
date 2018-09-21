@@ -289,7 +289,7 @@ export default {
     },
     getPlanDetails() {
       axios
-        .get(`${this.planApiUrl}/${this.plan.slug}`)
+        .get(`${this.planApiUrl}/${this.plan.slug}`, { withCredentials: true })
         .then(response => {
           this.plan.name = response.data.plan.title;
           this.plan.summary = response.data.plan.summary;
