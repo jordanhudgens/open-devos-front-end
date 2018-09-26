@@ -1,12 +1,12 @@
 <template>
   <div class="auth-page-wrapper">
-    <div class="auth-form-elements">
+    <div v-if="userLoggedIn" class="auth-form-elements">
       <h2>Account Settings</h2>
 
       <div v-if="error">{{ error }}</div>
 
       <form class="auth-form" @submit.prevent="updateAccount">
-        <input id="email" v-model="user.email" type="email" placeholder="Email address" required autofocus>
+        <input id="email" v-model="user.email" type="email" placeholder="Email address" required>
         <label for="email">Your email</label>
 
         <input id="fullName" v-model="user.fullName" type="text" placeholder="Full Name" required>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import {mapGetters} from 'vuex';
 import axios from 'axios';
 import FileSelect from '@/components/shared/FileSelect';
 
@@ -48,49 +48,87 @@ export default {
         passwordConfirmation: null,
         avatar: null,
       },
-      error: false
-    }
+      userLoggedIn: null,
+      error: false,
+    };
   },
   components: {
-    FileSelect
+    FileSelect,
   },
-  beforeMount() {
-    console.log('user loading...', this.currentUser);
+  mounted() {
+    this.loggedIn();
   },
   methods: {
+    loggedIn() {
+      if (localStorage.getItem('token')) {
+        axios
+          .get('https://open-devos-api.herokuapp.com/logged_in', {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('token'),
+            },
+          })
+          .then(response => {
+            if (response.data.logged_in === true) {
+              this.userLoggedIn = true;
+              console.log('current user response', response.data);
+
+              this.user.email = response.data.current_user.email;
+              this.user.fullName = response.data.current_user.full_name;
+
+              return true;
+            } else {
+              this.userLoggedIn = false;
+              return false;
+            }
+          })
+          .catch(error => {
+            this.userLoggedIn = false;
+            return false;
+          });
+      } else {
+        this.userLoggedIn = false;
+        return false;
+      }
+    },
+    populateForm() {},
     buildForm() {
       let formData = new FormData();
 
       formData.append('user[email]', this.user.email);
       formData.append('user[full_name]', this.user.fullName);
       formData.append('user[password]', this.user.password);
-      formData.append('user[password_confirmation]', this.user.passwordConfirmation);
+      formData.append(
+        'user[password_confirmation]',
+        this.user.passwordConfirmation,
+      );
       formData.append('user[avatar]', this.user.avatar);
 
       return formData;
     },
     updateAccount() {
       axios
-        .patch(`https://open-devos-api.herokuapp.com/users/${this.currentUser.id}`,
-        this.buildForm(),
-        {
-          headers: {
-            "Authorization": 'Bearer ' + localStorage.getItem('token'),
-          }
-        })
+        .patch(
+          `https://open-devos-api.herokuapp.com/users/${this.currentUser.id}`,
+          this.buildForm(),
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('token'),
+            },
+          },
+        )
         .then(response => {
           console.log('responsee from account', response);
           return response.data;
         })
         .catch(error => {
           console.log(error);
-        })
+        });
     },
   },
   computed: {
-    ...mapGetters({ currentUser: 'currentUser' })
-  }
-}
+    ...mapGetters({currentUser: 'currentUser'}),
+  },
+};
 </script>
 
 <style lang="scss">
