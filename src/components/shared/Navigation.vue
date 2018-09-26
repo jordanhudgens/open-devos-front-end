@@ -60,22 +60,21 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import {mapGetters} from 'vuex';
 import axios from 'axios';
-// import loggedIn from '@/mixins/loggedIn';
 
 export default {
   name: 'Navigation',
   computed: {
-    ...mapGetters({ currentUser: 'currentUser' })
+    ...mapGetters({currentUser: 'currentUser'}),
   },
   mounted() {
     this.loggedIn();
   },
   watch: {
-    '$route'(to, from) {
+    $route(to, from) {
       this.loggedIn();
-    }
+    },
   },
   data() {
     return {
@@ -84,16 +83,16 @@ export default {
       showMobileNavBar: false,
       userLoggedIn: null,
       navLinks: [
-        { linkName: 'Categories', linkIcon: 'navIcon fas fa-map-signs' },
-        { linkName: 'Popular', linkIcon: 'navIcon fas fa-chart-line' },
-      ]
-    }
+        {linkName: 'Categories', linkIcon: 'navIcon fas fa-map-signs'},
+        {linkName: 'Popular', linkIcon: 'navIcon fas fa-chart-line'},
+      ],
+    };
   },
   methods: {
     submitQuery() {
       this.$router.push({
-        name: "SearchResults",
-        params: { query: this.query }
+        name: 'SearchResults',
+        params: {query: this.query},
       });
       this.query = '';
     },
@@ -105,12 +104,12 @@ export default {
       }
     },
     loggedIn() {
-      if (localStorage.getItem("token")) {
+      if (localStorage.getItem('token')) {
         axios
-          .get("https://open-devos-api.herokuapp.com/logged_in", {
+          .get('https://open-devos-api.herokuapp.com/logged_in', {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("token")
-            }
+              Authorization: 'Bearer ' + localStorage.getItem('token'),
+            },
           })
           .then(response => {
             if (response.data.logged_in === true) {
@@ -130,150 +129,12 @@ export default {
         this.userLoggedIn = false;
         return false;
       }
-    }
+    },
   },
-}
+};
 </script>
 
 <style scoped>
 @import 'https://use.fontawesome.com/releases/v5.0.13/css/all.css';
-
-.navbar {
-  background: white;
-  height: 90px;
-  border-bottom: lightgray solid 1px;
-}
-
-.navbar .toggle,
-.navbar .brand {
-  display: flex;
-  align-items: center;
-}
-
-.navIcon {
-  margin-right: 10px;
-}
-
-.navbar .link {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  padding: 2em;
-  text-decoration: none;
-  color: #239a87;
-  background-color: white;
-  font-size: 1.2rem;
-  border-bottom: transparent solid 1px;
-}
-
-.navbar .link:hover,
-.navbar .link:active {
-  color: #156356;
-  border-bottom: #156356 solid 1px;
-}
-
-.navbar .brand {
-  width: 15em;
-  text-align: center;
-  padding: 1em;
-  color: white;
-}
-
-.navbar a {
-  text-decoration: none;
-}
-
-.navSearchBar {
-  font-family: "Font Awesome\ 5 Free", Helvetica, sans-serif;
-}
-
-.navSearchBar input {
-  width: 75%;
-  padding-left: 21px;
-}
-
-.navbar .toggle {
-  padding: 1em;
-  color: #223047;
-  vertical-align: middle;
-}
-
-.brand img {
-  width: 100%;
-}
-
-.navSearchBar input[type="text"] {
-  font-size: 1.3em;
-  font-family: "Font Awesome\ 5 Free", Arial, Helvetica, sans-serif;
-  color: #585858;
-  border-top: 1px solid transparent;
-  border-right: 1px solid transparent;
-  border-left: 1px solid transparent;
-  border-bottom: 1px solid transparent;
-}
-
-.navSearchBar input[type="text"]::placeholer {
-  font-family: "Font Awesome\ 5 Free", Arial, Helvetica, sans-serif;
-  color: #a4a4a4;
-}
-
-.navSearchBar input[type="text"]:focus {
-  outline: none;
-  border-bottom: 1px solid #239a87;
-}
-
-@media (min-width: 48em) {
-  .navbar {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-  }
-  .navbar .navSearchBar,
-  .navbar .right {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-  }
-  .navbar .link {
-    width: auto;
-  }
-  .navbar .right {
-    -webkit-box-pack: end;
-    -ms-flex-pack: end;
-    justify-content: flex-end;
-  }
-  .navbar .toggle {
-    display: none;
-  }
-
-  .navbar div {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-  }
-}
-
-.navbar div {
-  display: none;
-}
-
-@media (max-width: 48em) {
-  .navbar {
-    display: flex;
-  }
-
-  .navbar.active {
-    width: 100vw;
-  }
-
-  .navbar.active div {
-    display: grid;
-    width: 100vw;
-    position: absolute;
-    top: 91px;
-  }
-}
+@import './../../styles/navigation.css';
 </style>
