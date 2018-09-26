@@ -49,6 +49,12 @@
           </span>
         </router-link>
 
+        <router-link v-if="userLoggedIn" :to="{ name: 'Account' }" class="link">
+          <span @click="toggleNav">
+            <i class="navIcon fas fa-cog"></i> Account
+          </span>
+        </router-link>
+
         <router-link v-if="userLoggedIn" :to="{ name: 'Logout' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-sign-out-alt"></i> Logout
