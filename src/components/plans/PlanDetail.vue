@@ -1,33 +1,68 @@
 <template>
-  <div>
-    <div class="spacer"></div>
-    <div v-if="!plan.name" class="spinner-wrapper">
-      <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
-    </div>
-
-    <div class="plan-header-wrapper">
-      <div class="left-column">
-        <h1>{{ plan.name }}</h1>
-        <div class="plan-summary">{{ plan.summary }}</div>
+  <div class="plan-details-wrapper">
+    <div :class="showForm ? 'slide-devos-out' : ''">
+      <div class="spacer"></div>
+      <div v-if="!plan.name" class="spinner-wrapper">
+        <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
       </div>
 
-      <div class="right-column">
-        <div v-if="currentUser && !planStarted">
-          <button @click.prevent="startPlan" class="btn">Start Plan</button>
+      <div class="plan-header-wrapper">
+        <div class="left-column">
+          <h1>{{ plan.name }}</h1>
+          <div class="plan-summary">{{ plan.summary }}</div>
         </div>
-        <div v-else-if="currentUser && planStarted">
-          <button @click.prevent="archivePlan" class="btn">Archive Plan</button>
-        </div>
-        <div v-else>
-          <router-link :to="{ name: 'Register' }">
-            Sign Up to Take Plan
-          </router-link>
+
+        <div class="right-column">
+          <div v-if="currentUser && !planStarted">
+            <button @click.prevent="startPlan" class="btn">Start Plan</button>
+          </div>
+          <div v-else-if="currentUser && planStarted">
+            <button @click.prevent="archivePlan" class="btn">Archive Plan</button>
+          </div>
+          <div v-else>
+            <router-link :to="{ name: 'Register' }">
+              Sign Up to Take Plan
+            </router-link>
+          </div>
         </div>
       </div>
-    </div>
 
-    <draggable v-model="devos" @end="updatePosition" v-if="ownerOnPage">
-      <transition-group name="thumb-card-wrapper" class="thumb-card-wrapper">
+      <draggable v-model="devos" @end="updatePosition" v-if="ownerOnPage">
+        <transition-group name="thumb-card-wrapper" class="thumb-card-wrapper">
+          <div v-for="devo in devos" :key="devo.slug" class="animated-draggable-thumb-card" :id="devo.id">
+            <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
+              <img v-if="devo.featured_image" :src="devo.featured_image" class="thumb-img">
+              <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img">
+            </router-link>
+
+            <div class="thumb-card">
+              <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
+                <span class="title">{{ devo.title }}</span>
+              </router-link>
+
+              <div v-if="positionsUpdated" class="dayCountDescription">
+                Day {{ devo.position + 1 }} of {{ devos.length }}
+              </div>
+
+              <div v-else class="dayCountDescription">
+                Updating...
+              </div>
+
+              <div class='thumb-action-icons-wrapper'>
+                <a @click.prevent="editDevo(devo)" href="#">
+                  <i class="fas fa-pen-square"></i>
+                </a>
+
+                <a @click.prevent="deleteDevo(devo)" href="#">
+                  <i class="fas fa-trash"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </transition-group>
+      </draggable>
+
+      <div class="thumb-card-wrapper" v-else-if="!showForm">
         <div v-for="devo in devos" :key="devo.slug" class="animated-draggable-thumb-card" :id="devo.id">
           <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
             <img v-if="devo.featured_image" :src="devo.featured_image" class="thumb-img">
@@ -42,39 +77,6 @@
             <div v-if="positionsUpdated" class="dayCountDescription">
               Day {{ devo.position + 1 }} of {{ devos.length }}
             </div>
-
-            <div v-else class="dayCountDescription">
-              Updating...
-            </div>
-
-            <div class='thumb-action-icons-wrapper'>
-              <a @click.prevent="editDevo(devo)" href="#">
-                <i class="fas fa-pen-square"></i>
-              </a>
-
-              <a @click.prevent="deleteDevo(devo)" href="#">
-                <i class="fas fa-trash"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </transition-group>
-    </draggable>
-
-    <div class="thumb-card-wrapper" v-else>
-      <div v-for="devo in devos" :key="devo.slug" class="animated-draggable-thumb-card" :id="devo.id">
-        <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
-          <img v-if="devo.featured_image" :src="devo.featured_image" class="thumb-img">
-          <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img">
-        </router-link>
-
-        <div class="thumb-card">
-          <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
-            <span class="title">{{ devo.title }}</span>
-          </router-link>
-
-          <div v-if="positionsUpdated" class="dayCountDescription">
-            Day {{ devo.position + 1 }} of {{ devos.length }}
           </div>
         </div>
       </div>
@@ -89,7 +91,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import {mapGetters} from 'vuex';
 import axios from 'axios';
 import DevoForm from '@/components/devos/DevoForm';
 import draggable from 'vuedraggable';
@@ -104,7 +106,7 @@ export default {
         summary: null,
         slug: this.$route.params.slug,
         id: null,
-        owner: null
+        owner: null,
       },
       planStarted: null,
       planApiUrl: 'https://open-devos-api.herokuapp.com/plans',
@@ -117,12 +119,12 @@ export default {
       showNewDevoButton: true,
       devoFormKey: null,
       positionsUpdated: true,
-      ownerOnPage: false
-    }
+      ownerOnPage: false,
+    };
   },
   components: {
     DevoForm,
-    draggable
+    draggable,
   },
   beforeMount() {
     this.getPlanDetails();
@@ -133,11 +135,11 @@ export default {
     }
   },
   beforeRouteUpdate(to, from, next) {
-    this.plan.slug = this.$route.params.slug
-    next()
+    this.plan.slug = this.$route.params.slug;
+    next();
   },
   computed: {
-    ...mapGetters({ currentUser: 'currentUser' })
+    ...mapGetters({currentUser: 'currentUser'}),
   },
   methods: {
     updatePosition(event) {
@@ -149,13 +151,17 @@ export default {
       }
 
       axios
-        .patch(`https://open-devos-api.herokuapp.com/devo_positions/${this.plan.slug}`,
-        { devos: updatedPositions },
-        {
-          headers: {
-            "Authorization": 'Bearer ' + localStorage.getItem('token')
-          }
-        })
+        .patch(
+          `https://open-devos-api.herokuapp.com/devo_positions/${
+            this.plan.slug
+          }`,
+          {devos: updatedPositions},
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('token'),
+            },
+          },
+        )
         .then(response => {
           this.devos = response.data.devos;
           this.positionsUpdated = true;
@@ -163,15 +169,14 @@ export default {
         })
         .catch(error => {
           console.log(error);
-        })
+        });
     },
     getCurrentUserPlans() {
       axios
-        .get('https://open-devos-api.herokuapp.com/plan_assignments',
-        {
+        .get('https://open-devos-api.herokuapp.com/plan_assignments', {
           headers: {
-            "Authorization": 'Bearer ' + localStorage.getItem('token'),
-          }
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+          },
         })
         .then(response => {
           response.data.plans.forEach(plan => {
@@ -180,7 +185,7 @@ export default {
             } else {
               this.planStarted = false;
             }
-          })
+          });
         })
         .catch(error => {
           console.log(error);
@@ -188,18 +193,20 @@ export default {
     },
     startPlan() {
       axios
-        .post("https://open-devos-api.herokuapp.com/plan_assignments",
-        {
-          'plan_assignment': {
-            'plan_id': this.plan.id,
-            'user_id': this.currentUser.id
-          }
-        },
-        {
-          headers: {
-            "Authorization": 'Bearer ' + localStorage.getItem('token'),
-          }
-        })
+        .post(
+          'https://open-devos-api.herokuapp.com/plan_assignments',
+          {
+            plan_assignment: {
+              plan_id: this.plan.id,
+              user_id: this.currentUser.id,
+            },
+          },
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('token'),
+            },
+          },
+        )
         .then(response => {
           this.planStarted = true;
           // this.responseMessage = 'Your devo has been published!';
@@ -209,7 +216,7 @@ export default {
           console.log(error);
           // this.responseMessage = 'There was an error submitting the form, make sure you filled out all required fields.';
           // this.errorSubmittingDevo = true;
-        })
+        });
     },
     cancelDevoForm() {
       this.showNewDevoButton = true;
@@ -245,45 +252,51 @@ export default {
     deleteDevo(devo) {
       this.$swal({
         title: 'Are you sure you want to delete this devotional?',
-        text: "This will permanently delete the devotional and you won't be able to get it back",
+        text:
+          "This will permanently delete the devotional and you won't be able to get it back",
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes Delete it!',
         cancelButtonText: 'No, Keep it!',
         showCloseButton: true,
-        showLoaderOnConfirm: true
-      }).then((result) => {
+        showLoaderOnConfirm: true,
+      }).then(result => {
         if (result.value) {
           axios
-            .delete(`https://open-devos-api.herokuapp.com/devos/${devo.slug}`,
-            {
+            .delete(`https://open-devos-api.herokuapp.com/devos/${devo.slug}`, {
               headers: {
-                "Authorization": 'Bearer ' + localStorage.getItem('token'),
-                'Content-Type': 'application/json'
-              }
+                Authorization: 'Bearer ' + localStorage.getItem('token'),
+                'Content-Type': 'application/json',
+              },
             })
             .then(response => {
               this.errorDeletingDevo = false;
               this.devoDeletedSuccessfully = true;
               this.devos = this.devos.filter(el => el.slug !== devo.slug);
-              this.devoDeletionResponseMessage = 'The devotional was successfully deleted';
+              this.devoDeletionResponseMessage =
+                'The devotional was successfully deleted';
               return response.data;
             })
             .catch(error => {
               console.log(error);
-              this.devoDeletionResponseMessage = 'There was an error deleting the devotional';
+              this.devoDeletionResponseMessage =
+                'There was an error deleting the devotional';
               this.errorDeletingDevo = true;
-            })
-          this.$swal('Deleted', 'You successfully deleted the devotional', 'success')
+            });
+          this.$swal(
+            'Deleted',
+            'You successfully deleted the devotional',
+            'success',
+          );
         } else {
-          this.$swal('Cancelled', 'Your devotional is still intact!', 'info')
+          this.$swal('Cancelled', 'Your devotional is still intact!', 'info');
         }
-      })
+      });
     },
     sortDevosByPosition(devos) {
       devos.sort((prev, next) => {
         return prev.position - next.position;
-      })
+      });
 
       return devos;
     },
@@ -291,9 +304,9 @@ export default {
       axios
         .get(`${this.planApiUrl}/${this.plan.slug}`, {
           headers: {
-            "Authorization": 'Bearer ' + localStorage.getItem('token'),
-            'Content-Type': 'application/json'
-          }
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json',
+          },
         })
         .then(response => {
           this.plan.name = response.data.plan.title;
@@ -312,9 +325,9 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss">

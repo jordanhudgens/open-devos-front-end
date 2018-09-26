@@ -1,7 +1,7 @@
-@import "./variables.scss";
+@import './variables.scss';
 
 .plan-summary {
-  font-family: "Merriweather", serif;
+  font-family: 'Merriweather', serif;
   margin-bottom: 42px;
 }
 
@@ -26,4 +26,13 @@
   font-size: 0.8em;
   color: $lightgray;
   font-weight: 900;
+}
+
+.plan-details-wrapper {
+  position: relative;
+  .slide-devos-out {
+    position: absolute;
+    transition: all 2s;
+    transform: translateY(-200%);
+  }
 }
