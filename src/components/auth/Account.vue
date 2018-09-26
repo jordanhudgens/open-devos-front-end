@@ -25,10 +25,15 @@
         </div>
 
         <div class="right-column">
-            <p>Avatar:
-              <file-select v-model="user.avatar"></file-select>
-            </p>
-            <p v-if="user.avatar">{{ user.avatar.name }}</p>
+          <div v-if="profileImage" class="account-profile-image-wrapper">
+            <img :src="profileImage">
+          </div>
+
+          <div>
+            <file-select v-model="user.avatar"></file-select>
+          </div>
+
+          <div v-if="user.avatar">{{ user.avatar.name }}</div>
         </div>
 
         <div class="sm-bottom-spacer"></div>
@@ -56,6 +61,7 @@ export default {
       },
       userLoggedIn: null,
       error: false,
+      profileImage: null,
     };
   },
   components: {
@@ -80,6 +86,10 @@ export default {
 
               this.user.email = response.data.current_user.email;
               this.user.fullName = response.data.current_user.full_name;
+
+              if (response.data.profile_image) {
+                this.profileImage = response.data.profile_image;
+              }
 
               return true;
             } else {

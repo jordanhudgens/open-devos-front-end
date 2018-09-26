@@ -1,4 +1,5 @@
 <template>
+  <div class="file-select-wrapper">
   <label class="file-select">
     <div class="select-button">
       <span v-if="value">Selected File: {{value.name}}</span>
@@ -6,33 +7,23 @@
     </div>
     <input type="file" @change="handleFileChange" />
   </label>
+  </div>
 </template>
 
 <script>
 export default {
   props: {
-    value: File
+    value: File,
   },
 
   methods: {
     handleFileChange(e) {
-      this.$emit('input', e.target.files[0])
+      this.$emit('input', e.target.files[0]);
     },
-  }
-}
+  },
+};
 </script>
 
-<style scoped>
-.file-select>.select-button {
-  padding: 1rem;
-  color: white;
-  background-color: #156356;
-  border-radius: .3rem;
-  text-align: center;
-  font-weight: bold;
-}
-
-.file-select>input[type="file"] {
-  display: none;
-}
+<style scoped lang="scss">
+@import '../../styles/forms.scss';
 </style>

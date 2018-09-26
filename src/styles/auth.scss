@@ -11,6 +11,19 @@
   flex-direction: column;
   width: 400px;
 
+  .account-profile-image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+
+    img {
+      width: 80%;
+      border-radius: 100%;
+      border: 10px solid $teal;
+    }
+  }
+
   input {
     font-size: 1.5rem;
     font-family: inherit;

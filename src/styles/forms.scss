@@ -1,0 +1,30 @@
+@import './variables.scss';
+
+.file-select-wrapper {
+  display: flex;
+  justify-content: center;
+
+  .file-select {
+    margin-left: 0px !important;
+    width: 50%;
+
+    .select-button {
+      height: 20px;
+      padding: 0.5rem;
+      color: white;
+      background-color: $teal;
+      border-radius: 0.3rem;
+      text-align: center;
+      font-weight: 300;
+      font-size: 0.8em;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    input[type='file'] {
+      display: none;
+    }
+  }
+}
