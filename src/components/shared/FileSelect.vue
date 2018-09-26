@@ -1,12 +1,12 @@
 <template>
   <div class="file-select-wrapper">
-  <label class="file-select">
-    <div class="select-button">
-      <span v-if="value">Selected File: {{value.name}}</span>
-      <span v-else>Select File</span>
-    </div>
-    <input type="file" @change="handleFileChange" />
-  </label>
+    <label class="file-select">
+      <div class="select-button">
+        <span v-if="value">Selected File: {{value.name}}</span>
+        <span v-else>Select File</span>
+      </div>
+      <input type="file" @change="handleFileChange" />
+    </label>
   </div>
 </template>
 
