@@ -1,17 +1,19 @@
 <template>
   <div class="devo-form-wrapper">
-    <div v-if="devoSubmittedSuccessfully">
-      <h2>{{ responseMessage }}</h2>
-    </div>
-
-    <div>
-      <h2>Add a Devo to the Plan</h2>
-
       <div v-if="errorSubmittingDevo">
         <h2>{{ responseMessage }}</h2>
       </div>
 
-      <form @submit.prevent="formTypeSelector" class="form-wrapper">
+    <form @submit.prevent="formTypeSelector" class="form-wrapper">
+
+      <div class="left-column">
+        <div v-if="!devo.title || !devo.content" class="spacer">
+          <button type="submit" class="btn-disabled" disabled>Fill in required fields</button>
+        </div>
+
+        <div v-else class="spacer">
+          <button type="submit" class="btn">Publish Devo</button>
+        </div>
 
         <div>
           <input type="text" v-model="devo.title" placeholder="Title" class="full-width-element">
@@ -28,23 +30,18 @@
         <input type="checkbox" id="checkbox" v-model="devo.status" :true-value="'published'" :false-value="'draft'">
         <label v-if="devo.status === 'published'" for="checkbox">Switch to draft?</label>
         <label v-else for="checkbox">Publish publicly?</label>
+      </div>
 
+      <div class="right-column">
         <wysiwyg v-model="devo.content" />
+      </div>
 
-        <div v-if="!devo.title || !devo.content" class="spacer">
-          <button type="submit" class="btn-disabled" disabled>Fill in required fields</button>
-        </div>
-
-        <div v-else class="spacer">
-          <button type="submit" class="btn">Publish Devo</button>
-        </div>
-      </form>
-    </div>
+    </form>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import {mapGetters} from 'vuex';
 import axios from 'axios';
 import FileSelect from '@/components/shared/FileSelect';
 
@@ -62,7 +59,7 @@ export default {
       responseMessage: null,
       devoSubmittedSuccessfully: false,
       errorSubmittingDevo: false,
-    }
+    };
   },
   props: {
     planId: Number,
@@ -70,10 +67,10 @@ export default {
     devoToEdit: Object,
   },
   computed: {
-    ...mapGetters({ currentUser: 'currentUser' })
+    ...mapGetters({currentUser: 'currentUser'}),
   },
   components: {
-    FileSelect
+    FileSelect,
   },
   created() {
     if (this.devoToEdit) {
@@ -83,14 +80,14 @@ export default {
   watch: {
     devoToEdit(newValue, oldValue) {
       this.devo = newValue;
-    }
+    },
   },
   methods: {
     formTypeSelector() {
       if (this.devoToEdit) {
-        this.editDevoForm()
+        this.editDevoForm();
       } else {
-        this.submitDevoForm()
+        this.submitDevoForm();
       }
     },
     buildForm() {
@@ -112,13 +109,15 @@ export default {
     },
     editDevoForm() {
       axios
-        .patch(`https://open-devos-api.herokuapp.com/devos/${this.devoToEdit.slug}`,
-        this.buildForm(),
-        {
-          headers: {
-            "Authorization": 'Bearer ' + localStorage.getItem('token')
-          }
-        })
+        .patch(
+          `https://open-devos-api.herokuapp.com/devos/${this.devoToEdit.slug}`,
+          this.buildForm(),
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('token'),
+            },
+          },
+        )
         .then(response => {
           this.errorSubmittingDevo = false;
           this.devoSubmittedSuccessfully = true;
@@ -128,18 +127,17 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          this.responseMessage = 'There was an error submitting the form, make sure you filled out all required fields.';
+          this.responseMessage =
+            'There was an error submitting the form, make sure you filled out all required fields.';
           this.errorSubmittingDevo = true;
-        })
+        });
     },
     submitDevoForm() {
       axios
-        .post("https://open-devos-api.herokuapp.com/devos",
-        this.buildForm(),
-        {
+        .post('https://open-devos-api.herokuapp.com/devos', this.buildForm(), {
           headers: {
-            "Authorization": 'Bearer ' + localStorage.getItem('token'),
-          }
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+          },
         })
         .then(response => {
           this.errorSubmittingDevo = false;
@@ -151,16 +149,15 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          this.responseMessage = 'There was an error submitting the form, make sure you filled out all required fields.';
+          this.responseMessage =
+            'There was an error submitting the form, make sure you filled out all required fields.';
           this.errorSubmittingDevo = true;
-        })
-    }
-  }
-}
+        });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-.devo-form-wrapper {
-  margin-bottom: 100px;
-}
+@import '../../styles/forms.scss';
 </style>

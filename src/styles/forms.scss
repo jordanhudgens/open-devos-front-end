@@ -28,3 +28,14 @@
     }
   }
 }
+
+.devo-form-wrapper {
+  margin-bottom: 100px;
+  margin-top: 30px;
+
+  .form-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-gap: 42px;
+  }
+}

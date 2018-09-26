@@ -84,7 +84,7 @@
 
     <div v-if="currentUser && currentUser.id === plan.owner" class="devo-form-wrapper">
       <button v-if="showNewDevoButton" @click="renderDevoForm" class="btn">Add a New Devo</button>
-      <button v-if="!showNewDevoButton" @click="cancelDevoForm" class="btn">Cancel</button>
+      <button v-if="!showNewDevoButton" @click="cancelDevoForm" class="btn top-spacer">Cancel</button>
       <DevoForm v-if="showForm" :devoToEdit.sync="devoToEdit" :planId="plan.id" :devos="devos" @new="addToDevos" @update="updateDevoList" :key="devoFormKey" />
     </div>
   </div>
@@ -332,4 +332,5 @@ export default {
 
 <style lang="scss">
 @import '../../styles/plan_detail.scss';
+@import '../../styles/helpers.scss';
 </style>
