@@ -1,28 +1,34 @@
 <template>
-  <div class="auth-page-wrapper">
-    <div v-if="userLoggedIn" class="auth-form-elements">
+  <div class="">
+
+    <div class="heading">
       <h2>Account Settings</h2>
 
       <div v-if="error">{{ error }}</div>
+    </div>
 
-      <form class="auth-form" @submit.prevent="updateAccount">
-        <input id="email" v-model="user.email" type="email" placeholder="Email address" required>
-        <label for="email">Your email</label>
+    <div v-if="userLoggedIn">
+      <form class="auth-form account-page-wrapper" @submit.prevent="updateAccount">
+        <div class="left-column"> <input id="email" v-model="user.email" type="email" placeholder="Email address" required>
+          <label for="email">Your email</label>
 
-        <input id="fullName" v-model="user.fullName" type="text" placeholder="Full Name" required>
-        <label for="fullName">Your full name</label>
+          <input id="fullName" v-model="user.fullName" type="text" placeholder="Full Name" required>
+          <label for="fullName">Your full name</label>
+        </div>
 
-        <input id="password" v-model="user.password" type="password" placeholder="Password" required>
-        <label for="password">Your password</label>
+        <div class="middle-column">
+          <input id="password" v-model="user.password" type="password" placeholder="Password" required>
+          <label for="password">Your password</label>
 
-        <input id="passwordConfirmation" v-model="user.passwordConfirmation" type="password" placeholder="Confirm password" required>
-        <label for="passwordConfirmation">Confirm your password</label>
+          <input id="passwordConfirmation" v-model="user.passwordConfirmation" type="password" placeholder="Confirm password" required>
+          <label for="passwordConfirmation">Confirm your password</label>
+        </div>
 
-        <div>
-          <p>Avatar:
-            <file-select v-model="user.avatar"></file-select>
-          </p>
-          <p v-if="user.avatar">{{ user.avatar.name }}</p>
+        <div class="right-column">
+            <p>Avatar:
+              <file-select v-model="user.avatar"></file-select>
+            </p>
+            <p v-if="user.avatar">{{ user.avatar.name }}</p>
         </div>
 
         <div class="sm-bottom-spacer"></div>
@@ -101,7 +107,10 @@ export default {
         'user[password_confirmation]',
         this.user.passwordConfirmation,
       );
-      formData.append('user[avatar]', this.user.avatar);
+
+      if (this.user.avatar) {
+        formData.append('user[avatar]', this.user.avatar);
+      }
 
       return formData;
     },

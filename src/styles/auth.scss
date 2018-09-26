@@ -1,4 +1,4 @@
-@import "./variables.scss";
+@import './variables.scss';
 
 .auth-page-wrapper {
   display: flex;
@@ -54,4 +54,11 @@
     visibility: hidden;
     transform: translateY(-4rem);
   }
+}
+
+.account-page-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 42px;
+  width: 100%;
 }
