@@ -7,22 +7,27 @@
     <form @submit.prevent="formTypeSelector" class="form-wrapper">
 
       <div class="left-column">
-        <div v-if="!devo.title || !devo.content" class="spacer">
+        <div v-if="!devo.title || !devo.content">
           <button type="submit" class="btn-disabled" disabled>Fill in required fields</button>
         </div>
 
-        <div v-else class="spacer">
+        <div v-else>
           <button type="submit" class="btn">Publish Devo</button>
         </div>
 
-        <div>
-          <input type="text" v-model="devo.title" placeholder="Title" class="full-width-element">
+        <div class='title-wrapper'>
+          <input type="text" v-model="devo.title" placeholder="Devo Title" class="full-width-element" autofocus>
         </div>
 
         <div>
-          <p>Featured Image:
+          <h3 class='featured-image-label'>
+            Featured Image
+          </h3>
+
+          <div>
             <file-select v-model="devo.featuredImage"></file-select>
-          </p>
+          </div>
+
           <p v-if="devo.featuredImage">{{ devo.featuredImage.name}}</p>
         </div>
 
@@ -33,7 +38,7 @@
       </div>
 
       <div class="right-column">
-        <wysiwyg v-model="devo.content" />
+        <wysiwyg v-model="devo.content" placeholder="Devo content" />
       </div>
 
     </form>

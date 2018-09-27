@@ -37,5 +37,20 @@
     display: grid;
     grid-template-columns: 1fr 3fr;
     grid-gap: 42px;
+
+    .left-column {
+      .title-wrapper {
+        margin-top: 42px;
+        margin-bottom: 42px;
+      }
+
+      .featured-image-label {
+        margin-bottom: 21px;
+      }
+
+      .file-select {
+        width: 100%;
+      }
+    }
   }
 }
