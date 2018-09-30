@@ -1,17 +1,17 @@
 <template>
-  <div class="notification">
+  <div :class="'notification ' + alertClass">
     <div class="left-column">
       <div class="title">{{ title }}</div>
-
-      <!--https://snipcart.com/blog/vuejs-transitions-animations  -->
-      <div class="progress">
-        {{ subtitle }}
-      </div>
     </div>
     <div class="right-column">
-      <router-link class="btn-clear" :to="{ name: routeName, params: { devo_slug: slug } }">
-        {{ buttonText }}
-      </router-link>
+      <div class="two-columns">
+        <div class="progress">
+          {{ subtitle }}
+        </div>
+        <router-link class="btn-clear" :to="{ name: routeName, params: { devo_slug: slug } }">
+          {{ buttonText }}
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -21,7 +21,8 @@ export default {
   name: 'Notification',
   data() {
     return {
-    }
+      alertClass: 'notification-start',
+    };
   },
   props: {
     title: String,
@@ -29,8 +30,13 @@ export default {
     routeName: String,
     slug: String,
     buttonText: String,
-  }
-}
+  },
+  mounted() {
+    setTimeout(() => {
+      this.alertClass = 'notification-end';
+    }, 2000);
+  },
+};
 </script>
 
 <style scoped lang="scss">

@@ -1,4 +1,4 @@
-@import "./variables.scss";
+@import './variables.scss';
 
 .notification {
   border-bottom-left-radius: 8px;
@@ -26,8 +26,33 @@
     justify-content: flex-end;
     align-items: center;
 
-    a {
-      color: white;
+    .two-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 21px;
+
+      .progress {
+        display: flex;
+        flex-direction: center;
+        align-items: center;
+      }
+
+      a {
+        color: white;
+      }
     }
   }
+}
+
+.notification-start {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: all 0.5s ease-in;
+  height: 0px !important;
+}
+
+.notification-end {
+  height: 18px !important;
+  opacity: 1;
+  transform: translateX(0%);
 }
