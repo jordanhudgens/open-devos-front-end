@@ -103,6 +103,7 @@ export default {
       this.query = '';
     },
     toggleNav() {
+      console.log('toggleee');
       if (this.showMobileNavBar) {
         this.showMobileNavBar = !this.showMobileNavBar;
       } else {

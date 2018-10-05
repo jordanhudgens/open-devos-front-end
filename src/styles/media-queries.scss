@@ -1,4 +1,42 @@
 @media (max-width: 48em) {
+  .navbar.active {
+    width: 100vw;
+  }
+
+  .navbar.active div {
+    display: grid;
+    width: 100vw;
+    position: absolute;
+    top: 91px;
+  }
+
+  .navbar {
+    display: flex;
+  }
+
+  .navbar .navSearchBar,
+  .navbar .right {
+    display: flex;
+    flex: 1;
+  }
+  .navbar .link {
+    width: auto;
+  }
+  .navbar .right {
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+  }
+  .navbar .toggle {
+    display: none;
+  }
+
+  .navbar div {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
   .thumb-card-wrapper {
     display: grid;
     grid-template-columns: 1fr;
