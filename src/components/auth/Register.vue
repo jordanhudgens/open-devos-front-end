@@ -9,6 +9,9 @@
         <input v-model="email" type="email" placeholder="Email address" required autofocus>
         <label for="email">Your email</label>
 
+        <input v-model="fullName" type="text" placeholder="Full name" required>
+        <label for="fullName">Your full name</label>
+
         <input v-model="password" type="password" placeholder="Password" required>
         <label for="password">Your password</label>
 
@@ -23,48 +26,55 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex';
 
 export default {
   name: 'Register',
   data() {
     return {
       email: '',
+      fullName: '',
       password: '',
       passwordConfirmation: '',
-      error: false
-    }
+      error: false,
+    };
   },
   methods: {
     register() {
-      this.$http.post('/register', { user: this.email, password: this.password, password_confirmation: this.passwordConfirmation })
+      this.$http
+        .post('/register', {
+          user: this.email,
+          full_name: this.fullName,
+          password: this.password,
+          password_confirmation: this.passwordConfirmation,
+        })
         .then(request => this.loginSuccessful(request))
-        .catch(() => this.loginFailed())
+        .catch(() => this.loginFailed());
     },
     loginSuccessful(req) {
       if (!req.data.token) {
-        this.loginFailed()
-        return
+        this.loginFailed();
+        return;
       }
 
-      localStorage.token = req.data.token
-      this.$store.dispatch('login')
-      this.error = false
+      localStorage.token = req.data.token;
+      this.$store.dispatch('login');
+      this.error = false;
 
       this.$router.push({
-        name: "Homepage"
+        name: 'Homepage',
       });
     },
     loginFailed() {
-      this.error = 'Registration failed!'
-      this.$store.dispatch('logout')
-      delete localStorage.token
-    }
+      this.error = 'Registration failed!';
+      this.$store.dispatch('logout');
+      delete localStorage.token;
+    },
   },
   computed: {
-    ...mapGetters({ currentUser: 'currentUser' })
-  }
-}
+    ...mapGetters({currentUser: 'currentUser'}),
+  },
+};
 </script>
 
 <style lang="scss">
