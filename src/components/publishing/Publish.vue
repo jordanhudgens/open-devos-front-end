@@ -7,7 +7,7 @@
       <div class="card published-plans-card-wrapper">
         {{ planResponseMessage }}
 
-        <div v-if="plans.length === 0" class="spinner-wrapper">
+        <div v-if="loading" class="spinner-wrapper">
           <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
         </div>
 
@@ -69,14 +69,14 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import axios from "axios";
-import moment from "moment";
-import router from "@/router";
-import PlanForm from "@/components/plans/PlanForm";
+import {mapGetters} from 'vuex';
+import axios from 'axios';
+import moment from 'moment';
+import router from '@/router';
+import PlanForm from '@/components/plans/PlanForm';
 
 export default {
-  name: "Publish",
+  name: 'Publish',
   data() {
     return {
       plans: [],
@@ -89,17 +89,18 @@ export default {
       planDeletedSuccessfully: false,
       planResponseMessage: null,
       showPlanForm: false,
-      formMode: "new",
+      formMode: 'new',
       planToEdit: null,
-      planBtnText: "Add a New Plan",
-      categoryApiUrl: "https://open-devos-api.herokuapp.com/topics"
+      planBtnText: 'Add a New Plan',
+      categoryApiUrl: 'https://open-devos-api.herokuapp.com/topics',
+      loading: true,
     };
   },
   computed: {
-    ...mapGetters({ currentUser: "currentUser" })
+    ...mapGetters({currentUser: 'currentUser'}),
   },
   components: {
-    PlanForm
+    PlanForm,
   },
   beforeMount() {
     this.getCurrentPlans();
@@ -109,7 +110,7 @@ export default {
     addToPlans(plan) {
       this.plans.push(plan);
       this.showPlanForm = false;
-      this.planBtnText = "Add a New Plan";
+      this.planBtnText = 'Add a New Plan';
     },
     updatePlanList(plan) {
       this.plans.forEach(element => {
@@ -121,14 +122,14 @@ export default {
         }
       }, this);
       this.showPlanForm = false;
-      this.planBtnText = "Add a New Plan";
+      this.planBtnText = 'Add a New Plan';
       this.planToEdit = null;
     },
     formatDate(date) {
       return moment(date).fromNow();
     },
     formTypeSelector() {
-      return this.formMode === "new"
+      return this.formMode === 'new'
         ? this.submitPlanForm()
         : this.editPlanForm();
     },
@@ -136,63 +137,64 @@ export default {
       this.showPlanForm = !this.showPlanForm;
 
       if (this.showPlanForm) {
-        this.planBtnText = "Cancel";
+        this.planBtnText = 'Cancel';
       } else {
-        this.planBtnText = "Add a New Plan";
+        this.planBtnText = 'Add a New Plan';
         this.planToEdit = null;
       }
     },
     editPlan(plan) {
       this.showPlanForm = true;
       this.planToEdit = plan;
-      this.planBtnText = "Cancel";
+      this.planBtnText = 'Cancel';
     },
     deletePlan(plan) {
       this.$swal({
         title: 'Are you sure you want to delete this plan?',
-        text: "This will permanently delete the plan and you won't be able to get it back",
+        text:
+          "This will permanently delete the plan and you won't be able to get it back",
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes Delete it!',
         cancelButtonText: 'No, Keep it!',
         showCloseButton: true,
-        showLoaderOnConfirm: true
-      }).then((result) => {
+        showLoaderOnConfirm: true,
+      }).then(result => {
         if (result.value) {
           axios
             .delete(`https://open-devos-api.herokuapp.com/plans/${plan.slug}`, {
               headers: {
-                Authorization: "Bearer " + localStorage.getItem("token"),
-                "Content-Type": "application/json"
-              }
+                Authorization: 'Bearer ' + localStorage.getItem('token'),
+                'Content-Type': 'application/json',
+              },
             })
             .then(response => {
               this.errorDeletingPlan = false;
               this.planDeletedSuccessfully = true;
               this.plans = this.plans.filter(el => el.slug !== plan.slug);
-              this.planResponseMessage = "The plan was successfully deleted";
+              this.planResponseMessage = 'The plan was successfully deleted';
               return response.data;
             })
             .catch(error => {
               console.log(error);
-              this.planResponseMessage = "There was an error deleting the plan";
+              this.planResponseMessage = 'There was an error deleting the plan';
               this.errorDeletingPlan = true;
             });
-          this.$swal('Deleted', 'You successfully deleted the plan', 'success')
+          this.$swal('Deleted', 'You successfully deleted the plan', 'success');
         } else {
-          this.$swal('Cancelled', 'Your plan is still intact!', 'info')
+          this.$swal('Cancelled', 'Your plan is still intact!', 'info');
         }
-      })
+      });
     },
     togglePlanForm(plan = null, edit = false) {
       if (edit) {
-        this.formMode = "edit";
+        this.formMode = 'edit';
         this.showPlanForm = true;
         this.planTitle = plan.title;
         this.planTopic = plan.topic.id;
         this.planSummary = plan.summary;
       } else {
-        this.formMode = "new";
+        this.formMode = 'new';
         this.planTitle = null;
         this.planTopic = null;
         this.planSummary = null;
@@ -201,19 +203,20 @@ export default {
     },
     getCurrentPlans() {
       axios
-        .get("https://open-devos-api.herokuapp.com/user-plans", {
+        .get('https://open-devos-api.herokuapp.com/user-plans', {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token")
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
           },
           params: {
-            user_id: this.currentUser.id
-          }
+            user_id: this.currentUser.id,
+          },
         })
         .then(response => {
           this.plans.push(...response.data.plans);
+          this.loading = false;
         })
         .catch(error => {
-          console.log("error: ", error);
+          console.log('error: ', error);
         });
     },
     getCategories() {
@@ -225,8 +228,8 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -246,7 +249,7 @@ export default {
 .fade-leave-to
 /* .fade-leave-active below version 2.1.8 */
 
-{
+ {
   opacity: 0;
 }
 </style>
