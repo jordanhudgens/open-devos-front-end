@@ -41,4 +41,5 @@ export default {
 
 <style scoped lang="scss">
 @import '../../styles/notification.scss';
+@import '../../styles/media-queries.scss';
 </style>
