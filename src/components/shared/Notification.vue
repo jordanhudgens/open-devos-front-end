@@ -8,7 +8,7 @@
         <div class="progress">
           {{ subtitle }}
         </div>
-        <router-link class="btn-clear" :to="{ name: routeName, params: { devo_slug: slug } }">
+        <router-link class="btn-clear btn-sm" :to="{ name: routeName, params: { devo_slug: slug } }">
           {{ buttonText }}
         </router-link>
       </div>
