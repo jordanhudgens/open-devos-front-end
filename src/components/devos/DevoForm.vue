@@ -1,8 +1,8 @@
 <template>
   <div class="devo-form-wrapper">
-      <div v-if="errorSubmittingDevo">
-        <h2>{{ responseMessage }}</h2>
-      </div>
+    <div v-if="errorSubmittingDevo">
+      <h2>{{ responseMessage }}</h2>
+    </div>
 
     <form @submit.prevent="formTypeSelector" class="form-wrapper">
 
@@ -18,6 +18,8 @@
         <div class='title-wrapper'>
           <input type="text" v-model="devo.title" placeholder="Devo Title" class="full-width-element" autofocus>
         </div>
+
+        <div>{{ responseMessage }}</div>
 
         <div>
           <h3 class='featured-image-label'>
@@ -46,7 +48,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import { mapGetters } from 'vuex';
 import axios from 'axios';
 import FileSelect from '@/components/shared/FileSelect';
 
@@ -64,6 +66,7 @@ export default {
       responseMessage: null,
       devoSubmittedSuccessfully: false,
       errorSubmittingDevo: false,
+      autoSaver: null
     };
   },
   props: {
@@ -72,7 +75,7 @@ export default {
     devoToEdit: Object,
   },
   computed: {
-    ...mapGetters({currentUser: 'currentUser'}),
+    ...mapGetters({ currentUser: 'currentUser' }),
   },
   components: {
     FileSelect,
@@ -81,6 +84,11 @@ export default {
     if (this.devoToEdit) {
       this.devo = this.devoToEdit;
     }
+
+    this.autoSave();
+  },
+  destroyed() {
+    clearInterval(this.autoSaver);
   },
   watch: {
     devoToEdit(newValue, oldValue) {
@@ -88,6 +96,33 @@ export default {
     },
   },
   methods: {
+    autoSave() {
+      this.autoSaver = setInterval(() => {
+        axios
+          .patch(
+          `https://open-devos-api.herokuapp.com/devos/${this.devoToEdit.slug}`,
+          this.buildForm(),
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('token'),
+            },
+          },
+        )
+          .then(response => {
+            this.responseMessage = 'Autosaved...';
+
+            setTimeout(() => {
+              this.responseMessage = '';
+            }, 3000);
+
+            return response.data;
+          })
+          .catch(error => {
+            console.log(error);
+            this.errorSubmittingDevo = true;
+          });
+      }, 10000);
+    },
     formTypeSelector() {
       if (this.devoToEdit) {
         this.editDevoForm();
@@ -115,14 +150,14 @@ export default {
     editDevoForm() {
       axios
         .patch(
-          `https://open-devos-api.herokuapp.com/devos/${this.devoToEdit.slug}`,
-          this.buildForm(),
-          {
-            headers: {
-              Authorization: 'Bearer ' + localStorage.getItem('token'),
-            },
+        `https://open-devos-api.herokuapp.com/devos/${this.devoToEdit.slug}`,
+        this.buildForm(),
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
           },
-        )
+        },
+      )
         .then(response => {
           this.errorSubmittingDevo = false;
           this.devoSubmittedSuccessfully = true;
