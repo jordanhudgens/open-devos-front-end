@@ -19,7 +19,10 @@
           <input type="text" v-model="devo.title" placeholder="Devo Title" class="full-width-element" autofocus>
         </div>
 
-        <div>{{ responseMessage }}</div>
+        <div class="autosave-wrapper">
+          <i class="fas fa-save" v-if="responseMessage"></i>
+          {{ responseMessage }}
+        </div>
 
         <div>
           <h3 class='featured-image-label'>
@@ -83,9 +86,8 @@ export default {
   created() {
     if (this.devoToEdit) {
       this.devo = this.devoToEdit;
+      this.autoSave();
     }
-
-    this.autoSave();
   },
   destroyed() {
     clearInterval(this.autoSaver);
@@ -113,7 +115,7 @@ export default {
 
             setTimeout(() => {
               this.responseMessage = '';
-            }, 3000);
+            }, 5000);
 
             return response.data;
           })

@@ -1,4 +1,4 @@
-@import './variables.scss';
+@import "./variables.scss";
 
 .file-select-wrapper {
   display: flex;
@@ -23,7 +23,7 @@
       cursor: pointer;
     }
 
-    input[type='file'] {
+    input[type="file"] {
       display: none;
     }
   }
@@ -53,4 +53,12 @@
       }
     }
   }
+}
+
+.autosave-wrapper {
+  height: 42px;
+  font-size: 0.9em;
+  font-weight: 900;
+  color: $lightgray;
+  text-align: center;
 }
