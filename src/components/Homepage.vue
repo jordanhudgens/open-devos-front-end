@@ -305,12 +305,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-@import './../styles/grid.scss';
-@import './../styles/homepage.scss';
-@import './../styles/card.scss';
-@import './../styles/author.scss';
-@import './../styles/helpers.scss';
-@import './../styles/media-queries.scss';
-</style>

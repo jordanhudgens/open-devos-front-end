@@ -62,7 +62,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-@import '../../styles/auth.scss';
-</style>

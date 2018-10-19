@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Register',
@@ -72,11 +72,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({currentUser: 'currentUser'}),
+    ...mapGetters({ currentUser: 'currentUser' }),
   },
 };
 </script>
-
-<style lang="scss">
-@import '../../styles/auth.scss';
-</style>

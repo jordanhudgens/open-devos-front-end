@@ -174,11 +174,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-$teal: #156356;
-
-.plan-form-wrapper {
-  margin-top: 30px;
-}
-</style>

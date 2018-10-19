@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import { mapGetters } from 'vuex';
 import axios from 'axios';
 import moment from 'moment';
 import router from '@/router';
@@ -97,7 +97,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({currentUser: 'currentUser'}),
+    ...mapGetters({ currentUser: 'currentUser' }),
   },
   components: {
     PlanForm,
@@ -152,7 +152,7 @@ export default {
       this.$swal({
         title: 'Are you sure you want to delete this plan?',
         text:
-          "This will permanently delete the plan and you won't be able to get it back",
+        "This will permanently delete the plan and you won't be able to get it back",
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes Delete it!',
@@ -232,24 +232,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.published-plans-wrapper {
-  display: grid;
-  grid-template-columns: 600px auto;
-  grid-gap: 42px;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter,
-.fade-leave-to
-/* .fade-leave-active below version 2.1.8 */
-
- {
-  opacity: 0;
-}
-</style>

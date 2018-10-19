@@ -199,7 +199,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import '../../styles/forms.scss';
-</style>

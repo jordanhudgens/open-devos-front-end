@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import { mapGetters } from 'vuex';
 import axios from 'axios';
 import DevoForm from '@/components/devos/DevoForm';
 import draggable from 'vuedraggable';
@@ -139,7 +139,7 @@ export default {
     next();
   },
   computed: {
-    ...mapGetters({currentUser: 'currentUser'}),
+    ...mapGetters({ currentUser: 'currentUser' }),
   },
   methods: {
     updatePosition(event) {
@@ -152,16 +152,16 @@ export default {
 
       axios
         .patch(
-          `https://open-devos-api.herokuapp.com/devo_positions/${
-            this.plan.slug
-          }`,
-          {devos: updatedPositions},
-          {
-            headers: {
-              Authorization: 'Bearer ' + localStorage.getItem('token'),
-            },
+        `https://open-devos-api.herokuapp.com/devo_positions/${
+        this.plan.slug
+        }`,
+        { devos: updatedPositions },
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
           },
-        )
+        },
+      )
         .then(response => {
           this.devos = response.data.devos;
           this.positionsUpdated = true;
@@ -194,19 +194,19 @@ export default {
     startPlan() {
       axios
         .post(
-          'https://open-devos-api.herokuapp.com/plan_assignments',
-          {
-            plan_assignment: {
-              plan_id: this.plan.id,
-              user_id: this.currentUser.id,
-            },
+        'https://open-devos-api.herokuapp.com/plan_assignments',
+        {
+          plan_assignment: {
+            plan_id: this.plan.id,
+            user_id: this.currentUser.id,
           },
-          {
-            headers: {
-              Authorization: 'Bearer ' + localStorage.getItem('token'),
-            },
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
           },
-        )
+        },
+      )
         .then(response => {
           this.planStarted = true;
           // this.responseMessage = 'Your devo has been published!';
@@ -253,7 +253,7 @@ export default {
       this.$swal({
         title: 'Are you sure you want to delete this devotional?',
         text:
-          "This will permanently delete the devotional and you won't be able to get it back",
+        "This will permanently delete the devotional and you won't be able to get it back",
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes Delete it!',
@@ -329,8 +329,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-@import '../../styles/plan_detail.scss';
-@import '../../styles/helpers.scss';
-</style>

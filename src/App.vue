@@ -16,7 +16,6 @@
 import Navigation from "@/components/shared/Navigation";
 import { mapGetters } from "vuex";
 
-
 export default {
   name: "App",
   components: {
@@ -29,6 +28,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import './styles/common.scss';
-@import './styles/media-queries.scss';
+@import './styles/main.scss';
 </style>

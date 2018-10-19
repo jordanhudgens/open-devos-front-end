@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import { mapGetters } from 'vuex';
 import axios from 'axios';
 import FileSelect from '@/components/shared/FileSelect';
 
@@ -106,7 +106,7 @@ export default {
         return false;
       }
     },
-    populateForm() {},
+    populateForm() { },
     buildForm() {
       let formData = new FormData();
 
@@ -127,14 +127,14 @@ export default {
     updateAccount() {
       axios
         .patch(
-          `https://open-devos-api.herokuapp.com/users/${this.currentUser.id}`,
-          this.buildForm(),
-          {
-            headers: {
-              Authorization: 'Bearer ' + localStorage.getItem('token'),
-            },
+        `https://open-devos-api.herokuapp.com/users/${this.currentUser.id}`,
+        this.buildForm(),
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
           },
-        )
+        },
+      )
         .then(response => {
           console.log('responsee from account', response);
           return response.data;
@@ -145,11 +145,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({currentUser: 'currentUser'}),
+    ...mapGetters({ currentUser: 'currentUser' }),
   },
 };
 </script>
-
-<style lang="scss">
-@import '../../styles/auth.scss';
-</style>
