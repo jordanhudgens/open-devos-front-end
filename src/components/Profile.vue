@@ -26,13 +26,16 @@ export default {
       noPlansText: null,
     };
   },
+
   created() {
     this.profileSlug = this.$route.params.user_slug;
     this.getResults(this.profileSlug);
   },
+
   components: {
     ThumbCards,
   },
+
   methods: {
     getResults(user_slug) {
       axios
