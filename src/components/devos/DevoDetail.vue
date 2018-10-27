@@ -18,6 +18,12 @@
         <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
       </div>
 
+      <div v-if="devo.featuredImage">
+        <div class="devo-featured-image-wrapper">
+          <img :src="devo.featuredImage">
+        </div>
+      </div>
+
       <div class="returned-content" v-html="devo.content"></div>
     </div>
   </div>
@@ -37,7 +43,8 @@ export default {
         name: null,
         slug: this.$route.params.devo_slug,
         content: null,
-        plan: null
+        plan: null,
+        featuredImage: null
       },
       devoCompletions: [],
       devoApiUrl: 'https://open-devos-api.herokuapp.com/devos',
@@ -70,8 +77,6 @@ export default {
           }
         })
         .then(response => {
-          // this.responseMessage = 'Your devo has been published!';
-
           this.$router.push({
             name: "PlanDetail",
             params: { slug: response.data.plan.slug }
@@ -81,9 +86,9 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          // this.responseMessage = 'There was an error submitting the form, make sure you filled out all required fields.';
         })
     },
+
     markNotCompleted(devo_id) {
       axios
         .delete(`https://open-devos-api.herokuapp.com/devo_completions/${devo_id}`, {
@@ -93,18 +98,14 @@ export default {
           }
         })
         .then(response => {
-          // this.errorDeletingPlan = false;
-          // this.planDeletedSuccessfully = true;
           this.devoCompletions = this.devoCompletions.filter(el => el !== devo_id);
-          // this.planResponseMessage = "The plan was successfully deleted";
           return response.data;
         })
         .catch(error => {
           console.log(error);
-          // this.planResponseMessage = "There was an error deleting the plan";
-          // this.errorDeletingPlan = true;
         });
     },
+
     getUserDevoCompletions() {
       if (this.currentUser) {
         axios
@@ -123,13 +124,16 @@ export default {
           });
       }
     },
+
     getDevoDetails() {
       axios
         .get(`${this.devoApiUrl}/${this.devo.slug}`)
         .then(response => {
+          console.log("Response", response);
           this.devo.id = response.data.devo.id;
           this.devo.name = response.data.devo.title;
           this.devo.plan = response.data.devo.plan;
+          this.devo.featuredImage = response.data.devo.featured_image;
           this.devo.content = sanitizeHtml(response.data.devo.content, {
             allowedTags: sanitizeHtml.defaults.allowedTags.concat(['h1', 'h2', 'img', 'div', 'a']),
             allowedSchemes: ['data', 'http']
