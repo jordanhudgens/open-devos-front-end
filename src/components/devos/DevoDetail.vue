@@ -36,6 +36,7 @@ import { mapGetters } from "vuex";
 
 export default {
   name: 'DevoDetail',
+
   data() {
     return {
       devo: {
@@ -50,17 +51,21 @@ export default {
       devoApiUrl: 'https://open-devos-api.herokuapp.com/devos',
     }
   },
+
   beforeMount() {
     this.getDevoDetails();
     this.getUserDevoCompletions();
   },
+
   beforeRouteUpdate(to, from, next) {
     this.devo.slug = this.$route.params.devo_slug
     next()
   },
+
   computed: {
     ...mapGetters({ currentUser: "currentUser" })
   },
+
   methods: {
     markCompleted(devo_id) {
       axios
