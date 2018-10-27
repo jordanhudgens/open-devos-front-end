@@ -13,6 +13,7 @@ import Publish from "@/components/publishing/Publish";
 import Logout from "@/components/auth/Logout";
 import PlanDetail from "@/components/plans/PlanDetail";
 import DevoDetail from "@/components/devos/DevoDetail";
+import EditDevo from "@/components/devos/EditDevo";
 import Bookmarks from "@/components/Bookmarks";
 import { mapGetters } from "vuex";
 import store from "@/store";
@@ -73,6 +74,11 @@ const router = new Router({
       path: "/devo/:devo_slug",
       name: "DevoDetail",
       component: DevoDetail
+    },
+    {
+      path: "/devo/:devo_slug/edit",
+      name: "EditDevo",
+      component: EditDevo
     },
     {
       path: "/popular",

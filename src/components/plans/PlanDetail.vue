@@ -99,6 +99,7 @@ import loggedIn from '@/mixins/loggedIn';
 
 export default {
   name: 'PlanDetail',
+
   data() {
     return {
       plan: {
@@ -122,25 +123,31 @@ export default {
       ownerOnPage: false,
     };
   },
+
   components: {
     DevoForm,
     draggable,
   },
+
   beforeMount() {
     this.getPlanDetails();
   },
+
   mounted() {
     if (loggedIn()) {
       this.getCurrentUserPlans();
     }
   },
+
   beforeRouteUpdate(to, from, next) {
     this.plan.slug = this.$route.params.slug;
     next();
   },
+
   computed: {
     ...mapGetters({ currentUser: 'currentUser' }),
   },
+
   methods: {
     updatePosition(event) {
       this.positionsUpdated = false;
@@ -171,6 +178,7 @@ export default {
           console.log(error);
         });
     },
+
     getCurrentUserPlans() {
       axios
         .get('https://open-devos-api.herokuapp.com/plan_assignments', {
@@ -191,6 +199,7 @@ export default {
           console.log(error);
         });
     },
+
     startPlan() {
       axios
         .post(
@@ -209,24 +218,24 @@ export default {
       )
         .then(response => {
           this.planStarted = true;
-          // this.responseMessage = 'Your devo has been published!';
           return response.data;
         })
         .catch(error => {
           console.log(error);
-          // this.responseMessage = 'There was an error submitting the form, make sure you filled out all required fields.';
-          // this.errorSubmittingDevo = true;
         });
     },
+
     cancelDevoForm() {
       this.showNewDevoButton = true;
       this.showForm = false;
     },
+
     addToDevos(devo) {
       this.devos.push(devo);
       this.showForm = false;
       this.showNewDevoButton = true;
     },
+
     updateDevoList(devo) {
       this.devos.forEach(element => {
         if (element.id === devo.id) {
@@ -239,16 +248,19 @@ export default {
       this.showForm = false;
       this.showNewDevoButton = true;
     },
+
     renderDevoForm() {
       this.showNewDevoButton = false;
       this.showForm = true;
       this.devoToEdit = null;
     },
+
     editDevo(devo) {
       this.showNewDevoButton = false;
       this.showForm = true;
       this.devoToEdit = devo;
     },
+
     deleteDevo(devo) {
       this.$swal({
         title: 'Are you sure you want to delete this devotional?',
@@ -293,6 +305,7 @@ export default {
         }
       });
     },
+
     sortDevosByPosition(devos) {
       devos.sort((prev, next) => {
         return prev.position - next.position;
@@ -300,6 +313,7 @@ export default {
 
       return devos;
     },
+
     getPlanDetails() {
       axios
         .get(`${this.planApiUrl}/${this.plan.slug}`, {

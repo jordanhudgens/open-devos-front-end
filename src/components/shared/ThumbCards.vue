@@ -21,10 +21,12 @@
 <script>
 export default {
   name: 'ThumbCards',
+
   data() {
     return {
     }
   },
+
   props: {
     collection: Array,
     routeName: String,
