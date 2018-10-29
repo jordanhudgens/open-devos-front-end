@@ -13,7 +13,7 @@ import Publish from "@/components/publishing/Publish";
 import Logout from "@/components/auth/Logout";
 import PlanDetail from "@/components/plans/PlanDetail";
 import DevoDetail from "@/components/devos/DevoDetail";
-import EditDevo from "@/components/devos/EditDevo";
+import DevoManager from "@/components/devos/DevoManager";
 import Bookmarks from "@/components/Bookmarks";
 import { mapGetters } from "vuex";
 import store from "@/store";
@@ -76,9 +76,9 @@ const router = new Router({
       component: DevoDetail
     },
     {
-      path: "/devo/:devo_slug/edit",
-      name: "EditDevo",
-      component: EditDevo
+      path: "/devo-manager/:devo_slug",
+      name: "DevoManager",
+      component: DevoManager
     },
     {
       path: "/popular",

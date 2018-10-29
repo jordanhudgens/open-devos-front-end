@@ -49,9 +49,9 @@
               </div>
 
               <div class='thumb-action-icons-wrapper'>
-                <a @click.prevent="editDevo(devo)" href="#">
+                <router-link :to="{ name: 'DevoManager', params: { devo_slug: devo.slug } }">
                   <i class="fas fa-pen-square"></i>
-                </a>
+                </router-link>
 
                 <a @click.prevent="deleteDevo(devo)" href="#">
                   <i class="fas fa-trash"></i>
@@ -83,8 +83,10 @@
     </div>
 
     <div v-if="currentUser && currentUser.id === plan.owner" class="devo-form-wrapper">
-      <button v-if="showNewDevoButton" @click="renderDevoForm" class="btn">Add a New Devo</button>
-      <button v-if="!showNewDevoButton" @click="cancelDevoForm" class="btn top-spacer">Cancel</button>
+      <router-link :to="{ name: 'DevoManager', params: { devo_slug: 'new' } }">
+        <button class="btn">Add a New Devo</button>
+      </router-link>
+
       <DevoForm v-if="showForm" :devoToEdit.sync="devoToEdit" :planId="plan.id" :devos="devos" @new="addToDevos" @update="updateDevoList" :key="devoFormKey" />
     </div>
   </div>

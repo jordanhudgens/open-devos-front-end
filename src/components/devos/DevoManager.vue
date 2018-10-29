@@ -1,15 +1,21 @@
 <template>
   <div>
-    <h1>{{ devo.name }}</h1>
+    <h1>{{ formTitle }}</h1>
+    <!-- <DevoForm :devoToEdit.sync="devoToEdit" :planId="plan.id" :devos="devos" @new="addToDevos" @update="updateDevoList" :key="devoFormKey" /> -->
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import { mapGetters } from "vuex";
+import DevoForm from '@/components/devos/DevoForm';
+
+// TODOs
+// If the slug is 'new' render a new devo form
+// If the slug is anything else, lookup the devo and populate the edit form
 
 export default {
-  name: 'EditDevo',
+  name: 'DevoManager',
 
   data() {
     return {
@@ -26,11 +32,21 @@ export default {
   },
 
   beforeMount() {
-    this.getDevoDetails();
+    if (this.devo.slug !== 'new') {
+      this.getDevoDetails();
+    }
   },
 
   computed: {
-    ...mapGetters({ currentUser: "currentUser" })
+    ...mapGetters({ currentUser: "currentUser" }),
+
+    formTitle: function() {
+      if (this.devo.slug === 'new') {
+        return "Create a new devo";
+      } else {
+        return this.devo.name;
+      }
+    }
   },
 
   methods: {
