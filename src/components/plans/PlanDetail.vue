@@ -49,7 +49,7 @@
               </div>
 
               <div class='thumb-action-icons-wrapper'>
-                <router-link :to="{ name: 'DevoManager', params: { devo_slug: devo.slug } }">
+                <router-link :to="{ name: 'DevoManager', params: { plan_slug: plan.slug, devo_slug: devo.slug } }">
                   <i class="fas fa-pen-square"></i>
                 </router-link>
 
@@ -83,7 +83,8 @@
     </div>
 
     <div v-if="currentUser && currentUser.id === plan.owner" class="devo-form-wrapper">
-      <router-link :to="{ name: 'DevoManager', params: { devo_slug: 'new' } }">
+      <router-link :to="{ name: 'DevoManager', params: { plan_slug: plan.slug, devo_slug: 'new' } }">
+        <h2>{{ plan.slug }}</h2>
         <button class="btn">Add a New Devo</button>
       </router-link>
 

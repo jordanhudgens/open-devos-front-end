@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{ formTitle }}</h1>
-    <!-- <DevoForm :devoToEdit.sync="devoToEdit" :planId="plan.id" :devos="devos" @new="addToDevos" @update="updateDevoList" :key="devoFormKey" /> -->
+    <DevoForm :devoToEdit.sync="devo" :planId="devo.plan.id" @new="addToDevos" @update="updateDevoList" />
   </div>
 </template>
 
@@ -11,8 +11,10 @@ import { mapGetters } from "vuex";
 import DevoForm from '@/components/devos/DevoForm';
 
 // TODOs
-// If the slug is 'new' render a new devo form
-// If the slug is anything else, lookup the devo and populate the edit form
+// Get the plan id
+// It's needed because the devo object is empty for new devos
+// You now have access to it in the route plan_slug
+
 
 export default {
   name: 'DevoManager',
@@ -50,6 +52,17 @@ export default {
   },
 
   methods: {
+    addToDevos() {
+      console.log("Adding to devos");
+      // Redirect to plan detail
+    },
+
+    updateDevoList() {
+      console.log("updating...");
+      // Redirect to plan detail
+      // Combine these
+    },
+
     getDevoDetails() {
       axios
         .get(`${this.devoApiUrl}/${this.devo.slug}`)

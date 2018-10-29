@@ -76,7 +76,7 @@ const router = new Router({
       component: DevoDetail
     },
     {
-      path: "/devo-manager/:devo_slug",
+      path: "/:plan_slug/devo-manager/:devo_slug",
       name: "DevoManager",
       component: DevoManager
     },
