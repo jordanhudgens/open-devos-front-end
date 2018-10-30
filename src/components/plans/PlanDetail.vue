@@ -1,68 +1,33 @@
 <template>
   <div class="plan-details-wrapper">
-    <div :class="showForm ? 'slide-devos-out' : ''">
-      <div class="spacer"></div>
-      <div v-if="!plan.name" class="spinner-wrapper">
-        <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
+    <div class="spacer"></div>
+    <div v-if="!plan.name" class="spinner-wrapper">
+      <i class="fas fa-circle-notch fa-spin fa-3x fa-fw"></i>
+    </div>
+
+    <div class="plan-header-wrapper">
+      <div class="left-column">
+        <h1>{{ plan.name }}</h1>
+        <div class="plan-summary">{{ plan.summary }}</div>
       </div>
 
-      <div class="plan-header-wrapper">
-        <div class="left-column">
-          <h1>{{ plan.name }}</h1>
-          <div class="plan-summary">{{ plan.summary }}</div>
+      <div class="right-column">
+        <div v-if="currentUser && !planStarted">
+          <button @click.prevent="startPlan" class="btn">Start Plan</button>
         </div>
-
-        <div class="right-column">
-          <div v-if="currentUser && !planStarted">
-            <button @click.prevent="startPlan" class="btn">Start Plan</button>
-          </div>
-          <div v-else-if="currentUser && planStarted">
-            <button @click.prevent="archivePlan" class="btn">Archive Plan</button>
-          </div>
-          <div v-else>
-            <router-link :to="{ name: 'Register' }">
-              Sign Up to Take Plan
-            </router-link>
-          </div>
+        <div v-else-if="currentUser && planStarted">
+          <button @click.prevent="archivePlan" class="btn">Archive Plan</button>
+        </div>
+        <div v-else>
+          <router-link :to="{ name: 'Register' }">
+            Sign Up to Take Plan
+          </router-link>
         </div>
       </div>
+    </div>
 
-      <draggable v-model="devos" @end="updatePosition" v-if="ownerOnPage">
-        <transition-group name="thumb-card-wrapper" class="thumb-card-wrapper">
-          <div v-for="devo in devos" :key="devo.slug" class="animated-draggable-thumb-card" :id="devo.id">
-            <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
-              <img v-if="devo.featured_image" :src="devo.featured_image" class="thumb-img">
-              <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img">
-            </router-link>
-
-            <div class="thumb-card">
-              <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
-                <span class="title">{{ devo.title }}</span>
-              </router-link>
-
-              <div v-if="positionsUpdated" class="dayCountDescription">
-                Day {{ devo.position + 1 }} of {{ devos.length }}
-              </div>
-
-              <div v-else class="dayCountDescription">
-                Updating...
-              </div>
-
-              <div class='thumb-action-icons-wrapper'>
-                <router-link :to="{ name: 'DevoManager', params: { plan_slug: plan.slug, devo_slug: devo.slug } }">
-                  <i class="fas fa-pen-square"></i>
-                </router-link>
-
-                <a @click.prevent="deleteDevo(devo)" href="#">
-                  <i class="fas fa-trash"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </transition-group>
-      </draggable>
-
-      <div class="thumb-card-wrapper" v-else-if="!showForm">
+    <draggable v-model="devos" @end="updatePosition" v-if="ownerOnPage">
+      <transition-group name="thumb-card-wrapper" class="thumb-card-wrapper">
         <div v-for="devo in devos" :key="devo.slug" class="animated-draggable-thumb-card" :id="devo.id">
           <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
             <img v-if="devo.featured_image" :src="devo.featured_image" class="thumb-img">
@@ -77,6 +42,39 @@
             <div v-if="positionsUpdated" class="dayCountDescription">
               Day {{ devo.position + 1 }} of {{ devos.length }}
             </div>
+
+            <div v-else class="dayCountDescription">
+              Updating...
+            </div>
+
+            <div class='thumb-action-icons-wrapper'>
+              <router-link :to="{ name: 'DevoManager', params: { plan_slug: plan.slug, devo_slug: devo.slug } }">
+                <i class="fas fa-pen-square"></i>
+              </router-link>
+
+              <a @click.prevent="deleteDevo(devo)" href="#">
+                <i class="fas fa-trash"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </transition-group>
+    </draggable>
+
+    <div class="thumb-card-wrapper" v-else>
+      <div v-for="devo in devos" :key="devo.slug" class="animated-draggable-thumb-card" :id="devo.id">
+        <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
+          <img v-if="devo.featured_image" :src="devo.featured_image" class="thumb-img">
+          <img v-else src="@/assets/teal-placeholder.jpg" class="thumb-img">
+        </router-link>
+
+        <div class="thumb-card">
+          <router-link :to="{ name: 'DevoDetail', params: { devo_slug: devo.slug } }">
+            <span class="title">{{ devo.title }}</span>
+          </router-link>
+
+          <div v-if="positionsUpdated" class="dayCountDescription">
+            Day {{ devo.position + 1 }} of {{ devos.length }}
           </div>
         </div>
       </div>
@@ -84,11 +82,8 @@
 
     <div v-if="currentUser && currentUser.id === plan.owner" class="devo-form-wrapper">
       <router-link :to="{ name: 'DevoManager', params: { plan_slug: plan.slug, devo_slug: 'new' } }">
-        <h2>{{ plan.slug }}</h2>
         <button class="btn">Add a New Devo</button>
       </router-link>
-
-      <DevoForm v-if="showForm" :devoToEdit.sync="devoToEdit" :planId="plan.id" :devos="devos" @new="addToDevos" @update="updateDevoList" :key="devoFormKey" />
     </div>
   </div>
 </template>
@@ -96,7 +91,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import axios from 'axios';
-import DevoForm from '@/components/devos/DevoForm';
 import draggable from 'vuedraggable';
 import loggedIn from '@/mixins/loggedIn';
 
@@ -118,17 +112,14 @@ export default {
       errorDeletingDevo: false,
       devoDeletedSuccessfully: false,
       devoDeletionResponseMessage: null,
-      showForm: false,
       devoToEdit: null,
       showNewDevoButton: true,
-      devoFormKey: null,
       positionsUpdated: true,
       ownerOnPage: false,
     };
   },
 
   components: {
-    DevoForm,
     draggable,
   },
 
@@ -226,42 +217,6 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    },
-
-    cancelDevoForm() {
-      this.showNewDevoButton = true;
-      this.showForm = false;
-    },
-
-    addToDevos(devo) {
-      this.devos.push(devo);
-      this.showForm = false;
-      this.showNewDevoButton = true;
-    },
-
-    updateDevoList(devo) {
-      this.devos.forEach(element => {
-        if (element.id === devo.id) {
-          element.title = devo.title;
-          element.content = devo.content;
-          element.status = devo.status;
-          element.featured_image = devo.featured_image;
-        }
-      }, this);
-      this.showForm = false;
-      this.showNewDevoButton = true;
-    },
-
-    renderDevoForm() {
-      this.showNewDevoButton = false;
-      this.showForm = true;
-      this.devoToEdit = null;
-    },
-
-    editDevo(devo) {
-      this.showNewDevoButton = false;
-      this.showForm = true;
-      this.devoToEdit = devo;
     },
 
     deleteDevo(devo) {
