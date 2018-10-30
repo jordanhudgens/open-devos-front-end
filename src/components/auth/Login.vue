@@ -34,11 +34,27 @@ export default {
     }
   },
 
+  beforeMount() {
+    this.routeGuard();
+  },
+
+  computed: {
+    ...mapGetters([
+      'getLoginStatus',
+    ]),
+  },
+
   methods: {
     ...mapMutations([
       'SET_CURRENT_USER',
       'SET_LOGIN_STATUS'
     ]),
+
+    routeGuard() {
+      if (this.getLoginStatus === 'LOGGED_IN') {
+        this.$router.push({ name: 'Homepage' });
+      }
+    },
 
     login() {
       axios
