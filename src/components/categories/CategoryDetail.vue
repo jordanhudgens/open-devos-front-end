@@ -18,6 +18,7 @@ import ThumbCards from '@/components/shared/ThumbCards';
 
 export default {
   name: 'CategoryDetail',
+
   data() {
     return {
       category: {
@@ -29,16 +30,20 @@ export default {
       plans: []
     }
   },
+
   beforeMount() {
     this.getCategoryPlans();
   },
+
   beforeRouteUpdate(to, from, next) {
     this.category.slug = this.$route.params.category_slug
     next()
   },
+
   components: {
     ThumbCards
   },
+
   methods: {
     getCategoryPlans() {
       axios

@@ -63,7 +63,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ currentUser: "currentUser" })
+    ...mapGetters([
+      "currentUser"
+    ])
   },
 
   methods: {
@@ -77,9 +79,7 @@ export default {
           }
         },
         {
-          headers: {
-            "Authorization": 'Bearer ' + localStorage.getItem('token'),
-          }
+          withCredentials: true
         })
         .then(response => {
           this.$router.push({
@@ -97,10 +97,7 @@ export default {
     markNotCompleted(devo_id) {
       axios
         .delete(`https://open-devos-api.herokuapp.com/devo_completions/${devo_id}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-            "Content-Type": "application/json"
-          }
+          withCredentials: true
         })
         .then(response => {
           this.devoCompletions = this.devoCompletions.filter(el => el !== devo_id);
@@ -116,9 +113,7 @@ export default {
         axios
           .get(`https://open-devos-api.herokuapp.com/devo_completions?user_id=${this.currentUser.id}`,
           {
-            headers: {
-              "Authorization": 'Bearer ' + localStorage.getItem('token'),
-            }
+            withCredentials: true
           })
           .then(response => {
             this.devoCompletions.push(...response.data);
@@ -134,7 +129,6 @@ export default {
       axios
         .get(`${this.devoApiUrl}/${this.devo.slug}`)
         .then(response => {
-          console.log("Response", response);
           this.devo.id = response.data.devo.id;
           this.devo.name = response.data.devo.title;
           this.devo.plan = response.data.devo.plan;

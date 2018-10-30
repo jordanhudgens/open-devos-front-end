@@ -27,15 +27,18 @@ import axios from "axios";
 
 export default {
   name: 'Categories',
+
   data() {
     return {
       categoryApiUrl: 'https://open-devos-api.herokuapp.com/topics',
       categories: []
     }
   },
+
   beforeMount() {
     this.getCategories();
   },
+
   methods: {
     getCategories() {
       axios
