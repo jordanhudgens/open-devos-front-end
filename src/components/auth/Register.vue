@@ -27,7 +27,7 @@
 
 <script>
 import axios from 'axios';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'Register',
@@ -39,6 +39,7 @@ export default {
       password: '',
       passwordConfirmation: '',
       error: false,
+      registrationUrl: "https://open-devos-api.herokuapp.com/registrations"
     };
   },
 
@@ -53,6 +54,11 @@ export default {
   },
 
   methods: {
+    ...mapMutations([
+      'SET_CURRENT_USER',
+      'SET_LOGIN_STATUS'
+    ]),
+
     routeGuard() {
       if (this.getLoginStatus === 'LOGGED_IN') {
         this.$router.push({ name: 'Homepage' });
@@ -60,6 +66,29 @@ export default {
     },
 
     register() {
+      axios
+        .post(
+        this.registrationUrl,
+        {
+          user: {
+            email: this.email,
+            full_name: this.fullName,
+            password: this.password,
+            password_confirmation: this.password,
+          },
+        },
+        { withCredentials: true },
+      )
+        .then(response => {
+          if (response.data.status === "created") {
+            this.SET_CURRENT_USER(response.data.user);
+            this.SET_LOGIN_STATUS('LOGGED_IN');
+            this.$router.push({ name: 'Homepage' });
+          }
+        })
+        .catch(error => {
+          console.log("error occurred with registration", error);
+        });
     },
   },
 };

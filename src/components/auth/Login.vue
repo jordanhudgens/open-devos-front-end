@@ -69,7 +69,6 @@ export default {
         { withCredentials: true },
       )
         .then(response => {
-          console.log('res from login', response.data);
           if (response.data.status === "created") {
             this.SET_CURRENT_USER(response.data.user);
             this.SET_LOGIN_STATUS('LOGGED_IN');
