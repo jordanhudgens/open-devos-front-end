@@ -82,7 +82,7 @@ export default {
 
   methods: {
     routeGuard() {
-      if (this.getLoginStatus() === 'NOT_LOGGED_IN') {
+      if (this.getLoginStatus === 'NOT_LOGGED_IN') {
         this.$router.push({ name: 'Homepage' });
       }
     },

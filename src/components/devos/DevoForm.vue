@@ -80,7 +80,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ currentUser: 'currentUser' }),
+    ...mapGetters([
+      "currentUser"
+    ])
   },
 
   components: {
@@ -90,7 +92,6 @@ export default {
   created() {
     if (this.devoToEdit.slug !== 'new') {
       this.devo = this.devoToEdit;
-      console.log("in created, devo and then devo to edit", this.devo, this.devoToEdit);
       this.autoSave();
     }
   },
@@ -113,9 +114,7 @@ export default {
           `https://open-devos-api.herokuapp.com/devos/${this.devoToEdit.slug}`,
           this.buildForm(),
           {
-            headers: {
-              Authorization: 'Bearer ' + localStorage.getItem('token'),
-            },
+            withCredentials: true
           },
         )
           .then(response => {
@@ -137,10 +136,8 @@ export default {
     formTypeSelector() {
       if (this.devoToEdit.slug !== 'new') {
         this.editDevoForm();
-        console.log("edit mode");
       } else {
         this.submitDevoForm();
-        console.log("new mode");
       }
     },
 
@@ -168,9 +165,7 @@ export default {
         `https://open-devos-api.herokuapp.com/devos/${this.devoToEdit.slug}`,
         this.buildForm(),
         {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token'),
-          },
+          withCredentials: true
         },
       )
         .then(response => {
@@ -191,9 +186,7 @@ export default {
     submitDevoForm() {
       axios
         .post('https://open-devos-api.herokuapp.com/devos', this.buildForm(), {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token'),
-          },
+          withCredentials: true
         })
         .then(response => {
           this.errorSubmittingDevo = false;

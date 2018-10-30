@@ -1,20 +1,26 @@
 <template>
   <div id="app">
-    <Navigation />
-
-    <div class="container">
-      <div class="content-wrapper">
-        <router-view :key="$route.path" />
-      </div>
-
+    <div v-if="isLoading">
+      Loading...
     </div>
-    <div class="bottom-spacer"></div>
+
+    <div v-else>
+      <Navigation />
+
+      <div class="container">
+        <div class="content-wrapper">
+          <router-view :key="$route.path" />
+        </div>
+
+      </div>
+      <div class="bottom-spacer"></div>
+    </div>
   </div>
 </template>
 
 <script>
 import Navigation from "@/components/shared/Navigation";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations, mapState } from 'vuex';
 
 export default {
   name: "App",
@@ -23,8 +29,21 @@ export default {
     Navigation
   },
 
+  beforeMount() {
+    this.getLoadingStatus();
+  },
+
   computed: {
-    ...mapGetters({ currentUser: "currentUser" })
+    ...mapState([
+      'isLoading'
+    ])
+  },
+
+  methods: {
+    ...mapGetters([
+      'getLoadingStatus',
+      'getLoginStatus',
+    ]),
   }
 };
 </script>

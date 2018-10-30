@@ -14,8 +14,6 @@ import PlanDetail from "@/components/plans/PlanDetail";
 import DevoDetail from "@/components/devos/DevoDetail";
 import DevoManager from "@/components/devos/DevoManager";
 import Bookmarks from "@/components/Bookmarks";
-import { mapGetters } from "vuex";
-import store from "@/store";
 import VueAnalytics from "vue-analytics";
 import VueGtm from "vue-gtm";
 
@@ -92,14 +90,7 @@ const router = new Router({
     {
       path: "/publish",
       name: "Publish",
-      component: Publish,
-      beforeEnter: (to, from, next) => {
-        if (store.getters.currentUser) {
-          next();
-        } else {
-          next({ name: "Login" });
-        }
-      }
+      component: Publish
     }
   ]
 });

@@ -24,6 +24,7 @@ const actions = {
   storeCheckLoginStatus: context => {
     loggedIn()
       .then(res => {
+        console.log("loggedIn status response", res);
         if (res.logged_in) {
           context.commit("SET_CURRENT_USER", res.user);
           context.commit("SET_LOGIN_STATUS", "LOGGED_IN");

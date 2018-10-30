@@ -2,6 +2,8 @@
   <div>
     <h1>Published Plans</h1>
 
+    <h2>{{ currentUser }}</h2>
+
     <div class="published-plans-wrapper">
 
       <div class="card published-plans-card-wrapper">
@@ -72,7 +74,6 @@
 import { mapGetters } from 'vuex';
 import axios from 'axios';
 import moment from 'moment';
-import router from '@/router';
 import PlanForm from '@/components/plans/PlanForm';
 
 export default {
@@ -99,14 +100,18 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ currentUser: 'currentUser' }),
+    ...mapGetters([
+      'currentUser'
+    ]),
   },
 
   components: {
     PlanForm,
   },
 
-  beforeMount() {
+  mounted() {
+    // TODO
+    // Move to redux store so you can mange the 'loading' process
     this.getCurrentPlans();
     this.getCategories();
   },
@@ -174,10 +179,7 @@ export default {
         if (result.value) {
           axios
             .delete(`https://open-devos-api.herokuapp.com/plans/${plan.slug}`, {
-              headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('token'),
-                'Content-Type': 'application/json',
-              },
+              withCredentials: true
             })
             .then(response => {
               this.errorDeletingPlan = false;
@@ -215,14 +217,13 @@ export default {
     },
 
     getCurrentPlans() {
+      console.log("current plans...", this.currentUser);
       axios
         .get('https://open-devos-api.herokuapp.com/user-plans', {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token'),
-          },
           params: {
             user_id: this.currentUser.id,
           },
+          withCredentials: true
         })
         .then(response => {
           this.plans.push(...response.data.plans);
