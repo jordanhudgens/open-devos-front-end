@@ -13,12 +13,10 @@
   "dependencies": {
     "axios": "^0.18.0",
     "express": "^4.16.3",
-    "jwt-decode": "^2.2.0",
     "moment": "^2.22.2",
     "sanitize-html": "^1.18.2",
     "vue": "^2.5.2",
     "vue-analytics": "^5.12.2",
-    "vue-axios": "^2.1.1",
     "vue-gtm": "^1.0.2",
     "vue-router": "^3.0.1",
     "vue-sweetalert2": "^1.4.2",
