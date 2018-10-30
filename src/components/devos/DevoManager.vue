@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{ formTitle }}</h1>
-    <DevoForm :devoToEdit.sync="devo" :planId="plan.id" @new="addToDevos" @update="updateDevoList" />
+    <DevoForm :devoToEdit.sync="devo" :planId="plan.id" @devoSubmittedSuccessfully="redirectToDevo" @errorSubmittingDevo="handleSubmissionError" />
   </div>
 </template>
 
@@ -53,15 +53,17 @@ export default {
   },
 
   methods: {
-    addToDevos() {
-      console.log("Adding to devos");
-      // Redirect to plan detail
+    redirectToDevo(devo) {
+      this.$router.push({
+        name: "DevoDetail",
+        params: {
+          devo_slug: devo.slug
+        }
+      });
     },
 
-    updateDevoList() {
-      console.log("updating...");
-      // Redirect to plan detail
-      // Combine these
+    handleSubmissionError(err) {
+      console.log("error", err);
     },
 
     getPlan() {
@@ -79,7 +81,6 @@ export default {
       axios
         .get(`${this.devoApiUrl}/${this.devo.slug}`)
         .then(response => {
-          console.log("Response from getDevoDetails", response);
           this.devo.id = response.data.devo.id;
           this.devo.title = response.data.devo.title;
           this.devo.featuredImage = response.data.devo.featured_image;

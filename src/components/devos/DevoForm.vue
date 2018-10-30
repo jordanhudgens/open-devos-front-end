@@ -88,7 +88,7 @@ export default {
   },
 
   created() {
-    if (this.devoToEdit) {
+    if (this.devoToEdit.slug !== 'new') {
       this.devo = this.devoToEdit;
       console.log("in created, devo and then devo to edit", this.devo, this.devoToEdit);
       this.autoSave();
@@ -135,10 +135,12 @@ export default {
     },
 
     formTypeSelector() {
-      if (this.devoToEdit) {
+      if (this.devoToEdit.slug !== 'new') {
         this.editDevoForm();
+        console.log("edit mode");
       } else {
         this.submitDevoForm();
+        console.log("new mode");
       }
     },
 
@@ -175,7 +177,7 @@ export default {
           this.errorSubmittingDevo = false;
           this.devoSubmittedSuccessfully = true;
           this.responseMessage = 'Your devo has been updated!';
-          this.$emit('update', response.data.devo);
+          this.$emit('devoSubmittedSuccessfully', response.data.devo);
           return response.data;
         })
         .catch(error => {
@@ -197,7 +199,7 @@ export default {
           this.errorSubmittingDevo = false;
           this.devoSubmittedSuccessfully = true;
           this.responseMessage = 'Your devo has been published!';
-          this.$emit('new', response.data.devo);
+          this.$emit('devoSubmittedSuccessfully', response.data.devo);
 
           return response.data;
         })
