@@ -26,10 +26,12 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'Register',
+
   data() {
     return {
       email: '',
@@ -39,40 +41,26 @@ export default {
       error: false,
     };
   },
-  methods: {
-    register() {
-      this.$http
-        .post('/register', {
-          user: this.email,
-          full_name: this.fullName,
-          password: this.password,
-          password_confirmation: this.passwordConfirmation,
-        })
-        .then(request => this.loginSuccessful(request))
-        .catch(() => this.loginFailed());
-    },
-    loginSuccessful(req) {
-      if (!req.data.token) {
-        this.loginFailed();
-        return;
-      }
 
-      localStorage.token = req.data.token;
-      this.$store.dispatch('login');
-      this.error = false;
-
-      this.$router.push({
-        name: 'Homepage',
-      });
-    },
-    loginFailed() {
-      this.error = 'Registration failed!';
-      this.$store.dispatch('logout');
-      delete localStorage.token;
-    },
+  beforeMount() {
+    this.routeGuard();
   },
+
   computed: {
-    ...mapGetters({ currentUser: 'currentUser' }),
+    ...mapGetters([
+      'getLoginStatus',
+    ]),
+  },
+
+  methods: {
+    routeGuard() {
+      if (this.getLoginStatus === 'LOGGED_IN') {
+        this.$router.push({ name: 'Homepage' });
+      }
+    },
+
+    register() {
+    },
   },
 };
 </script>
