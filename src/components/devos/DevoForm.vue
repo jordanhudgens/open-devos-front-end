@@ -57,6 +57,7 @@ import FileSelect from '@/components/shared/FileSelect';
 
 export default {
   name: 'DevoForm',
+
   data() {
     return {
       devo: {
@@ -72,31 +73,38 @@ export default {
       autoSaver: null
     };
   },
+
   props: {
     planId: Number,
-    devos: Array,
     devoToEdit: Object,
   },
+
   computed: {
     ...mapGetters({ currentUser: 'currentUser' }),
   },
+
   components: {
     FileSelect,
   },
+
   created() {
     if (this.devoToEdit) {
       this.devo = this.devoToEdit;
+      console.log("in created, devo and then devo to edit", this.devo, this.devoToEdit);
       this.autoSave();
     }
   },
+
   destroyed() {
     clearInterval(this.autoSaver);
   },
+
   watch: {
     devoToEdit(newValue, oldValue) {
       this.devo = newValue;
     },
   },
+
   methods: {
     autoSave() {
       this.autoSaver = setInterval(() => {
@@ -125,6 +133,7 @@ export default {
           });
       }, 10000);
     },
+
     formTypeSelector() {
       if (this.devoToEdit) {
         this.editDevoForm();
@@ -132,6 +141,7 @@ export default {
         this.submitDevoForm();
       }
     },
+
     buildForm() {
       let formData = new FormData();
 
@@ -149,6 +159,7 @@ export default {
 
       return formData;
     },
+
     editDevoForm() {
       axios
         .patch(
@@ -174,6 +185,7 @@ export default {
           this.errorSubmittingDevo = true;
         });
     },
+
     submitDevoForm() {
       axios
         .post('https://open-devos-api.herokuapp.com/devos', this.buildForm(), {

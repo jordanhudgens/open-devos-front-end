@@ -17,7 +17,7 @@ export default {
     return {
       devo: {
         id: null,
-        name: null,
+        title: null,
         slug: this.$route.params.devo_slug,
         content: null,
         featuredImage: null
@@ -47,7 +47,7 @@ export default {
       if (this.devo.slug === 'new') {
         return "Create a new devo";
       } else {
-        return this.devo.name;
+        return this.devo.title;
       }
     }
   },
@@ -81,12 +81,9 @@ export default {
         .then(response => {
           console.log("Response from getDevoDetails", response);
           this.devo.id = response.data.devo.id;
-          this.devo.name = response.data.devo.title;
+          this.devo.title = response.data.devo.title;
           this.devo.featuredImage = response.data.devo.featured_image;
-          this.devo.content = sanitizeHtml(response.data.devo.content, {
-            allowedTags: sanitizeHtml.defaults.allowedTags.concat(['h1', 'h2', 'img', 'div', 'a']),
-            allowedSchemes: ['data', 'http']
-          });
+          this.devo.content = response.data.devo.content;
         })
         .catch(error => {
           console.log(error);
