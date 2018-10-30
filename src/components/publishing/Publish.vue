@@ -77,6 +77,7 @@ import PlanForm from '@/components/plans/PlanForm';
 
 export default {
   name: 'Publish',
+
   data() {
     return {
       plans: [],
@@ -96,22 +97,27 @@ export default {
       loading: true,
     };
   },
+
   computed: {
     ...mapGetters({ currentUser: 'currentUser' }),
   },
+
   components: {
     PlanForm,
   },
+
   beforeMount() {
     this.getCurrentPlans();
     this.getCategories();
   },
+
   methods: {
     addToPlans(plan) {
       this.plans.push(plan);
       this.showPlanForm = false;
       this.planBtnText = 'Add a New Plan';
     },
+
     updatePlanList(plan) {
       this.plans.forEach(element => {
         if (element.id === plan.id) {
@@ -125,14 +131,17 @@ export default {
       this.planBtnText = 'Add a New Plan';
       this.planToEdit = null;
     },
+
     formatDate(date) {
       return moment(date).fromNow();
     },
+
     formTypeSelector() {
       return this.formMode === 'new'
         ? this.submitPlanForm()
         : this.editPlanForm();
     },
+
     renderPlanForm() {
       this.showPlanForm = !this.showPlanForm;
 
@@ -143,11 +152,13 @@ export default {
         this.planToEdit = null;
       }
     },
+
     editPlan(plan) {
       this.showPlanForm = true;
       this.planToEdit = plan;
       this.planBtnText = 'Cancel';
     },
+
     deletePlan(plan) {
       this.$swal({
         title: 'Are you sure you want to delete this plan?',
@@ -186,6 +197,7 @@ export default {
         }
       });
     },
+
     togglePlanForm(plan = null, edit = false) {
       if (edit) {
         this.formMode = 'edit';
@@ -201,6 +213,7 @@ export default {
         this.showPlanForm = !this.showPlanForm;
       }
     },
+
     getCurrentPlans() {
       axios
         .get('https://open-devos-api.herokuapp.com/user-plans', {
@@ -219,6 +232,7 @@ export default {
           console.log('error: ', error);
         });
     },
+
     getCategories() {
       axios
         .get(this.categoryApiUrl)

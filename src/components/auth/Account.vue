@@ -50,6 +50,7 @@ import FileSelect from '@/components/shared/FileSelect';
 
 export default {
   name: 'Account',
+
   data() {
     return {
       user: {
@@ -64,12 +65,15 @@ export default {
       profileImage: null,
     };
   },
+
   components: {
     FileSelect,
   },
+
   mounted() {
     this.loggedIn();
   },
+
   methods: {
     loggedIn() {
       if (localStorage.getItem('token')) {
@@ -106,7 +110,9 @@ export default {
         return false;
       }
     },
+
     populateForm() { },
+
     buildForm() {
       let formData = new FormData();
 
@@ -124,6 +130,7 @@ export default {
 
       return formData;
     },
+
     updateAccount() {
       axios
         .patch(
@@ -144,6 +151,7 @@ export default {
         });
     },
   },
+
   computed: {
     ...mapGetters({ currentUser: 'currentUser' }),
   },
