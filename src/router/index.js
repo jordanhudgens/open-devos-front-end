@@ -10,7 +10,6 @@ import CategoryDetail from "@/components/categories/CategoryDetail";
 import Popular from "@/components/Popular";
 import Profile from "@/components/Profile";
 import Publish from "@/components/publishing/Publish";
-import Logout from "@/components/auth/Logout";
 import PlanDetail from "@/components/plans/PlanDetail";
 import DevoDetail from "@/components/devos/DevoDetail";
 import DevoManager from "@/components/devos/DevoManager";
@@ -49,11 +48,6 @@ const router = new Router({
       path: "/account-settings",
       name: "Account",
       component: Account
-    },
-    {
-      path: "/logout",
-      name: "Logout",
-      component: Logout
     },
     {
       path: "/categories",
