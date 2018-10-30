@@ -20,10 +20,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import axios from 'axios';
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'Login',
+
   data() {
     return {
       email: '',
@@ -31,34 +33,37 @@ export default {
       error: false
     }
   },
+
   methods: {
+    ...mapMutations([
+      'SET_CURRENT_USER',
+      'SET_LOGIN_STATUS'
+    ]),
+
     login() {
-      this.$http.post('/login', { user: this.email, password: this.password })
-        .then(request => this.loginSuccessful(request))
-        .catch(() => this.loginFailed())
+      axios
+        .post(
+        'https://open-devos-api.herokuapp.com/sessions',
+        {
+          user: {
+            email: this.email,
+            password: this.password,
+          },
+        },
+        { withCredentials: true },
+      )
+        .then(response => {
+          console.log('res from login', response.data);
+          if (response.data.status === "created") {
+            this.SET_CURRENT_USER(response.data.user);
+            this.SET_LOGIN_STATUS('LOGGED_IN');
+            this.$router.push({ name: 'Homepage' });
+          }
+        })
+        .catch(error => {
+          this.$emit('loginError', error);
+        });
     },
-    loginSuccessful(req) {
-      if (!req.data.token) {
-        this.loginFailed()
-        return
-      }
-
-      localStorage.token = req.data.token
-      this.$store.dispatch('login')
-      this.error = false
-
-      this.$router.push({
-        name: "Homepage"
-      });
-    },
-    loginFailed() {
-      this.error = 'Login failed!'
-      this.$store.dispatch('logout')
-      delete localStorage.token
-    }
   },
-  computed: {
-    ...mapGetters({ currentUser: 'currentUser' })
-  }
 }
 </script>

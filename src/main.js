@@ -4,9 +4,8 @@ import Vue from "vue";
 import VueSweetalert2 from "vue-sweetalert2";
 import App from "./App";
 import router from "./router";
-import store from "@/store";
+import store from "./store/index.js";
 import wysiwyg from "vue-wysiwyg";
-import axios from "@/data/vue-axios";
 Vue.use(wysiwyg, {});
 Vue.use(VueSweetalert2);
 
@@ -15,11 +14,9 @@ import "../node_modules/vue-wysiwyg/dist/vueWysiwyg.css";
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
-new Vue({
-  el: "#app",
-  router,
-  axios,
-  store,
-  components: { App },
-  template: "<App/>"
-});
+store.dispatch("storeCheckLoginStatus"),
+  new Vue({
+    router,
+    store,
+    render: h => h(App)
+  }).$mount("#app");

@@ -18,9 +18,11 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "App",
+
   components: {
     Navigation
   },
+
   computed: {
     ...mapGetters({ currentUser: "currentUser" })
   }

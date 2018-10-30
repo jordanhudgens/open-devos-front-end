@@ -71,47 +71,21 @@ export default {
   },
 
   mounted() {
-    this.loggedIn();
+    this.routeGuard();
+  },
+
+  computed: {
+    ...mapGetters([
+      'getLoginStatus',
+    ]),
   },
 
   methods: {
-    loggedIn() {
-      if (localStorage.getItem('token')) {
-        axios
-          .get('https://open-devos-api.herokuapp.com/logged_in', {
-            headers: {
-              Authorization: 'Bearer ' + localStorage.getItem('token'),
-            },
-          })
-          .then(response => {
-            if (response.data.logged_in === true) {
-              this.userLoggedIn = true;
-              console.log('current user response', response.data);
-
-              this.user.email = response.data.current_user.email;
-              this.user.fullName = response.data.current_user.full_name;
-
-              if (response.data.profile_image) {
-                this.profileImage = response.data.profile_image;
-              }
-
-              return true;
-            } else {
-              this.userLoggedIn = false;
-              return false;
-            }
-          })
-          .catch(error => {
-            this.userLoggedIn = false;
-            return false;
-          });
-      } else {
-        this.userLoggedIn = false;
-        return false;
+    routeGuard() {
+      if (this.getLoginStatus() === 'NOT_LOGGED_IN') {
+        this.$router.push({ name: 'Homepage' });
       }
     },
-
-    populateForm() { },
 
     buildForm() {
       let formData = new FormData();
@@ -137,9 +111,7 @@ export default {
         `https://open-devos-api.herokuapp.com/users/${this.currentUser.id}`,
         this.buildForm(),
         {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token'),
-          },
+          withCredentials: true
         },
       )
         .then(response => {
@@ -150,10 +122,6 @@ export default {
           console.log(error);
         });
     },
-  },
-
-  computed: {
-    ...mapGetters({ currentUser: 'currentUser' }),
   },
 };
 </script>
