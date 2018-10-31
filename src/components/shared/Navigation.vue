@@ -19,47 +19,47 @@
           </span>
         </router-link>
 
-        <router-link v-if="!userLoggedIn" :to="{ name: 'Login' }" class="link">
+        <router-link v-if="getLoginStatus !== 'LOGGED_IN'" :to="{ name: 'Login' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-sign-in-alt"></i> Login
           </span>
         </router-link>
 
-        <router-link v-if="!userLoggedIn" :to="{ name: 'Register' }" class="link">
+        <router-link v-if="getLoginStatus !== 'LOGGED_IN'" :to="{ name: 'Register' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-user-plus"></i> Register
           </span>
         </router-link>
 
-        <router-link v-if="userLoggedIn" :to="`/profile/${currentUser.profile_slug}`" class="link">
+        <router-link v-if="getLoginStatus === 'LOGGED_IN'" :to="`/profile/${currentUser.profile_slug}`" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-user"></i> Profile
           </span>
         </router-link>
 
-        <router-link v-if="userLoggedIn" :to="{ name: 'Bookmarks' }" class="link">
+        <router-link v-if="getLoginStatus === 'LOGGED_IN'" :to="{ name: 'Bookmarks' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-bookmark"></i> Bookmarks
           </span>
         </router-link>
 
-        <router-link v-if="userLoggedIn" :to="{ name: 'Publish' }" class="link">
+        <router-link v-if="getLoginStatus === 'LOGGED_IN'" :to="{ name: 'Publish' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-plus-square"></i> Publish
           </span>
         </router-link>
 
-        <router-link v-if="userLoggedIn" :to="{ name: 'Account' }" class="link">
+        <router-link v-if="getLoginStatus === 'LOGGED_IN'" :to="{ name: 'Account' }" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-cog"></i> Account
           </span>
         </router-link>
 
-        <router-link v-if="userLoggedIn" :to="{ name: 'Logout' }" class="link">
+        <a v-if="getLoginStatus === 'LOGGED_IN'" @click.prevent="logout" class="link">
           <span @click="toggleNav">
             <i class="navIcon fas fa-sign-out-alt"></i> Logout
           </span>
-        </router-link>
+        </a>
       </div>
     </div>
   </div>
@@ -67,22 +67,12 @@
 
 <script>
 import axios from 'axios';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'Navigation',
 
-  mounted() {
-    this.loggedIn();
-  },
-
-  watch: {
-    $route(to, from) {
-      this.loggedIn();
-    },
-  },
-
   data() {
-    // TODO get nav working
     return {
       query: null,
       searchPlaceholder: `\uf002 Search Devos`,
@@ -94,7 +84,38 @@ export default {
     };
   },
 
+  // TODO
+  // Utilize currentUser for navigation links such as profile/account, etc
+  computed: {
+    ...mapGetters([
+      "currentUser",
+      'getLoginStatus',
+    ]),
+  },
+
   methods: {
+    ...mapMutations([
+      'SET_LOGIN_STATUS'
+    ]),
+
+    logout() {
+      axios
+        .delete(`https://open-devos-api.herokuapp.com/logout`, {
+          withCredentials: true,
+        })
+        .then(response => {
+          // this.RETURN_TO_BASE_STATE();
+          console.log("LOGOUT", response);
+          this.SET_LOGIN_STATUS('NOT_LOGGED_IN');
+          this.$router.push({
+            name: 'Homepage',
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
     submitQuery() {
       this.$router.push({
         name: 'SearchResults',

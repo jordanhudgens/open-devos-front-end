@@ -31,6 +31,7 @@
 .navbar .link:active {
   color: #156356;
   border-bottom: #156356 solid 1px;
+  cursor: pointer;
 }
 
 .navbar .brand {
@@ -45,7 +46,7 @@
 }
 
 .navSearchBar {
-  font-family: 'Font Awesome\ 5 Free', Helvetica, sans-serif;
+  font-family: "Font Awesome\ 5 Free", Helvetica, sans-serif;
 }
 
 .navSearchBar input {
@@ -63,9 +64,9 @@
   width: 100%;
 }
 
-.navSearchBar input[type='text'] {
+.navSearchBar input[type="text"] {
   font-size: 1.3em;
-  font-family: 'Font Awesome\ 5 Free', Arial, Helvetica, sans-serif;
+  font-family: "Font Awesome\ 5 Free", Arial, Helvetica, sans-serif;
   color: #585858;
   border-top: 1px solid transparent;
   border-right: 1px solid transparent;
@@ -73,12 +74,12 @@
   border-bottom: 1px solid transparent;
 }
 
-.navSearchBar input[type='text']::placeholer {
-  font-family: 'Font Awesome\ 5 Free', Arial, Helvetica, sans-serif;
+.navSearchBar input[type="text"]::placeholer {
+  font-family: "Font Awesome\ 5 Free", Arial, Helvetica, sans-serif;
   color: #a4a4a4;
 }
 
-.navSearchBar input[type='text']:focus {
+.navSearchBar input[type="text"]:focus {
   outline: none;
   border-bottom: 1px solid #239a87;
 }
