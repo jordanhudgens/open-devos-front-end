@@ -66,75 +66,48 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
 import axios from 'axios';
 
 export default {
   name: 'Navigation',
-  computed: {
-    ...mapGetters({currentUser: 'currentUser'}),
-  },
+
   mounted() {
     this.loggedIn();
   },
+
   watch: {
     $route(to, from) {
       this.loggedIn();
     },
   },
+
   data() {
+    // TODO get nav working
     return {
       query: null,
       searchPlaceholder: `\uf002 Search Devos`,
       showMobileNavBar: false,
-      userLoggedIn: null,
       navLinks: [
-        {linkName: 'Categories', linkIcon: 'navIcon fas fa-map-signs'},
-        {linkName: 'Popular', linkIcon: 'navIcon fas fa-chart-line'},
+        { linkName: 'Categories', linkIcon: 'navIcon fas fa-map-signs' },
+        { linkName: 'Popular', linkIcon: 'navIcon fas fa-chart-line' },
       ],
     };
   },
+
   methods: {
     submitQuery() {
       this.$router.push({
         name: 'SearchResults',
-        params: {query: this.query},
+        params: { query: this.query },
       });
       this.query = '';
     },
+
     toggleNav() {
-      console.log('toggleee');
       if (this.showMobileNavBar) {
         this.showMobileNavBar = !this.showMobileNavBar;
       } else {
         this.showMobileNavBar = !this.showMobileNavBar;
-      }
-    },
-    loggedIn() {
-      if (localStorage.getItem('token')) {
-        axios
-          .get('https://open-devos-api.herokuapp.com/logged_in', {
-            headers: {
-              Authorization: 'Bearer ' + localStorage.getItem('token'),
-            },
-          })
-          .then(response => {
-            if (response.data.logged_in === true) {
-              console.log(response.data);
-              this.userLoggedIn = true;
-              return true;
-            } else {
-              this.userLoggedIn = false;
-              return false;
-            }
-          })
-          .catch(error => {
-            this.userLoggedIn = false;
-            return false;
-          });
-      } else {
-        this.userLoggedIn = false;
-        return false;
       }
     },
   },
