@@ -92,7 +92,6 @@
 import { mapGetters } from 'vuex';
 import axios from 'axios';
 import draggable from 'vuedraggable';
-import loggedIn from '@/mixins/loggedIn';
 
 export default {
   name: 'PlanDetail',
