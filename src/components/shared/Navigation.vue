@@ -84,8 +84,6 @@ export default {
     };
   },
 
-  // TODO
-  // Utilize currentUser for navigation links such as profile/account, etc
   computed: {
     ...mapGetters([
       "currentUser",
@@ -104,8 +102,6 @@ export default {
           withCredentials: true,
         })
         .then(response => {
-          // this.RETURN_TO_BASE_STATE();
-          console.log("LOGOUT", response);
           this.SET_LOGIN_STATUS('NOT_LOGGED_IN');
           this.$router.push({
             name: 'Homepage',
