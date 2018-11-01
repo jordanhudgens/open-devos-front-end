@@ -2,8 +2,6 @@
   <div>
     <h1>Published Plans</h1>
 
-    <h2>{{ currentUser }}</h2>
-
     <div class="published-plans-wrapper">
 
       <div class="card published-plans-card-wrapper">
@@ -110,8 +108,6 @@ export default {
   },
 
   mounted() {
-    // TODO
-    // Move to redux store so you can mange the 'loading' process
     this.getCurrentPlans();
     this.getCategories();
   },

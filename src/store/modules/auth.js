@@ -24,9 +24,9 @@ const actions = {
   storeCheckLoginStatus: context => {
     loggedIn()
       .then(res => {
-        console.log("loggedIn status response", res);
         if (res.logged_in) {
           context.commit("SET_CURRENT_USER", res.user);
+          context.commit("SET_AVATAR", res.avatar);
           context.commit("SET_LOGIN_STATUS", "LOGGED_IN");
         } else {
           context.commit("SET_LOGIN_STATUS", "NOT_LOGGED_IN");
@@ -50,6 +50,10 @@ const mutations = {
 
   SET_LOADING_STATUS: (state, booleanStatus) => {
     state.isLoading = booleanStatus;
+  },
+
+  SET_AVATAR: (state, avatar) => {
+    state.user.avatar = avatar;
   }
 };
 
