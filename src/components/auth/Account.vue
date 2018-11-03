@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div v-if="!getLoadingStatus">
 
     <div class="heading">
       <h2>Account Settings</h2>
@@ -28,7 +28,7 @@
           <img :src="user.avatar">
         </div>
 
-        <div>
+        <div v-if="user.avatar">
           <file-select v-model="user.avatar"></file-select>
         </div>
 
@@ -58,7 +58,6 @@ export default {
         passwordConfirmation: null,
         avatar: null,
       },
-      userLoggedIn: null,
       error: false,
     };
   },
@@ -69,19 +68,23 @@ export default {
 
   mounted() {
     this.routeGuard();
-    this.populateForm();
   },
 
   computed: {
     ...mapGetters([
       'getLoginStatus',
       'currentUser',
+      'getLoadingStatus'
     ]),
   },
 
+  // TODO
+  // Fix route guard workflow
+  // Maybe build out a white list of routes that don't need auth
+  // And place them in the store and manage them from there
+
   methods: {
     populateForm() {
-      console.log("current user avatar", this.currentUser.avatar);
       this.user = {
         email: this.currentUser.email,
         fullName: this.currentUser.full_name,
@@ -90,7 +93,11 @@ export default {
     },
 
     routeGuard() {
-      if (this.getLoginStatus === 'NOT_LOGGED_IN') {
+      console.log("loading", this.getLoadingStatus);
+      if (!this.getLoadingStatus) {
+        this.populateForm();
+        console.log("currentUser", this.currentUser);
+      } else if (!this.getLoadingStatus && this.getLoginStatus === 'NOT_LOGGED_IN') {
         this.$router.push({ name: 'Homepage' });
       }
     },

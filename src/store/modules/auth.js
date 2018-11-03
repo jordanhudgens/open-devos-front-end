@@ -28,10 +28,11 @@ const actions = {
           context.commit("SET_CURRENT_USER", res.user);
           context.commit("SET_AVATAR", res.avatar);
           context.commit("SET_LOGIN_STATUS", "LOGGED_IN");
+          context.commit("SET_LOADING_STATUS", false);
         } else {
           context.commit("SET_LOGIN_STATUS", "NOT_LOGGED_IN");
+          context.commit("SET_LOADING_STATUS", false);
         }
-        context.commit("SET_LOADING_STATUS", false);
       })
       .catch(error => {
         context.commit("SET_LOGIN_STATUS", "ERROR_LOGGING_IN");
