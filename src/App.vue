@@ -33,6 +33,20 @@ export default {
     this.getLoadingStatus();
   },
 
+  updated() {
+    if (!this.getLoadingStatus()) {
+      if (this.getLoginStatus() === 'NOT_LOGGED_IN') {
+        if (this.routesThatDoNotRequireAuth().includes(this.$route.name)) {
+          this.$router.push({ name: this.$route.name });
+        } else {
+          this.$router.push({ name: 'home' });
+        }
+      } else if (this.getLoginStatus() === 'LOGGED_IN' && !this.doesOrgExist()) {
+        this.$router.push({ name: 'organization-manager' });
+      }
+    }
+  },
+
   computed: {
     ...mapState([
       'isLoading'
@@ -43,6 +57,7 @@ export default {
     ...mapGetters([
       'getLoadingStatus',
       'getLoginStatus',
+      'routesThatDoNotRequireAuth'
     ]),
   }
 };
