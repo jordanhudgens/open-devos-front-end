@@ -33,16 +33,20 @@ export default {
     this.getLoadingStatus();
   },
 
+  // TODO
+  // Figure out why the updated action isn't triggering with route changes
+  // needed to get the route guard working
+
   updated() {
+    console.log("getLoadingStatus", this.getLoadingStatus());
     if (!this.getLoadingStatus()) {
+      console.log("getLoginStatus", this.getLoginStatus());
       if (this.getLoginStatus() === 'NOT_LOGGED_IN') {
         if (this.routesThatDoNotRequireAuth().includes(this.$route.name)) {
           this.$router.push({ name: this.$route.name });
         } else {
-          this.$router.push({ name: 'home' });
+          this.$router.push({ name: 'Homepage' });
         }
-      } else if (this.getLoginStatus() === 'LOGGED_IN' && !this.doesOrgExist()) {
-        this.$router.push({ name: 'organization-manager' });
       }
     }
   },
@@ -57,7 +61,7 @@ export default {
     ...mapGetters([
       'getLoadingStatus',
       'getLoginStatus',
-      'routesThatDoNotRequireAuth'
+      'routesThatDoNotRequireAuth',
     ]),
   }
 };

@@ -33,8 +33,6 @@ export default {
   },
 
   beforeMount() {
-    this.routeGuard();
-
     if (this.devo.slug !== 'new') {
       this.getDevoDetails();
     }
@@ -58,14 +56,6 @@ export default {
   },
 
   methods: {
-    routeGuard() {
-      if (this.getLoginStatus === 'NOT_LOGGED_IN') {
-        this.$router.push({ name: 'Homepage' });
-      } else if (this.currentUser.id !== devo.user.id) {
-        this.$router.push({ name: 'Homepage' });
-      }
-    },
-
     redirectToDevo(devo) {
       this.$router.push({
         name: "DevoDetail",
