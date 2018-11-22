@@ -12,7 +12,9 @@
       </div>
 
       <div class="right-column">
-        <div v-if="currentUser && !planStarted">
+        <div v-if="currentUser && planStarted === null">
+        </div>
+        <div v-else-if="currentUser && !planStarted">
           <button @click.prevent="startPlan" class="btn">Start Plan</button>
         </div>
         <div v-else-if="currentUser && planStarted">
@@ -124,12 +126,7 @@ export default {
 
   beforeMount() {
     this.getPlanDetails();
-  },
-
-  mounted() {
-    if (loggedIn()) {
-      this.getCurrentUserPlans();
-    }
+    this.getCurrentUserPlans();
   },
 
   beforeRouteUpdate(to, from, next) {
@@ -138,7 +135,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ currentUser: 'currentUser' }),
+    ...mapGetters(['currentUser'])
   },
 
   methods: {
@@ -152,16 +149,10 @@ export default {
 
       axios
         .patch(
-        `https://open-devos-api.herokuapp.com/devo_positions/${
-        this.plan.slug
-        }`,
+        `https://open-devos-api.herokuapp.com/devo_positions/${this.plan.slug}`,
         { devos: updatedPositions },
-        {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token'),
-          },
-        },
-      )
+        { withCredentials: true }
+        )
         .then(response => {
           this.devos = response.data.devos;
           this.positionsUpdated = true;
@@ -175,18 +166,23 @@ export default {
     getCurrentUserPlans() {
       axios
         .get('https://open-devos-api.herokuapp.com/plan_assignments', {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token'),
-          },
+          withCredentials: true
         })
         .then(response => {
-          response.data.plans.forEach(plan => {
+          console.log("plan assignments", response.data.plans);
+          console.log("current plan", this.plan);
+
+          for (let plan of response.data.plans) {
             if (plan.id === this.plan.id) {
+              console.log("I'm true!!!", plan.id, this.plan.id);
               this.planStarted = true;
+              break;
             } else {
+              console.log("I'm false!!!", plan.id, this.plan.id);
               this.planStarted = false;
             }
-          });
+          }
+
         })
         .catch(error => {
           console.log(error);
@@ -203,11 +199,7 @@ export default {
             user_id: this.currentUser.id,
           },
         },
-        {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token'),
-          },
-        },
+        { withCredentials: true },
       )
         .then(response => {
           this.planStarted = true;
@@ -232,12 +224,7 @@ export default {
       }).then(result => {
         if (result.value) {
           axios
-            .delete(`https://open-devos-api.herokuapp.com/devos/${devo.slug}`, {
-              headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('token'),
-                'Content-Type': 'application/json',
-              },
-            })
+            .delete(`https://open-devos-api.herokuapp.com/devos/${devo.slug}`, { withCredentials: true })
             .then(response => {
               this.errorDeletingDevo = false;
               this.devoDeletedSuccessfully = true;
@@ -273,12 +260,7 @@ export default {
 
     getPlanDetails() {
       axios
-        .get(`${this.planApiUrl}/${this.plan.slug}`, {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token'),
-            'Content-Type': 'application/json',
-          },
-        })
+        .get(`${this.planApiUrl}/${this.plan.slug}`, { withCredentials: true })
         .then(response => {
           this.plan.name = response.data.plan.title;
           this.plan.summary = response.data.plan.summary;
