@@ -2,7 +2,16 @@
   <div class="devo-detail-wrapper">
     <div class="devo-detail-content">
       <div class="heading">
-        <h1>{{ devo.name }}</h1>
+        <div class="left-column">
+          <h1>{{ devo.name }}</h1>
+
+          <div v-if="currentUser && currentUser.id === devo.plan.user_id" class="devo-edit-action-link">
+            <router-link :to="{ name: 'DevoManager', params: { plan_slug: devo.plan.slug, devo_slug: devo.slug } }">
+              <i class="fas fa-pen-square"></i>
+              Edit
+            </router-link>
+          </div>
+        </div>
 
         <div class="mark-completed-wrapper">
           <button v-if="currentUser && !devoCompletions.includes(devo.id) && devo.plan" @click="markCompleted(devo.id)" class="btn">Mark Completed</button>

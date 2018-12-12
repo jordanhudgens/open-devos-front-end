@@ -33,10 +33,6 @@ export default {
     this.getLoadingStatus();
   },
 
-  // TODO
-  // Figure out why the updated action isn't triggering with route changes
-  // needed to get the route guard working
-
   updated() {
     console.log("getLoadingStatus", this.getLoadingStatus());
     if (!this.getLoadingStatus()) {
