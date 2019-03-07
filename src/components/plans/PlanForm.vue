@@ -10,13 +10,18 @@
       </div>
 
       <form @submit.prevent="formTypeSelector" class="form-wrapper">
-
         <input type="text" v-model="planTitle" placeholder="Title">
-
+        
         <textarea v-model="planSummary" cols="30" rows="10" placeholder="Plan summary"></textarea>
 
         <div>{{ planStatus }}</div>
-        <input type="checkbox" id="checkbox" v-model="planStatus" :true-value="'published'" :false-value="'draft'">
+        <input
+          type="checkbox"
+          id="checkbox"
+          v-model="planStatus"
+          :true-value="'published'"
+          :false-value="'draft'"
+        >
         <label v-if="planStatus === 'draft'" for="checkbox">Publish publicly?</label>
         <label v-else for="checkbox">Switch to draft?</label>
 
@@ -28,7 +33,11 @@
         </div>
 
         <select v-model="planTopic">
-          <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.title }}</option>
+          <option
+            v-for="category in categories"
+            :key="category.id"
+            :value="category.id"
+          >{{ category.title }}</option>
         </select>
 
         <div v-if="!planTitle || !planTopic || !planSummary">
@@ -46,7 +55,7 @@
 <script>
 import { mapGetters } from "vuex";
 import axios from "axios";
-import FileSelect from '@/components/shared/FileSelect';
+import FileSelect from "@/components/shared/FileSelect";
 
 export default {
   name: "PlanForm",
@@ -107,17 +116,17 @@ export default {
     buildForm() {
       let formData = new FormData();
 
-      formData.append('plan[title]', this.planTitle);
-      formData.append('plan[summary]', this.planSummary);
-      formData.append('plan[topic_id]', this.planTopic);
-      formData.append('plan[user_id]', this.currentUser.id);
+      formData.append("plan[title]", this.planTitle);
+      formData.append("plan[summary]", this.planSummary);
+      formData.append("plan[topic_id]", this.planTopic);
+      formData.append("plan[user_id]", this.currentUser.id);
 
       if (this.planStatus) {
-        formData.append('plan[status]', this.planStatus);
+        formData.append("plan[status]", this.planStatus);
       }
 
       if (this.planFeaturedImage) {
-        formData.append('plan[plan_image]', this.planFeaturedImage);
+        formData.append("plan[plan_image]", this.planFeaturedImage);
       }
 
       return formData;
@@ -125,13 +134,12 @@ export default {
     editPlanForm() {
       axios
         .patch(
-        `https://open-devos-api.herokuapp.com/plans/${this.planToEdit.slug}`,
-        this.buildForm(),
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token")
+          `https://open-devos-api.herokuapp.com/plans/${this.planToEdit.slug}`,
+          this.buildForm(),
+          {
+            withCredentials: true
           }
-        })
+        )
         .then(response => {
           this.errorSubmittingPlan = false;
           this.planSubmittedSuccessfully = true;
@@ -148,15 +156,11 @@ export default {
     },
     submitPlanForm() {
       axios
-        .post(
-        "https://open-devos-api.herokuapp.com/plans",
-        this.buildForm(),
-        {
+        .post("https://open-devos-api.herokuapp.com/plans", this.buildForm(), {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token")
           }
-        }
-        )
+        })
         .then(response => {
           this.errorSubmittingPlan = false;
           this.planSubmittedSuccessfully = true;

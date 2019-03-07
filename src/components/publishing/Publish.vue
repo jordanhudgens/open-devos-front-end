@@ -213,7 +213,6 @@ export default {
     },
 
     getCurrentPlans() {
-      console.log("current plans...", this.currentUser);
       axios
         .get('https://open-devos-api.herokuapp.com/user-plans', {
           params: {
